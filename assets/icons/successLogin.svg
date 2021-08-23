@@ -1,0 +1,8 @@
+<svg id="vuesax_linear_login" data-name="vuesax/linear/login" xmlns="http://www.w3.org/2000/svg" width="32.4" height="32.4" viewBox="0 0 32.4 32.4">
+  <g id="login" transform="translate(0)">
+    <path id="Vector" d="M0,6.912,3.456,3.456,0,0" transform="translate(15.768 12.825)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    <path id="Vector-2" data-name="Vector" d="M0,0H13.73" transform="translate(5.4 16.281)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    <path id="Vector-3" data-name="Vector" d="M0,0C5.967,0,10.8,4.05,10.8,10.8S5.967,21.6,0,21.6" transform="translate(16.2 5.4)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    <path id="Vector-4" data-name="Vector" d="M0,0H32.4V32.4H0Z" transform="translate(32.4 32.4) rotate(180)" fill="none" opacity="0"/>
+  </g>
+</svg>
