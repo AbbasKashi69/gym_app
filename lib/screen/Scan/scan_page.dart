@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gym_app/components/constant.dart';
+import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 
 class ScanPage extends StatelessWidget {
   const ScanPage({Key? key}) : super(key: key);
@@ -11,13 +13,10 @@ class ScanPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xffF2F2F2),
-        // leading: SvgPicture.asset('assets/icons/backIcon.svg'),
-        brightness: Brightness.light,
-        shadowColor: Colors.transparent,
+      appBar: AppBarWidget(
+        title: 'اسکن کد',
       ),
-      backgroundColor: kColorBackGround,
+      backgroundColor: kColorBackGroundQrCode,
       body: Container(
           padding: EdgeInsets.symmetric(horizontal: padding),
           width: sizeScreen.width,
@@ -103,8 +102,8 @@ class ScanPage extends StatelessWidget {
                         SizedBox(
                           width: padding / 2,
                         ),
-                        // SvgPicture.asset('assets/icons/logout.svg',
-                        // color: Color(0xff00D84F)),
+                        SvgPicture.asset('assets/icons/logout.svg',
+                            color: Color(0xff00D84F)),
                         Spacer(),
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -116,9 +115,9 @@ class ScanPage extends StatelessWidget {
                             SizedBox(
                               width: padding,
                             ),
-                            // SvgPicture.asset(
-                            //   'assets/icons/barCode.svg',
-                            // ),
+                            SvgPicture.asset(
+                              'assets/icons/barCode.svg',
+                            ),
                           ],
                         )
                       ],
@@ -136,13 +135,13 @@ class ScanPage extends StatelessWidget {
                         SizedBox(
                           width: padding / 2,
                         ),
-                        // Transform.rotate(
-                        //   angle: pi,
-                        // child: SvgPicture.asset(
-                        //   'assets/icons/successLogin.svg',
-                        //   color: Color(0xffFF0057),
-                        // ),
-                        // ),
+                        Transform.rotate(
+                          angle: pi,
+                          child: SvgPicture.asset(
+                            'assets/icons/successLogin.svg',
+                            color: Color(0xffFF0057),
+                          ),
+                        ),
                         Spacer(),
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -154,9 +153,9 @@ class ScanPage extends StatelessWidget {
                             SizedBox(
                               width: padding,
                             ),
-                            // SvgPicture.asset(
-                            //   'assets/icons/barCode.svg',
-                            // ),
+                            SvgPicture.asset(
+                              'assets/icons/barCode.svg',
+                            ),
                           ],
                         )
                       ],

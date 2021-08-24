@@ -12,8 +12,8 @@ class RequestsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
     return Container(
-      // color: Color(0xffFBFBFB),
-      color: Color(0xffaaaaaa),
+      color: Color(0xffFBFBFB),
+      // color: Color(0xffaaaaaa),
       child: Scaffold(
         appBar: AppBarWidget(
           title: 'درخواست ها',
