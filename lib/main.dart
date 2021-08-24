@@ -4,6 +4,7 @@ import 'package:gym_app/Router/rout_generate.dart';
 import 'package:gym_app/screen/Cv/cv_page.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:gym_app/screen/ListApprentice/requests_page.dart';
+import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
 import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';
 import 'package:gym_app/screen/Scan/scan_page.dart';
 
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [const Locale('fa', '')],
-      initialRoute: CvPage.routeName,
+      initialRoute: ProfileApprenticePage.routeName,
       onGenerateRoute: MyRouter.onGenerateRoute,
     );
   }

@@ -4,6 +4,7 @@ import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/screen/Cv/cv_page.dart';
 import 'package:gym_app/screen/Cv/no_cv_screen.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
+import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
 
 class ProfileApprenticePage extends StatelessWidget {
   const ProfileApprenticePage({Key? key}) : super(key: key);
@@ -127,9 +128,9 @@ class ProfileApprenticePage extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: GestureDetector(
-                          onTap: () {
-                            // NoCvScreen().noCv(context);
-                            Navigator.of(context).pushNamed(CvPage.routeName);
+                          onTap: () async {
+                            // Navigator.of(context).pushNamed(CvPage.routeName);
+                            await NoCvScreen().noCv(context, sizeScreen);
                           },
                           child: ItemConversation(
                             image: 'assets/icons/cv.svg',
@@ -193,36 +194,41 @@ class ProfileApprenticePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: kColorBackgroundItem),
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(
-                      vertical: padding, horizontal: padding / 2),
-                  child: Row(
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/personalProfile.svg',
-                          ),
-                          SizedBox(
-                            width: padding,
-                          ),
-                          Text(
-                            'مشخصات فردی',
-                            style: textStyle,
-                          )
-                        ],
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.black,
-                      )
-                    ],
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(PersonalInfoPage.routeName);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: kColorBackgroundItem),
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
+                        vertical: padding, horizontal: padding / 2),
+                    child: Row(
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icons/personalProfile.svg',
+                            ),
+                            SizedBox(
+                              width: padding,
+                            ),
+                            Text(
+                              'مشخصات فردی',
+                              style: textStyle,
+                            )
+                          ],
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.black,
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Container(
