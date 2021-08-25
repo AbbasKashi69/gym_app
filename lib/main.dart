@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gym_app/Router/rout_generate.dart';
-import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
-import 'package:gym_app/screen/ListApprentice/requests_page.dart';
-import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';
-import 'package:gym_app/screen/Scan/scan_page.dart';
+import 'package:gym_app/screen/Home/home_page.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -23,7 +21,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [const Locale('fa', '')],
-      initialRoute: ProfileApprenticePage.routeName,
+      initialRoute: HomePage.routeName,
       onGenerateRoute: MyRouter.onGenerateRoute,
     );
   }

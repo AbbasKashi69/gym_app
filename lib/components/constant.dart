@@ -10,3 +10,4 @@ const kBodyDecoration = BoxDecoration(
         topLeft: Radius.circular(14), topRight: Radius.circular(14)));
 const Color kColorAppbar = Color(0xffFBFBFB);
 const Color kColorBackgroundItem = Color(0xffFBFBFB);
+const  textStyleHome = TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w600);

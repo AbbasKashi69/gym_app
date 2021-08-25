@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_app/screen/Home/home_page.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:gym_app/screen/ListApprentice/requests_page.dart';
 import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';
@@ -14,6 +15,8 @@ class MyRouter {
         return MaterialPageRoute(builder: (context) => ListApprenticePage());
       case RequestsPage.routeName:
         return MaterialPageRoute(builder: (context) => RequestsPage());
+      case HomePage.routeName:
+        return MaterialPageRoute(builder: (context) => HomePage());
       case ProfileApprenticePage.routeName:
         return MaterialPageRoute(builder: (context) => ProfileApprenticePage());
       default:
