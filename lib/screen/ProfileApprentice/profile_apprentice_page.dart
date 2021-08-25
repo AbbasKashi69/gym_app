@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gym_app/components/constant.dart';
+import 'package:gym_app/screen/Cv/cv_page.dart';
+import 'package:gym_app/screen/Cv/no_cv_screen.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
+import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
 
 class ProfileApprenticePage extends StatelessWidget {
   const ProfileApprenticePage({Key? key}) : super(key: key);
@@ -52,11 +56,7 @@ class ProfileApprenticePage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5),
                             color: kColorBackgroundItem),
                         child: Center(
-                          child: Icon(
-                            Icons.tram_sharp,
-                            color: Colors.red,
-                          ),
-                        ),
+                            child: SvgPicture.asset('assets/icons/trash.svg')),
                       )
                     ],
                   ),
@@ -127,9 +127,15 @@ class ProfileApprenticePage extends StatelessWidget {
                     children: [
                       Expanded(
                         flex: 2,
-                        child: ItemConversation(
-                          iconData: Icons.home,
-                          title: 'رزومه',
+                        child: GestureDetector(
+                          onTap: () async {
+                            // Navigator.of(context).pushNamed(CvPage.routeName);
+                            await NoCvScreen().noCv(context, sizeScreen);
+                          },
+                          child: ItemConversation(
+                            image: 'assets/icons/cv.svg',
+                            title: 'رزومه',
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -138,7 +144,7 @@ class ProfileApprenticePage extends StatelessWidget {
                       Expanded(
                         flex: 3,
                         child: ItemConversation(
-                          iconData: Icons.home,
+                          image: 'assets/icons/writeProgram.svg',
                           title: 'نوشتن برنامه',
                         ),
                       ),
@@ -148,8 +154,8 @@ class ProfileApprenticePage extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: ItemConversation(
-                          iconData: Icons.home,
                           title: 'گفتگو',
+                          image: 'assets/icons/conversation.svg',
                         ),
                       )
                     ],
@@ -168,9 +174,8 @@ class ProfileApprenticePage extends StatelessWidget {
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
-                            Icons.home,
-                            color: Colors.grey,
+                          SvgPicture.asset(
+                            'assets/icons/listProgram.svg',
                           ),
                           SizedBox(
                             width: padding,
@@ -189,37 +194,41 @@ class ProfileApprenticePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: kColorBackgroundItem),
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(
-                      vertical: padding, horizontal: padding / 2),
-                  child: Row(
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.home,
-                            color: Colors.grey,
-                          ),
-                          SizedBox(
-                            width: padding,
-                          ),
-                          Text(
-                            'مشخصات فردی',
-                            style: textStyle,
-                          )
-                        ],
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.black,
-                      )
-                    ],
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(PersonalInfoPage.routeName);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: kColorBackgroundItem),
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
+                        vertical: padding, horizontal: padding / 2),
+                    child: Row(
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icons/personalProfile.svg',
+                            ),
+                            SizedBox(
+                              width: padding,
+                            ),
+                            Text(
+                              'مشخصات فردی',
+                              style: textStyle,
+                            )
+                          ],
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.black,
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Container(
@@ -246,9 +255,8 @@ class ProfileApprenticePage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.note,
-                            color: Colors.black,
+                          SvgPicture.asset(
+                            'assets/icons/dateBlack.svg',
                           ),
                           SizedBox(
                             width: padding,
@@ -347,8 +355,9 @@ class ProfileApprenticePage extends StatelessWidget {
                             color: Color(0xff00B4D8)),
                         padding: EdgeInsets.all(5),
                         child: Center(
-                          child: Icon(Icons.home),
-                        ),
+                            child: SvgPicture.asset(
+                          'assets/icons/dateWhite.svg',
+                        )),
                       )
                     ],
                   ),
@@ -576,11 +585,10 @@ class _ChartChageBodyState extends State<ChartChageBody> {
 }
 
 class ItemConversation extends StatelessWidget {
-  const ItemConversation(
-      {Key? key, required this.iconData, required this.title})
+  const ItemConversation({Key? key, required this.image, required this.title})
       : super(key: key);
   final String title;
-  final IconData iconData;
+  final String image;
 
   @override
   Widget build(BuildContext context) {
@@ -593,10 +601,7 @@ class ItemConversation extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              iconData,
-              color: Colors.green,
-            ),
+            SvgPicture.asset(image),
             SizedBox(
               width: padding / 2,
             ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gym_app/components/constant.dart';
 
 class ListApprenticePage extends StatelessWidget {
@@ -191,7 +191,11 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               ),
               GestureDetector(
                   onTap: () => Navigator.of(context).pop(),
-                  child: SvgPicture.asset('assets/icons/backIcon.svg')
+                  child: SvgPicture.asset(
+                    'assets/icons/backIcon.svg',
+                    width: sizeScreen.width > 550 ? 40 : 25,
+                    height: sizeScreen.width > 550 ? 40 : 25,
+                  )
                   // child: Container(),
                   )
             ],
