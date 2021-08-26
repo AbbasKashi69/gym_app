@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="35.333" height="35.333" viewBox="0 0 35.333 35.333">
+  <g id="vuesax_linear_clipboard-tick" data-name="vuesax/linear/clipboard-tick" transform="translate(-172 -252)">
+    <g id="clipboard-tick" transform="translate(172 252)">
+      <path id="Vector" d="M2.944,5.889H8.833c2.944,0,2.944-1.472,2.944-2.944C11.778,0,10.306,0,8.833,0H2.944C1.472,0,0,0,0,2.944S1.472,5.889,2.944,5.889Z" transform="translate(11.778 2.944)" fill="none" stroke="#0077b6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"/>
+      <path id="Vector-2" data-name="Vector" d="M19.139,0c4.9.265,7.361,2.076,7.361,8.8v8.833c0,5.889-1.472,8.833-8.833,8.833H8.833C1.472,26.471,0,23.526,0,17.637V8.8C0,2.091,2.459.265,7.361,0" transform="translate(4.417 5.918)" fill="none" stroke="#0077b6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"/>
+      <path id="Vector-3" data-name="Vector" d="M0,0H35.333V35.333H0Z" fill="none" opacity="0"/>
+    </g>
+  </g>
+</svg>
