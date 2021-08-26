@@ -7,6 +7,7 @@ import 'package:gym_app/screen/ListApprentice/requests_page.dart';
 import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
 import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';
 import 'package:gym_app/screen/Scan/scan_page.dart';
+import 'package:gym_app/screen/Wallet/wallet_page.dart';
 
 class MyRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings routeSettings) {
@@ -21,6 +22,8 @@ class MyRouter {
         return MaterialPageRoute(builder: (context) => HomePage());
       case ProfileApprenticePage.routeName:
         return MaterialPageRoute(builder: (context) => ProfileApprenticePage());
+        case WalletPage.routeName:
+        return MaterialPageRoute(builder: (context) => WalletPage());
       case CvPage.routeName:
         return MaterialPageRoute(builder: (context) => CvPage());
       case PersonalInfoPage.routeName:

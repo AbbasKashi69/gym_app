@@ -13,6 +13,7 @@ environment:
 dependencies:
   auto_size_text: 2.1.0
   convex_bottom_bar: ^3.0.0
+  persian_number_utility: ^0.3.4
 
   get: ^4.3.8
 

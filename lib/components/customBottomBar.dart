@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
+import 'package:gym_app/screen/Wallet/wallet_page.dart';
 
 class CustomAppBarWidget extends StatelessWidget {
-  const CustomAppBarWidget({Key? key}) : super(key: key);
-
+  const CustomAppBarWidget({Key? key, required this.initialActive}) : super(key: key);
+   final int initialActive;
   @override
   Widget build(BuildContext context) {
     return ConvexAppBar(
@@ -39,13 +40,13 @@ class CustomAppBarWidget extends StatelessWidget {
               isIconBlend: false,
               activeIcon: SvgPicture.asset("assets/icons/wallet-b.svg")),
         ],
-        initialActiveIndex: 0,
+        initialActiveIndex: initialActive,
         onTap: (int i) {
           if (i == 0) {
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => HomePage()));
-          } else if (i == 2) {
-            // Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomePage()) );
+          } else if (i == 4) {
+            Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => WalletPage()) );
             //todo be in tartib
           }
         });

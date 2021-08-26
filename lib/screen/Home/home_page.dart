@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: CustomAppBarWidget(),
+        bottomNavigationBar: CustomAppBarWidget(initialActive: 0,),
         body: SingleChildScrollView(
           child: SafeArea(
               child: Container(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gym_app/Router/rout_generate.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
+import 'package:gym_app/screen/Wallet/wallet_page.dart';
 
 
 void main() {
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [const Locale('fa', '')],
-      initialRoute: HomePage.routeName,
+      initialRoute: WalletPage.routeName,
       onGenerateRoute: MyRouter.onGenerateRoute,
     );
   }
