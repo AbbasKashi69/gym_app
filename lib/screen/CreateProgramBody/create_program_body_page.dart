@@ -1,6 +1,9 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/components/constant.dart';
+import 'package:gym_app/extensions/ext.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 
 class CreateProgramBodyPage extends StatelessWidget {
@@ -219,7 +222,7 @@ class CustomeButton extends StatelessWidget {
       width: Get.width * 0.8,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.horizontal(
-              left: Radius.circular(10), right: Radius.circular(10)),
+              left: Radius.circular(20), right: Radius.circular(20)),
           gradient: LinearGradient(
               colors: [Color(0xff00B4D8), Color(0xff48CAE4)],
               begin: Alignment.bottomCenter,

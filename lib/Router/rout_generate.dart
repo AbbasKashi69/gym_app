@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
 import 'package:gym_app/screen/Cv/cv_page.dart';
@@ -7,6 +8,7 @@ import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:gym_app/screen/ListApprentice/requests_page.dart';
 import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
 import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';
+import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 import 'package:gym_app/screen/Scan/scan_page.dart';
 import 'package:gym_app/screen/subscription_page/SubscriptionPage.dart';
 
@@ -31,6 +33,10 @@ class MyRouter {
         return MaterialPageRoute(builder: (context) => PersonalInfoPage());
       case CreateProgramBodyPage.routeName:
         return MaterialPageRoute(builder: (context) => CreateProgramBodyPage());
+      case CreateMovement.routeName:
+        return MaterialPageRoute(builder: (context) => CreateMovement());
+      case ProgramListPage.routeName:
+        return MaterialPageRoute(builder: (context) => ProgramListPage());
       default:
         return MaterialPageRoute(builder: (context) => ScanPage());
     }
