@@ -5,6 +5,7 @@ import 'package:gym_app/screen/Cv/cv_page.dart';
 import 'package:gym_app/screen/Cv/no_cv_screen.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
+import 'package:gym_app/screen/ProfileApprentice/components/write_program_screen.dart';
 
 class ProfileApprenticePage extends StatelessWidget {
   const ProfileApprenticePage({Key? key}) : super(key: key);
@@ -70,7 +71,7 @@ class ProfileApprenticePage extends StatelessWidget {
                         Text(
                           'برنامه تمرینی',
                           style: textStyle.copyWith(
-                              fontSize: 15, fontWeight: FontWeight.w500),
+                              fontSize: 15, fontWeight: FontWeight.w400),
                         ),
                         SizedBox(
                           height: padding / 2,
@@ -78,7 +79,7 @@ class ProfileApprenticePage extends StatelessWidget {
                         Text(
                           '13',
                           style: textStyle.copyWith(
-                              fontSize: 15, fontWeight: FontWeight.w700),
+                              fontSize: 15, fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -88,7 +89,7 @@ class ProfileApprenticePage extends StatelessWidget {
                         Text(
                           'برنامه غذایی',
                           style: textStyle.copyWith(
-                              fontSize: 15, fontWeight: FontWeight.w500),
+                              fontSize: 15, fontWeight: FontWeight.w400),
                         ),
                         SizedBox(
                           height: padding / 2,
@@ -96,7 +97,7 @@ class ProfileApprenticePage extends StatelessWidget {
                         Text(
                           '8',
                           style: textStyle.copyWith(
-                              fontSize: 15, fontWeight: FontWeight.w700),
+                              fontSize: 15, fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -106,7 +107,7 @@ class ProfileApprenticePage extends StatelessWidget {
                         Text(
                           'مربیان',
                           style: textStyle.copyWith(
-                              fontSize: 15, fontWeight: FontWeight.w500),
+                              fontSize: 15, fontWeight: FontWeight.w400),
                         ),
                         SizedBox(
                           height: padding / 2,
@@ -114,7 +115,7 @@ class ProfileApprenticePage extends StatelessWidget {
                         Text(
                           '2',
                           style: textStyle.copyWith(
-                              fontSize: 15, fontWeight: FontWeight.w700),
+                              fontSize: 15, fontWeight: FontWeight.w500),
                         ),
                       ],
                     )
@@ -129,8 +130,8 @@ class ProfileApprenticePage extends StatelessWidget {
                         flex: 2,
                         child: GestureDetector(
                           onTap: () async {
-                            // Navigator.of(context).pushNamed(CvPage.routeName);
-                            await NoCvScreen().noCv(context, sizeScreen);
+                            Navigator.of(context).pushNamed(CvPage.routeName);
+                            // await NoCvScreen().noCv(context, sizeScreen);
                           },
                           child: ItemConversation(
                             image: 'assets/icons/cv.svg',
@@ -143,9 +144,15 @@ class ProfileApprenticePage extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 3,
-                        child: ItemConversation(
-                          image: 'assets/icons/writeProgram.svg',
-                          title: 'نوشتن برنامه',
+                        child: GestureDetector(
+                          onTap: () async {
+                            await WriteProgramScreen()
+                                .writeProgram(context, sizeScreen);
+                          },
+                          child: ItemConversation(
+                            image: 'assets/icons/writeProgram.svg',
+                            title: 'نوشتن برنامه',
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -434,7 +441,7 @@ class ProfileApprenticePage extends StatelessWidget {
                         child: Text(
                           'توضیحات',
                           style:
-                              textStyle.copyWith(fontWeight: FontWeight.w700),
+                              textStyle.copyWith(fontWeight: FontWeight.w500),
                         ),
                       ),
                       Container(
@@ -442,7 +449,7 @@ class ProfileApprenticePage extends StatelessWidget {
                           'متن توضیحات',
                           textAlign: TextAlign.justify,
                           style:
-                              textStyle.copyWith(fontWeight: FontWeight.w500),
+                              textStyle.copyWith(fontWeight: FontWeight.w400),
                         ),
                       ),
                     ],
@@ -490,14 +497,14 @@ class ItemAttribute extends StatelessWidget {
       children: [
         Text(
           '$title:',
-          style: textStyle.copyWith(fontWeight: FontWeight.w700),
+          style: textStyle.copyWith(fontWeight: FontWeight.w500),
         ),
         SizedBox(
           width: padding / 5,
         ),
         Text(
           answer,
-          style: textStyle.copyWith(fontWeight: FontWeight.w500),
+          style: textStyle.copyWith(fontWeight: FontWeight.w400),
         ),
       ],
     );

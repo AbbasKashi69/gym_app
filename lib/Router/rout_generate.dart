@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
 import 'package:gym_app/screen/Cv/cv_page.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
@@ -28,6 +29,8 @@ class MyRouter {
         return MaterialPageRoute(builder: (context) => CvPage());
       case PersonalInfoPage.routeName:
         return MaterialPageRoute(builder: (context) => PersonalInfoPage());
+      case CreateProgramBodyPage.routeName:
+        return MaterialPageRoute(builder: (context) => CreateProgramBodyPage());
       default:
         return MaterialPageRoute(builder: (context) => ScanPage());
     }
