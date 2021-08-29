@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gym_app/components/constant.dart';
+import 'package:gym_app/components/no_data.dart';
 import 'package:gym_app/extensions/ext.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
@@ -77,11 +78,16 @@ class _CreateMovementState extends State<CreateMovement> {
               ),
               Column(
                 children: List.generate(
-                    listItemMovement.length, (index) => ItemMovement()),
+                    listItemMovement.length,
+                    (index) => ItemMovement(
+                          data: listItemMovement[index],
+                        )),
               ),
               GestureDetector(
                 onTap: () {
-                  listItemMovement.add(ItemMovement());
+                  listItemMovement.add({
+                    'listItemAddedSuperMovement': [ItemAddedSuperMovement()]
+                  });
                   setState(() {});
                 },
                 child: Container(
@@ -111,7 +117,10 @@ class _CreateMovementState extends State<CreateMovement> {
               Container(
                   margin: EdgeInsets.symmetric(vertical: padding * 2),
                   child: CustomeButton(
-                      sizeScreen: sizeScreen, title: 'ثبت برنامه', onTap: (){},))
+                    sizeScreen: sizeScreen,
+                    title: 'ثبت برنامه',
+                    onTap: () {},
+                  )),
             ],
           ),
         ),
@@ -120,20 +129,48 @@ class _CreateMovementState extends State<CreateMovement> {
   }
 }
 
-List<ItemMovement> listItemMovement = [
-  ItemMovement(),
-];
+String intToString(int index) {
+  switch (index) {
+    case 1:
+      return 'اول';
+    case 2:
+      return 'دوم';
+    case 3:
+      return 'سوم';
+    case 4:
+      return 'چهارم';
+    case 5:
+      return 'پنجم';
+    case 6:
+      return 'ششم';
+    case 7:
+      return 'هفتم';
+    case 8:
+      return 'هشتم';
+    case 9:
+      return 'نهم';
+    case 10:
+      return 'دهم';
+    default:
+      return 'صفرم';
+  }
+}
+
 List<ItemFilterChip> listItemFilterChip = [
   ItemFilterChip(index: 0, onChangeValue: () {}, isSelected: false),
   ItemFilterChip(index: 1, onChangeValue: () {}, isSelected: false),
   ItemFilterChip(index: 2, onChangeValue: () {}, isSelected: false),
 ];
 
-class ItemMovement extends StatelessWidget {
-  const ItemMovement({
-    Key? key,
-  }) : super(key: key);
+class ItemMovement extends StatefulWidget {
+  const ItemMovement({Key? key, required this.data}) : super(key: key);
+  final dynamic data;
 
+  @override
+  _ItemMovementState createState() => _ItemMovementState();
+}
+
+class _ItemMovementState extends State<ItemMovement> {
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
@@ -141,7 +178,8 @@ class ItemMovement extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 30, horizontal: padding),
       child: DottedBorder(
           borderType: BorderType.RRect,
-          color: parseColor('#CCCCCC'),
+          color: parseColor('#0055CC'),
+          // color:parseColor('#CCCCCC'),
           dashPattern: [5],
           radius: Radius.circular(12),
           child: ClipRRect(
@@ -154,89 +192,9 @@ class ItemMovement extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(left: padding),
                     child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(left: 15),
-                              width: 3,
-                              decoration: BoxDecoration(
-                                color: parseColor('#48CAE4'),
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(30),
-                                    bottom: Radius.circular(30)),
-                              ),
-                              height: 200,
-                            ),
-                            Expanded(
-                                child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(bottom: 20),
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                        suffix: Padding(
-                                            padding: const EdgeInsetsDirectional
-                                                .only(end: 5),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                // here we should clear textfield  using textEditing controller
-                                                //using this code: textEditingController.clear()
-                                              },
-                                              child: SvgPicture.asset(
-                                                'assets/icons/deleteIcon.svg',
-                                                width: 20,
-                                                height: 20,
-                                              ),
-                                            )),
-                                        hintText: 'نام حرکت',
-                                        hintStyle: textStyle.copyWith(
-                                            fontSize: kFontSizeText(sizeScreen,
-                                                FontSize.subTitle))),
-                                  ),
-                                ),
-                                Container(
-                                  width: 30,
-                                  margin: EdgeInsets.only(bottom: 20),
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                        hintText: 'ست',
-                                        hintStyle: textStyle.copyWith(
-                                            fontSize: kFontSizeText(sizeScreen,
-                                                FontSize.subTitle))),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(bottom: 20),
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                        suffix: Padding(
-                                            padding: const EdgeInsetsDirectional
-                                                .only(end: 5),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                // here we should clear textfield  using textEditing controller
-                                                //using this code: textEditingController.clear()
-                                              },
-                                              child: SvgPicture.asset(
-                                                'assets/icons/deleteIcon.svg',
-                                                width: 20,
-                                                height: 20,
-                                              ),
-                                            )),
-                                        hintText: 'توضیحات حرکت',
-                                        hintStyle: textStyle.copyWith(
-                                            fontSize: kFontSizeText(sizeScreen,
-                                                FontSize.subTitle))),
-                                  ),
-                                ),
-                              ],
-                            ))
-                          ],
-                        )
-                      ],
-                    ),
+                        children: List.generate(
+                            widget.data['listItemAddedSuperMovement'].length,
+                            (index) => ItemAddedSuperMovement())),
                   ),
                   SizedBox(
                     height: 20,
@@ -244,12 +202,111 @@ class ItemMovement extends StatelessWidget {
                   Align(
                     alignment: Alignment.center,
                     child: CustomeButton(
-                        sizeScreen: sizeScreen, title: 'حرکت سوپری', onTap: (){},),
+                      sizeScreen: sizeScreen,
+                      title: 'حرکت سوپری',
+                      onTap: () {
+                        setState(() {
+                          widget.data['listItemAddedSuperMovement']
+                              .add(ItemAddedSuperMovement());
+                        });
+                      },
+                    ),
                   )
                 ],
               ),
             ),
           )),
+    );
+  }
+}
+
+class ItemAddedSuperMovement extends StatelessWidget {
+  const ItemAddedSuperMovement({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final Size sizeScreen = MediaQuery.of(context).size;
+    return Container(
+      margin: EdgeInsets.only(bottom: 15),
+      child: Row(
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 15),
+            width: 3,
+            decoration: BoxDecoration(
+              color: parseColor('#48CAE4'),
+              borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(30), bottom: Radius.circular(30)),
+            ),
+            height: 200,
+          ),
+          Expanded(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: TextField(
+                  decoration: InputDecoration(
+                      suffix: Padding(
+                          padding: const EdgeInsetsDirectional.only(end: 5),
+                          child: GestureDetector(
+                            onTap: () {
+                              // here we should clear textfield  using textEditing controller
+                              //using this code: textEditingController.clear()
+                            },
+                            child: SvgPicture.asset(
+                              'assets/icons/deleteIcon.svg',
+                              width: 20,
+                              height: 20,
+                            ),
+                          )),
+                      hintText: 'نام حرکت',
+                      hintStyle: textStyle.copyWith(
+                          fontSize:
+                              kFontSizeText(sizeScreen, FontSize.subTitle))),
+                ),
+              ),
+              Container(
+                width: 30,
+                margin: EdgeInsets.only(bottom: 20),
+                child: TextField(
+                  decoration: InputDecoration(
+                      hintText: 'ست',
+                      hintStyle: textStyle.copyWith(
+                          fontSize:
+                              kFontSizeText(sizeScreen, FontSize.subTitle))),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: TextField(
+                  decoration: InputDecoration(
+                      suffix: Padding(
+                          padding: const EdgeInsetsDirectional.only(end: 5),
+                          child: GestureDetector(
+                            onTap: () {
+                              // here we should clear textfield  using textEditing controller
+                              //using this code: textEditingController.clear()
+                            },
+                            child: SvgPicture.asset(
+                              'assets/icons/deleteIcon.svg',
+                              width: 20,
+                              height: 20,
+                            ),
+                          )),
+                      hintText: 'توضیحات حرکت',
+                      hintStyle: textStyle.copyWith(
+                          fontSize:
+                              kFontSizeText(sizeScreen, FontSize.subTitle))),
+                ),
+              ),
+            ],
+          ))
+        ],
+      ),
     );
   }
 }
@@ -312,29 +369,11 @@ class _ItemFilterChipState extends State<ItemFilterChip> {
   }
 }
 
-String intToString(int index) {
-  switch (index) {
-    case 1:
-      return 'اول';
-    case 2:
-      return 'دوم';
-    case 3:
-      return 'سوم';
-    case 4:
-      return 'چهارم';
-    case 5:
-      return 'پنجم';
-    case 6:
-      return 'ششم';
-    case 7:
-      return 'هفتم';
-    case 8:
-      return 'هشتم';
-    case 9:
-      return 'نهم';
-    case 10:
-      return 'دهم';
-    default:
-      return 'صفرم';
+List listItemMovement = [
+  {
+    'listItemAddedSuperMovement': [ItemAddedSuperMovement()]
+  },
+  {
+    'listItemAddedSuperMovement': [ItemAddedSuperMovement()]
   }
-}
+];

@@ -167,7 +167,8 @@ class _BuySubscriptionState extends State<BuySubscription> {
                   ),
                 ),
                 Expanded(
-                  child: Center(child: Text("اعتبار شما برای خرید اشتراک کافی نیست")),
+                  child: Center(
+                      child: Text("اعتبار شما برای خرید اشتراک کافی نیست")),
                 ),
                 Container(
                   height: 40,
