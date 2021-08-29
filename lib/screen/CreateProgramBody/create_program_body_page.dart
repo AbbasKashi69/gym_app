@@ -179,8 +179,8 @@ class CreateProgramBodyPage extends StatelessWidget {
                           contentPadding: EdgeInsets.symmetric(
                               horizontal: padding / 2, vertical: padding / 2),
                           border: InputBorder.none),
-                      minLines:
-                          7, // any number you need (It works as the rows for the textarea)
+                      minLines: 7,
+                      // any number you need (It works as the rows for the textarea)
                       // maxLength: 1000,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
@@ -197,6 +197,7 @@ class CreateProgramBodyPage extends StatelessWidget {
                   CustomeButton(
                     sizeScreen: sizeScreen,
                     title: 'ادامه',
+                    onTap: () {},
                   )
                 ],
               ),
@@ -209,30 +210,47 @@ class CreateProgramBodyPage extends StatelessWidget {
 }
 
 class CustomeButton extends StatelessWidget {
-  const CustomeButton({Key? key, required this.sizeScreen, required this.title})
+  const CustomeButton(
+      {Key? key,
+      required this.sizeScreen,
+      required this.title,
+      required this.onTap})
       : super(key: key);
 
   final Size sizeScreen;
   final String title;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: Get.height * 0.07,
-      width: Get.width * 0.8,
-      decoration: BoxDecoration(
+    return Material(
+      child: Ink(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.horizontal(
+                left: Radius.circular(20), right: Radius.circular(20)),
+            gradient: LinearGradient(
+                colors: [Color(0xff00B4D8), Color(0xff48CAE4)],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter)),
+        child: InkWell(
+          onTap: () {
+            onTap();
+          },
+          splashColor: Colors.white.withOpacity(0.5),
           borderRadius: BorderRadius.horizontal(
               left: Radius.circular(20), right: Radius.circular(20)),
-          gradient: LinearGradient(
-              colors: [Color(0xff00B4D8), Color(0xff48CAE4)],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter)),
-      child: Center(
-        child: Text(
-          title,
-          style: textStyle.copyWith(
-              fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
-              color: Color(0xffffffff)),
+          child: Container(
+            height: Get.height * 0.07,
+            width: Get.width * 0.8,
+            child: Center(
+              child: Text(
+                title,
+                style: textStyle.copyWith(
+                    fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
+                    color: Colors.white),
+              ),
+            ),
+          ),
         ),
       ),
     );

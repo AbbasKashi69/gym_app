@@ -111,7 +111,7 @@ class _CreateMovementState extends State<CreateMovement> {
               Container(
                   margin: EdgeInsets.symmetric(vertical: padding * 2),
                   child: CustomeButton(
-                      sizeScreen: sizeScreen, title: 'ثبت برنامه'))
+                      sizeScreen: sizeScreen, title: 'ثبت برنامه', onTap: (){},))
             ],
           ),
         ),
@@ -244,7 +244,7 @@ class ItemMovement extends StatelessWidget {
                   Align(
                     alignment: Alignment.center,
                     child: CustomeButton(
-                        sizeScreen: sizeScreen, title: 'حرکت سوپری'),
+                        sizeScreen: sizeScreen, title: 'حرکت سوپری', onTap: (){},),
                   )
                 ],
               ),

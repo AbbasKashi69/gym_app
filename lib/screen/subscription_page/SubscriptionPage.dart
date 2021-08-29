@@ -12,6 +12,8 @@ import 'package:gym_app/components/customBottomBar.dart';
 import 'package:gym_app/extensions/ext.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+import 'BuySubscription.dart';
+
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({Key? key}) : super(key: key);
   static const routeName = '/subscription';
@@ -226,7 +228,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   borderRadius: BorderRadius.circular(20),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(20),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => BuySubscription(),));
+                    },
                     child: Container(
                       width: gw(0.9),
                       height: gh(0.23),
