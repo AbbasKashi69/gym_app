@@ -17,7 +17,7 @@ void main() {
 
 void start() async {
   await App.init();
-}
+}        
 
 class MyApp extends StatelessWidget {
   @override

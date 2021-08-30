@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
-import 'package:gym_app/screen/subscription_page/SubscriptionPage.dart';
+import 'package:gym_app/screen/profile_page/profile_page.dart';
+import 'package:gym_app/screen/subscription_page/subscription_page.dart';
 
 class CustomAppBarWidget extends StatelessWidget {
   int initialTab = 0;
@@ -51,6 +52,9 @@ class CustomAppBarWidget extends StatelessWidget {
           } else if (i == 1) {
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => SubscriptionPage()));
+          } else if (i == 3) {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => ProfilePage()));
           }
         });
   }

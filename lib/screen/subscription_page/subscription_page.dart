@@ -11,8 +11,7 @@ import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customBottomBar.dart';
 import 'package:gym_app/extensions/ext.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-
-import 'BuySubscription.dart';
+import 'buy_subscription.dart';
 
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({Key? key}) : super(key: key);
