@@ -11,6 +11,7 @@ import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';
 import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 import 'package:gym_app/screen/Scan/scan_page.dart';
 import 'package:gym_app/screen/profile_page/profile_page.dart';
+import 'package:gym_app/screen/settings/setting_page.dart';
 import 'package:gym_app/screen/subscription_page/subscription_page.dart';
 
 class MyRouter {
@@ -34,6 +35,8 @@ class MyRouter {
         return MaterialPageRoute(builder: (context) => CvPage());
       case PersonalInfoPage.routeName:
         return MaterialPageRoute(builder: (context) => PersonalInfoPage());
+      case SettingPage.routeName:
+        return MaterialPageRoute(builder: (context) => SettingPage());
       case CreateProgramBodyPage.routeName:
         return MaterialPageRoute(builder: (context) => CreateProgramBodyPage());
       case CreateMovement.routeName:

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 31 31">
+  <g id="vuesax_bulk_trash" data-name="vuesax/bulk/trash" transform="translate(-108 -188)">
+    <g id="trash" transform="translate(108 188)">
+      <path id="Vector" d="M24.314,5.141c-2.08-.207-4.159-.362-6.252-.478V4.65l-.284-1.679C17.584,1.782,17.3,0,14.278,0H10.893C7.884,0,7.6,1.7,7.393,2.958L7.122,4.611c-1.2.077-2.4.155-3.6.271L.883,5.141a.967.967,0,1,0,.181,1.925L3.7,6.807a102.983,102.983,0,0,1,20.434.271h.1a.978.978,0,0,0,.969-.878A.99.99,0,0,0,24.314,5.141Z" transform="translate(2.902 1.615)" fill="#ff003d"/>
+      <path id="Vector-2" data-name="Vector" d="M19.119.5A1.633,1.633,0,0,0,17.944,0H1.617A1.611,1.611,0,0,0,.442.5,1.664,1.664,0,0,0,0,1.718L.8,14.97c.142,1.963.323,4.418,4.831,4.418h8.292c4.508,0,4.689-2.441,4.831-4.418l.8-13.24A1.675,1.675,0,0,0,19.119.5Z" transform="translate(5.719 10.01)" fill="#ff003d" opacity="0.399"/>
+      <path id="Vector_Stroke_" data-name="Vector (Stroke)" d="M0,.969A.969.969,0,0,1,.969,0h4.3a.969.969,0,0,1,0,1.938H.969A.969.969,0,0,1,0,.969Z" transform="translate(12.374 20.99)" fill="#ff003d"/>
+      <path id="Vector_Stroke_2" data-name="Vector (Stroke)" d="M0,.969A.969.969,0,0,1,.969,0H7.427a.969.969,0,0,1,0,1.938H.969A.969.969,0,0,1,0,.969Z" transform="translate(11.302 15.823)" fill="#ff003d"/>
+      <path id="Vector-3" data-name="Vector" d="M0,0H31V31H0Z" fill="none" opacity="0"/>
+    </g>
+  </g>
+</svg>
