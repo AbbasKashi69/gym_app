@@ -7,6 +7,9 @@ import 'package:gym_app/screen/Cv/cv_page.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
 import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';
 import 'package:gym_app/screen/ProgramList/program_list_page.dart';
+import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
+import 'package:gym_app/screen/observeProgramBody/observe_program_body_page.dart';
+import 'package:gym_app/screen/observeProgramOtherSports/observe_other_sports_page.dart';
 import 'package:gym_app/screen/settings/setting_page.dart';
 
 import 'extensions/ext.dart';
@@ -32,7 +35,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [const Locale('fa', '')],
-      initialRoute: CreateMovement.routeName,
+      initialRoute: ObserveOtherSportsPage.routeName,
       onGenerateRoute: MyRouter.onGenerateRoute,
       theme: ThemeData(fontFamily: 'IRANSans'),
     );

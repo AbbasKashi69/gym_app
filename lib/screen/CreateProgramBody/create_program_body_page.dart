@@ -33,7 +33,71 @@ class CreateProgramBodyPage extends StatelessWidget {
                   TextField(
                     decoration: kInputDecorationTextField.copyWith(
                         hintStyle: textStyle.copyWith(
-                            fontSize: Get.width > 550 ? 12 : 10,
+                            fontSize:
+                                kFontSizeText(sizeScreen, FontSize.subTitle),
+                            color: kHintText),
+                        hintText: 'هزینه',
+                        suffix: Container(
+                          width: Get.width * 0.4,
+                          padding: EdgeInsets.symmetric(horizontal: padding),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'ریال',
+                                style: textStyle.copyWith(
+                                  fontSize: kFontSizeText(
+                                    sizeScreen,
+                                    FontSize.subTitle,
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                  onTap: () {
+                                    print('icons add');
+                                  },
+                                  child: Icon(
+                                    Icons.add,
+                                    size: kFontSizeText(
+                                            sizeScreen, FontSize.title) +
+                                        4,
+                                  ))
+                            ],
+                          ),
+                        ),
+                        prefix: Container(
+                            width: Get.width * 0.2,
+                            padding: EdgeInsets.symmetric(horizontal: padding),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  child: Icon(
+                                    Icons.remove,
+                                    size: kFontSizeText(
+                                            sizeScreen, FontSize.title) +
+                                        4,
+                                  ),
+                                  onTap: () {},
+                                ),
+                                Text('')
+                              ],
+                            ))),
+                    style: textStyle.copyWith(
+                      fontSize: kFontSizeText(
+                        sizeScreen,
+                        FontSize.subTitle,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: padding * 2),
+                  TextField(
+                    decoration: kInputDecorationTextField.copyWith(
+                        hintStyle: textStyle.copyWith(
+                            fontSize:
+                                kFontSizeText(sizeScreen, FontSize.subTitle),
                             color: kHintText),
                         hintText: 'نام برنامه'),
                     style: textStyle.copyWith(
@@ -47,21 +111,8 @@ class CreateProgramBodyPage extends StatelessWidget {
                   TextField(
                     decoration: kInputDecorationTextField.copyWith(
                         hintStyle: textStyle.copyWith(
-                            fontSize: Get.width > 550 ? 12 : 10,
-                            color: kHintText),
-                        hintText: 'نام برنامه'),
-                    style: textStyle.copyWith(
-                      fontSize: kFontSizeText(
-                        sizeScreen,
-                        FontSize.subTitle,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: padding * 2),
-                  TextField(
-                    decoration: kInputDecorationTextField.copyWith(
-                        hintStyle: textStyle.copyWith(
-                            fontSize: Get.width > 550 ? 12 : 10,
+                            fontSize:
+                                kFontSizeText(sizeScreen, FontSize.subTitle),
                             color: kHintText),
                         hintText: 'تاریخ شروع'),
                     style: textStyle.copyWith(
@@ -75,7 +126,8 @@ class CreateProgramBodyPage extends StatelessWidget {
                   TextField(
                     decoration: kInputDecorationTextField.copyWith(
                         hintStyle: textStyle.copyWith(
-                            fontSize: Get.width > 550 ? 12 : 10,
+                            fontSize:
+                                kFontSizeText(sizeScreen, FontSize.subTitle),
                             color: kHintText),
                         hintText: 'تاریخ پایان'),
                     style: textStyle.copyWith(
@@ -175,7 +227,7 @@ class CreateProgramBodyPage extends StatelessWidget {
                             side: BorderSide(color: Color(0xffEBEBEB)))),
                     child: TextFormField(
                       decoration: InputDecoration(
-                          hintText: 'نظرتان را بنویسید...',
+                          hintText: 'توضیحات برنام',
                           contentPadding: EdgeInsets.symmetric(
                               horizontal: padding / 2, vertical: padding / 2),
                           border: InputBorder.none),
