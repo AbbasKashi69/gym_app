@@ -7,6 +7,7 @@ import 'package:gym_app/screen/Cv/cv_page.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
 import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';
 import 'package:gym_app/screen/ProgramList/program_list_page.dart';
+import 'package:gym_app/screen/settings/setting_page.dart';
 
 import 'extensions/ext.dart';
 

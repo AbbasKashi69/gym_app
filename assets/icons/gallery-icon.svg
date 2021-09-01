@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="radial-gradient" cx="0.036" cy="0.22" r="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fc0"/>
+      <stop offset="1" stop-color="#ffd630"/>
+    </radialGradient>
+  </defs>
+  <g id="Group_2021" data-name="Group 2021" transform="translate(0 0.398)">
+    <circle id="Ellipse_167" data-name="Ellipse 167" cx="32" cy="32" r="32" transform="translate(0 -0.398)" fill="url(#radial-gradient)"/>
+    <g id="vuesax_bold_gallery" data-name="vuesax/bold/gallery" transform="translate(15.573 15.897)">
+      <g id="gallery">
+        <path id="Vector" d="M.7,2.605l-.026.026A8.14,8.14,0,0,1,0,0,8.081,8.081,0,0,0,.7,2.605Z" transform="translate(2.697 22.406)" fill="#fff"/>
+        <path id="Vector-2" data-name="Vector" d="M6.263,3.131A3.131,3.131,0,1,1,3.131,0,3.131,3.131,0,0,1,6.263,3.131Z" transform="translate(8.71 7.394)" fill="#fff"/>
+        <path id="Vector-3" data-name="Vector" d="M18.669,0H7.644C2.855,0,0,2.855,0,7.644V18.669a8.845,8.845,0,0,0,.737,3.736c1.131,2.5,3.552,3.908,6.907,3.908H18.669c4.789,0,7.644-2.855,7.644-7.644V7.644C26.313,2.855,23.458,0,18.669,0Zm5.5,13.814a2.933,2.933,0,0,0-3.71,0l-5.473,4.7a2.933,2.933,0,0,1-3.71,0l-.447-.368a2.922,2.922,0,0,0-3.473-.184l-4.921,3.3a7.016,7.016,0,0,1-.46-2.592V7.644c0-3.71,1.96-5.67,5.67-5.67H18.669c3.71,0,5.67,1.96,5.67,5.67v6.315Z" transform="translate(2.631 2.631)" fill="#fff"/>
+        <path id="Vector-4" data-name="Vector" d="M0,0H31.576V31.576H0Z" fill="none" opacity="0"/>
+      </g>
+    </g>
+  </g>
+</svg>

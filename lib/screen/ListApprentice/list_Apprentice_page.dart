@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gym_app/components/constant.dart';
+import 'package:gym_app/extensions/ext.dart';
 
 class ListApprenticePage extends StatelessWidget {
   const ListApprenticePage({Key? key}) : super(key: key);
@@ -175,6 +176,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         Container(
           padding: EdgeInsets.symmetric(horizontal: padding * 2),
           width: sizeScreen.width,
+          color: parseColor('#FBFBFB'),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
