@@ -4,6 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customBottomBar.dart';
+import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
+import 'package:gym_app/screen/ListCoach/list_coach_page.dart';
+import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,7 +16,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: CustomAppBarWidget(0),
-        body: SingleChildScrollView (
+        body: SingleChildScrollView(
           child: SafeArea(
               child: Container(
             width: Get.width,
@@ -149,9 +152,15 @@ class HomePage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ItemWidget(
-                      title: "لیست  \n برنامه ها ",
-                      pic: "assets/icons/vuesax-linear-clipboard-tick.svg",
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed(ProgramListPage.routeName);
+                      },
+                      child: ItemWidget(
+                        title: "لیست  \n برنامه ها ",
+                        pic: "assets/icons/vuesax-linear-clipboard-tick.svg",
+                      ),
                     ),
                     ItemWidget(
                       title: "گفنگوها",
@@ -173,9 +182,15 @@ class HomePage extends StatelessWidget {
                       title: "ایجاد برنامه\n غذایی",
                       pic: "assets/icons/vuesax-linear-reserve.svg",
                     ),
-                    ItemWidget(
-                      title: "ایجاد برنامه\n بدنسازی",
-                      pic: "assets/icons/vuesax-linear-weight.svg",
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed(CreateProgramBodyPage.routeName);
+                      },
+                      child: ItemWidget(
+                        title: "ایجاد برنامه\n بدنسازی",
+                        pic: "assets/icons/vuesax-linear-weight.svg",
+                      ),
                     ),
                     ItemWidget(
                       title: "ایجاد برنامه\n سایر رشته",
@@ -189,9 +204,15 @@ class HomePage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ItemWidget(
-                      title: "مربیان \n مشاهده",
-                      pic: "assets/icons/user-octagon.svg",
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed(ListCoachPage.routeName);
+                      },
+                      child: ItemWidget(
+                        title: "مربیان \n مشاهده",
+                        pic: "assets/icons/user-octagon.svg",
+                      ),
                     ),
                     ItemWidget(
                       title: "تنظیمات",

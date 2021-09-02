@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gym_app/components/constant.dart';
+import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 
 class CreateProgramBodySettingPage extends StatelessWidget {
@@ -20,33 +21,36 @@ class CreateProgramBodySettingPage extends StatelessWidget {
               height: sizeScreen.height * 0.25,
               child: Column(
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    margin: EdgeInsets.only(top: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'ایجاد برنامه بدنسازی',
-                          style: textStyle.copyWith(
-                              fontSize:
-                                  kFontSizeText(sizeScreen, FontSize.subTitle),
-                              color: Colors.white),
-                        ),
-                        GestureDetector(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: SvgPicture.asset(
-                              'assets/icons/backIcon.svg',
-                              width: sizeScreen.width > 550 ? 40 : 25,
-                              height: sizeScreen.width > 550 ? 40 : 25,
-                              color: Colors.white,
-                            )
-                            // child: Container(),
-                            )
-                      ],
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      margin: EdgeInsets.only(top: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'ایجاد برنامه بدنسازی',
+                            style: textStyle.copyWith(
+                                fontSize: kFontSizeText(
+                                    sizeScreen, FontSize.subTitle),
+                                color: Colors.white),
+                          ),
+                          GestureDetector(
+                              onTap: () => Navigator.of(context).pop(),
+                              child: SvgPicture.asset(
+                                'assets/icons/backIcon.svg',
+                                width: sizeScreen.width > 550 ? 40 : 25,
+                                height: sizeScreen.width > 550 ? 40 : 25,
+                                color: Colors.white,
+                              )
+                              // child: Container(),
+                              )
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(
+                    flex: 2,
                     child: Center(
                       child: Container(
                         decoration: BoxDecoration(
@@ -55,8 +59,8 @@ class CreateProgramBodySettingPage extends StatelessWidget {
                                 right: Radius.circular(40),
                                 left: Radius.circular(40))),
                         width: sizeScreen.width * 0.7,
-                        padding: EdgeInsets.symmetric(
-                            vertical: padding, horizontal: 20),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -199,7 +203,12 @@ class _DaysTaskState extends State<DaysTask> {
                 height: 20,
               ),
               CustomeButton(
-                  sizeScreen: widget.sizeScreen, title: "ثبت", onTap: () {}),
+                  sizeScreen: widget.sizeScreen,
+                  title: "ثبت",
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(CreateMovementPage.routeName);
+                  }),
             ],
           ),
         ),
@@ -305,8 +314,8 @@ class ItemDay extends StatelessWidget {
             },
             child: SvgPicture.asset(
               'assets/icons/trash.svg',
-              width: kFontSizeText(sizeScreen, FontSize.title),
-              height: kFontSizeText(sizeScreen, FontSize.title),
+              width: kFontSizeText(sizeScreen, FontSize.title) + 8,
+              height: kFontSizeText(sizeScreen, FontSize.title) + 8,
             ),
           )
         ],

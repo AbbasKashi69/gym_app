@@ -6,8 +6,11 @@ import 'package:gym_app/screen/Home/home_page.dart';
 import 'package:gym_app/screen/Cv/cv_page.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:gym_app/screen/ListApprentice/requests_page.dart';
+import 'package:gym_app/screen/ListCoach/list_coach_page.dart';
 import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
+import 'package:gym_app/screen/PersonalInfoCoach/personal_info_coach_page.dart';
 import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';
+import 'package:gym_app/screen/ProfileCoach/profile_coach_page.dart';
 import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 import 'package:gym_app/screen/Scan/scan_page.dart';
 import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
@@ -42,18 +45,24 @@ class MyRouter {
         return MaterialPageRoute(builder: (context) => SettingPage());
       case CreateProgramBodyPage.routeName:
         return MaterialPageRoute(builder: (context) => CreateProgramBodyPage());
-      case CreateMovement.routeName:
-        return MaterialPageRoute(builder: (context) => CreateMovement());
+      case CreateMovementPage.routeName:
+        return MaterialPageRoute(builder: (context) => CreateMovementPage());
       case ProgramListPage.routeName:
         return MaterialPageRoute(builder: (context) => ProgramListPage());
       case CreateProgramBodySettingPage.routeName:
         return MaterialPageRoute(
             builder: (context) => CreateProgramBodySettingPage());
-      case ObseveProgramBody.routeName:
-        return MaterialPageRoute(builder: (context) => ObseveProgramBody());
+      case ObserveProgramBody.routeName:
+        return MaterialPageRoute(builder: (context) => ObserveProgramBody());
       case ObserveOtherSportsPage.routeName:
         return MaterialPageRoute(
             builder: (context) => ObserveOtherSportsPage());
+      case ListCoachPage.routeName:
+        return MaterialPageRoute(builder: (context) => ListCoachPage());
+      case ProfileCoachPage.routeName:
+        return MaterialPageRoute(builder: (context) => ProfileCoachPage());
+      case PersonalInfoCoachPage.routeName:
+        return MaterialPageRoute(builder: (context) => PersonalInfoCoachPage());
       default:
         return MaterialPageRoute(builder: (context) => ScanPage());
     }

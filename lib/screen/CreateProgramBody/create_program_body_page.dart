@@ -1,10 +1,9 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/components/constant.dart';
-import 'package:gym_app/extensions/ext.dart';
+import 'package:gym_app/components/customeTextField.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
+import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
 
 class CreateProgramBodyPage extends StatelessWidget {
   const CreateProgramBodyPage({Key? key}) : super(key: key);
@@ -93,49 +92,16 @@ class CreateProgramBodyPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: padding * 2),
-                  TextField(
-                    decoration: kInputDecorationTextField.copyWith(
-                        hintStyle: textStyle.copyWith(
-                            fontSize:
-                                kFontSizeText(sizeScreen, FontSize.subTitle),
-                            color: kHintText),
-                        hintText: 'نام برنامه'),
-                    style: textStyle.copyWith(
-                      fontSize: kFontSizeText(
-                        sizeScreen,
-                        FontSize.subTitle,
-                      ),
-                    ),
+                  CustomeTextField(
+                    hintText: 'نام برنامه',
                   ),
                   SizedBox(height: padding * 2),
-                  TextField(
-                    decoration: kInputDecorationTextField.copyWith(
-                        hintStyle: textStyle.copyWith(
-                            fontSize:
-                                kFontSizeText(sizeScreen, FontSize.subTitle),
-                            color: kHintText),
-                        hintText: 'تاریخ شروع'),
-                    style: textStyle.copyWith(
-                      fontSize: kFontSizeText(
-                        sizeScreen,
-                        FontSize.subTitle,
-                      ),
-                    ),
+                  CustomeTextField(
+                    hintText: 'تاریخ شروع',
                   ),
                   SizedBox(height: padding * 2),
-                  TextField(
-                    decoration: kInputDecorationTextField.copyWith(
-                        hintStyle: textStyle.copyWith(
-                            fontSize:
-                                kFontSizeText(sizeScreen, FontSize.subTitle),
-                            color: kHintText),
-                        hintText: 'تاریخ پایان'),
-                    style: textStyle.copyWith(
-                      fontSize: kFontSizeText(
-                        sizeScreen,
-                        FontSize.subTitle,
-                      ),
-                    ),
+                  CustomeTextField(
+                    hintText: 'تاریخ پایان',
                   ),
                   SizedBox(height: padding * 2),
                   Container(
@@ -227,7 +193,7 @@ class CreateProgramBodyPage extends StatelessWidget {
                             side: BorderSide(color: Color(0xffEBEBEB)))),
                     child: TextFormField(
                       decoration: InputDecoration(
-                          hintText: 'توضیحات برنام',
+                          hintText: 'توضیحات برنامه',
                           contentPadding: EdgeInsets.symmetric(
                               horizontal: padding / 2, vertical: padding / 2),
                           border: InputBorder.none),
@@ -249,7 +215,10 @@ class CreateProgramBodyPage extends StatelessWidget {
                   CustomeButton(
                     sizeScreen: sizeScreen,
                     title: 'ادامه',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(CreateProgramBodySettingPage.routeName);
+                    },
                   )
                 ],
               ),
@@ -266,12 +235,14 @@ class CustomeButton extends StatelessWidget {
       {Key? key,
       required this.sizeScreen,
       required this.title,
+      this.isReject = false,
       required this.onTap})
       : super(key: key);
 
   final Size sizeScreen;
   final String title;
   final Function onTap;
+  final bool isReject;
 
   @override
   Widget build(BuildContext context) {
@@ -281,7 +252,9 @@ class CustomeButton extends StatelessWidget {
             borderRadius: BorderRadius.horizontal(
                 left: Radius.circular(20), right: Radius.circular(20)),
             gradient: LinearGradient(
-                colors: [Color(0xff00B4D8), Color(0xff48CAE4)],
+                colors: isReject
+                    ? [Color(0xffEFEFEF), Color(0xffF5F5F5)]
+                    : [Color(0xff00B4D8), Color(0xff48CAE4)],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter)),
         child: InkWell(
@@ -299,7 +272,7 @@ class CustomeButton extends StatelessWidget {
                 title,
                 style: textStyle.copyWith(
                     fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
-                    color: Colors.white),
+                    color: isReject ? Colors.black : Colors.white),
               ),
             ),
           ),

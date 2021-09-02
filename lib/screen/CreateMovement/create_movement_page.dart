@@ -2,21 +2,21 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gym_app/components/constant.dart';
-import 'package:gym_app/components/no_data.dart';
 import 'package:gym_app/extensions/ext.dart';
+import 'package:gym_app/screen/CreateMovement/components/warning_delete_trun_screen.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 
-class CreateMovement extends StatefulWidget {
-  static const routeName = '/CreateMovement';
-  const CreateMovement({Key? key}) : super(key: key);
+class CreateMovementPage extends StatefulWidget {
+  static const routeName = '/CreateMovementPage';
+  const CreateMovementPage({Key? key}) : super(key: key);
 
   @override
-  _CreateMovementState createState() => _CreateMovementState();
+  _CreateMovementPageState createState() => _CreateMovementPageState();
 }
 
-class _CreateMovementState extends State<CreateMovement> {
-  bool isSelected = false;
+class _CreateMovementPageState extends State<CreateMovementPage> {
+  int itemFilterChipSelected = 0;
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
@@ -41,21 +41,27 @@ class _CreateMovementState extends State<CreateMovement> {
                       children: List.generate(
                         listItemFilterChip.length,
                         (index) => ItemFilterChip(
+                            data: listItemFilterChip[index],
                             index: index,
-                            onChangeValue: (value) {
+                            onChangeValue: () {
                               setState(() {
-                                isSelected = value;
+                                itemFilterChipSelected = index;
                               });
                             },
-                            isSelected: isSelected),
+                            deleteItemfunc: (idx) {
+                              if (idx != itemFilterChipSelected)
+                                setState(() {
+                                  listItemFilterChip.removeAt(idx);
+                                });
+                            },
+                            isSelected: itemFilterChipSelected),
                       ),
                     ),
                     GestureDetector(
                       onTap: () {
-                        listItemFilterChip.add(ItemFilterChip(
-                            index: listItemFilterChip.length,
-                            onChangeValue: () {},
-                            isSelected: isSelected));
+                        listItemFilterChip.add({
+                          'turn': intToString(listItemFilterChip.length + 1)
+                        });
                         setState(() {});
                       },
                       child: DottedBorder(
@@ -151,16 +157,52 @@ String intToString(int index) {
       return 'نهم';
     case 10:
       return 'دهم';
+    case 11:
+      return 'یازدهم';
+    case 12:
+      return 'دوازدهم';
+    case 13:
+      return 'سیزدهم';
+    case 14:
+      return 'چهاردهم';
+    case 15:
+      return 'پانزدهم';
+    case 16:
+      return 'شانزدهم';
+    case 17:
+      return 'هفدهم';
+    case 18:
+      return 'هجدهم';
+    case 19:
+      return 'نوزدهم';
+    case 20:
+      return 'بیستم';
+    case 21:
+      return 'بیست و یکم';
+    case 22:
+      return 'بیست و دوم';
+    case 23:
+      return 'بیست و سوم';
+    case 24:
+      return 'بیست و چهارم';
+    case 25:
+      return 'بیست و پنجم';
+    case 26:
+      return 'بیست و ششم';
+    case 27:
+      return 'بیست و هفتم';
+    case 28:
+      return 'بیست و هشتم';
+    case 29:
+      return 'بیست و نهم';
+    case 30:
+      return 'سی ام';
+    case 31:
+      return 'سی و یکم';
     default:
-      return 'صفرم';
+      return 'دهم';
   }
 }
-
-List<ItemFilterChip> listItemFilterChip = [
-  ItemFilterChip(index: 0, onChangeValue: () {}, isSelected: false),
-  ItemFilterChip(index: 1, onChangeValue: () {}, isSelected: false),
-  ItemFilterChip(index: 2, onChangeValue: () {}, isSelected: false),
-];
 
 class ItemMovement extends StatefulWidget {
   const ItemMovement({Key? key, required this.data}) : super(key: key);
@@ -178,8 +220,8 @@ class _ItemMovementState extends State<ItemMovement> {
       padding: EdgeInsets.symmetric(vertical: 30, horizontal: padding),
       child: DottedBorder(
           borderType: BorderType.RRect,
-          color: parseColor('#0055CC'),
-          // color:parseColor('#CCCCCC'),
+          // color: parseColor('#0055CC'),
+          color: parseColor('#CCCCCC'),
           dashPattern: [5],
           radius: Radius.circular(12),
           child: ClipRRect(
@@ -311,59 +353,74 @@ class ItemAddedSuperMovement extends StatelessWidget {
   }
 }
 
-class ItemFilterChip extends StatefulWidget {
+class ItemFilterChip extends StatelessWidget {
   const ItemFilterChip(
       {Key? key,
       required this.onChangeValue,
+      required this.data,
+      required this.deleteItemfunc,
       required this.index,
       required this.isSelected})
       : super(key: key);
 
   final Function onChangeValue;
-  final bool isSelected;
+  final int isSelected;
   final int index;
-
-  @override
-  _ItemFilterChipState createState() => _ItemFilterChipState();
-}
-
-class _ItemFilterChipState extends State<ItemFilterChip> {
-  bool isSelecteddd = false;
+  final dynamic data;
+  final Function deleteItemfunc;
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Container(
-        margin: EdgeInsets.only(left: padding),
-        child: ChoiceChip(
-          labelPadding: EdgeInsets.only(
-              right: padding,
-              top: padding / 2,
-              bottom: padding / 2,
-              left: padding / 2),
-          avatar: CircleAvatar(
-            backgroundColor: Colors.white,
-            child: SvgPicture.asset(
-              'assets/icons/deleteIcon.svg',
-              width: 20,
-              height: 20,
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: padding / 2),
+      padding: EdgeInsets.fromLTRB(5, 5, 30, 5),
+      decoration: BoxDecoration(
+        color: index == isSelected ? Color(0xff00B4D8) : Color(0xffEEEEEE),
+        borderRadius: BorderRadius.horizontal(
+            right: Radius.circular(40), left: Radius.circular(40)),
+      ),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () {
+              onChangeValue();
+            },
+            child: Center(
+              child: Text(
+                'نوبت ${data['turn']}',
+                style: textStyle.copyWith(
+                    fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
+                    color: index == isSelected
+                        ? Color(0xffffffff)
+                        : Color(0xff959595)),
+              ),
             ),
           ),
-          backgroundColor: Color(0xffEEEEEE),
-          selected: isSelecteddd,
-          selectedColor: Color(0xff00B4D8),
-          label: Text('نوبت ${intToString(widget.index + 1)}',
-              style: textStyle.copyWith(
-                  fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
-                  color: isSelecteddd ? Colors.white : Color(0xff959595))),
-          onSelected: (bool isValid) {
-            // if (!isValid)
-            setState(() {
-              isSelecteddd = isValid;
-            });
-          },
-        ),
+          SizedBox(
+            width: padding,
+          ),
+          GestureDetector(
+            onTap: () async {
+              bool result = await WarningDelteTrunScreen()
+                  .warningDeleteTrun(context, sizeScreen, data);
+              if (result) {
+                deleteItemfunc(index);
+              }
+            },
+            child: CircleAvatar(
+              backgroundColor: Colors.white,
+              child: Container(
+                child: Center(
+                  child: SvgPicture.asset(
+                    'assets/icons/trash.svg',
+                    width: kFontSizeText(sizeScreen, FontSize.title),
+                    height: kFontSizeText(sizeScreen, FontSize.title),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -376,4 +433,18 @@ List listItemMovement = [
   {
     'listItemAddedSuperMovement': [ItemAddedSuperMovement()]
   }
+];
+List listItemFilterChip = [
+  {
+    'turn': 'اول',
+  },
+  {
+    'turn': 'دوم',
+  },
+  {
+    'turn': 'سوم',
+  },
+  {
+    'turn': 'چهارم',
+  },
 ];
