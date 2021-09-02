@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gym_app/Router/rout_generate.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
 import 'package:gym_app/screen/Wallet/wallet_page.dart';
-
+import 'package:get/get.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +12,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'gym',
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [
@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [const Locale('fa', '')],
+
+      locale: Locale("fa", "IR"),
       initialRoute: WalletPage.routeName,
       onGenerateRoute: MyRouter.onGenerateRoute,
     );

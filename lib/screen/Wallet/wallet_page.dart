@@ -3,7 +3,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customBottomBar.dart';
+import 'package:gym_app/screen/Wallet/tansfer_others_wallet.dart';
+import 'package:gym_app/screen/Wallet/transfer_page.dart';
+import 'package:gym_app/screen/Wallet/turnover_page.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
+
+import 'Increase_page.dart';
 
 class WalletPage extends StatelessWidget {
   const WalletPage({Key? key}) : super(key: key);
@@ -154,123 +159,143 @@ class WalletPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height:  Get.height * 0.015,),
-              Container(
-                height: Get.height * 0.08,
-                width: Get.width * 0.9,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Color.fromRGBO(63, 176, 213, 1),width: 1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                   Padding(
-                     padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
-                     child: Row(
-                       children: [
-                         SvgPicture.asset("assets/icons/empty-wallet-add.svg",height: Get.height * 0.05,),
-                         SizedBox(width: Get.width * 0.05,),
-                         Text("افزایش موجودی",style: TextStyle(color: Color.fromRGBO(0, 150, 199, 1),fontFamily: "IRANSans",fontSize: 17),),
-                       ],
+              InkWell(
+                onTap: (){
+                  Get.to(IncreaseWalletPage(),transition: Transition.downToUp);
+                },
+                child: Container(
+                  height: Get.height * 0.08,
+                  width: Get.width * 0.9,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Color.fromRGBO(63, 176, 213, 1),width: 1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                     Padding(
+                       padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
+                       child: Row(
+                         children: [
+                           SvgPicture.asset("assets/icons/empty-wallet-add.svg",height: Get.height * 0.05,),
+                           SizedBox(width: Get.width * 0.05,),
+                           Text("افزایش موجودی",style: TextStyle(color: Color.fromRGBO(0, 150, 199, 1),fontFamily: "IRANSans",fontSize: Get.height * 0.02),),
+                         ],
+                       ),
                      ),
-                   ),
-                    Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
-                      child: SvgPicture.asset("assets/icons/arrow-left.svg",height: Get.height * 0.022,),
-                    ),
+                      Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
+                        child: SvgPicture.asset("assets/icons/arrow-left.svg",height: Get.height * 0.022,),
+                      ),
 
-                  ],
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height:  Get.height * 0.015,),
-              Container(
-                height: Get.height * 0.08,
-                width: Get.width * 0.9,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Color.fromRGBO(63, 176, 213, 1),width: 1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                   Padding(
-                     padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
-                     child: Row(
-                       children: [
-                         SvgPicture.asset("assets/icons/vuesax-linear-card-receive.svg",height: Get.height * 0.05,),
-                         SizedBox(width: Get.width * 0.05,),
-                         Text("افزایش موجودی",style: TextStyle(color: Color.fromRGBO(0, 150, 199, 1),fontFamily: "IRANSans",fontSize: 17),),
-                       ],
+              InkWell(
+                onTap: (){
+                  Get.to(TransferToBankPage(),transition: Transition.downToUp);
+                },
+                child: Container(
+                  height: Get.height * 0.08,
+                  width: Get.width * 0.9,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Color.fromRGBO(63, 176, 213, 1),width: 1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                     Padding(
+                       padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
+                       child: Row(
+                         children: [
+                           SvgPicture.asset("assets/icons/vuesax-linear-card-receive.svg",height: Get.height * 0.05,),
+                           SizedBox(width: Get.width * 0.05,),
+                           Text("انتقال به حساب بانکی",style: TextStyle(color: Color.fromRGBO(0, 150, 199, 1),fontFamily: "IRANSans",fontSize: Get.height * 0.02),),
+                         ],
+                       ),
                      ),
-                   ),
-                    Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
-                      child: SvgPicture.asset("assets/icons/arrow-left.svg",height: Get.height * 0.022,),
-                    ),
+                      Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
+                        child: SvgPicture.asset("assets/icons/arrow-left.svg",height: Get.height * 0.022,),
+                      ),
 
-                  ],
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height:  Get.height * 0.015,),
-              Container(
-                height: Get.height * 0.08,
-                width: Get.width * 0.9,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Color.fromRGBO(63, 176, 213, 1),width: 1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset("assets/icons/empty-wallet-change.svg",height: Get.height * 0.05,),
-                          SizedBox(width: Get.width * 0.05,),
-                          Text("افزایش موجودی",style: TextStyle(color: Color.fromRGBO(0, 150, 199, 1),fontFamily: "IRANSans",fontSize: 17),),
-                        ],
+              InkWell(
+                onTap: (){
+                  Get.to(TransferOtherWallet(),transition: Transition.downToUp);
+                },
+                child: Container(
+                  height: Get.height * 0.08,
+                  width: Get.width * 0.9,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Color.fromRGBO(63, 176, 213, 1),width: 1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset("assets/icons/empty-wallet-change.svg",height: Get.height * 0.05,),
+                            SizedBox(width: Get.width * 0.05,),
+                            Text("انتقال به کیف پول دیگران",style: TextStyle(color: Color.fromRGBO(0, 150, 199, 1),fontFamily: "IRANSans",fontSize: Get.height * 0.02),),
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
-                      child: SvgPicture.asset("assets/icons/arrow-left.svg",height: Get.height * 0.022,),
-                    ),
+                      Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
+                        child: SvgPicture.asset("assets/icons/arrow-left.svg",height: Get.height * 0.022,),
+                      ),
 
-                  ],
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height:  Get.height * 0.015,),
-              Container(
-                height: Get.height * 0.08,
-                width: Get.width * 0.9,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Color.fromRGBO(63, 176, 213, 1),width: 1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset("assets/icons/clipboard2.svg",height: Get.height * 0.05,),
-                          SizedBox(width: Get.width * 0.05,),
-                          Text("افزایش موجودی",style: TextStyle(color: Color.fromRGBO(0, 150, 199, 1),fontFamily: "IRANSans",fontSize: 17),),
-                        ],
+              InkWell(
+                onTap: (){
+                  // Get.to(TurnoverPage(),transition: Transition.downToUp);
+                },
+                child: Container(
+                  height: Get.height * 0.08,
+                  width: Get.width * 0.9,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Color.fromRGBO(63, 176, 213, 1),width: 1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset("assets/icons/clipboard2.svg",height: Get.height * 0.05,),
+                            SizedBox(width: Get.width * 0.05,),
+                            Text("گزارش مالی",style: TextStyle(color: Color.fromRGBO(0, 150, 199, 1),fontFamily: "IRANSans",fontSize: Get.height * 0.02),),
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
-                      child: SvgPicture.asset("assets/icons/arrow-left.svg",height: Get.height * 0.022,),
-                    ),
+                      Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.03),
+                        child: SvgPicture.asset("assets/icons/arrow-left.svg",height: Get.height * 0.022,),
+                      ),
 
-                  ],
+                    ],
+                  ),
                 ),
               ),
 
