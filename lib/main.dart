@@ -20,7 +20,6 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-
       locale: Locale("fa", "IR"),
       initialRoute: WalletPage.routeName,
       onGenerateRoute: MyRouter.onGenerateRoute,
