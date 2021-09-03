@@ -5,8 +5,14 @@ import 'package:gym_app/screen/Home/home_page.dart';
 import 'package:gym_app/screen/Wallet/wallet_page.dart';
 import 'package:get/get.dart';
 
+import ' extensions/ext.dart';
 void main() {
   runApp(MyApp());
+  start();
+}
+
+void start() async {
+  await App.init();
 }
 
 class MyApp extends StatelessWidget {
@@ -20,9 +26,10 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      locale: Locale("fa", "IR"),
-      initialRoute: WalletPage.routeName,
+      locale: Locale("fa","IR"),
+      initialRoute: HomePage.routeName,
       onGenerateRoute: MyRouter.onGenerateRoute,
+      theme: ThemeData(fontFamily: 'IRANSans'),
     );
   }
 }
