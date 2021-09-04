@@ -11,6 +11,7 @@ import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
 import 'package:gym_app/screen/observeProgramBody/observe_program_body_page.dart';
 import 'package:gym_app/screen/observeProgramOtherSports/observe_other_sports_page.dart';
+import 'package:gym_app/screen/list_barnameha/list_barnameha.dart';
 import 'package:gym_app/screen/settings/setting_page.dart';
 
 import 'extensions/ext.dart';
