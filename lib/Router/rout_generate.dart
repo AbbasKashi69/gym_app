@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
+import 'package:gym_app/screen/DetailElan/detail_elan_page.dart';
+import 'package:gym_app/screen/Elanha/elan_page.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
 import 'package:gym_app/screen/Cv/cv_page.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
@@ -66,6 +68,13 @@ class MyRouter {
         return MaterialPageRoute(builder: (context) => PersonalInfoCoachPage());
       case ListBarnamehaPage.routeName:
         return MaterialPageRoute(builder: (context) => ListBarnamehaPage());
+      //******* new */
+      case ElanPage.routeName:
+        return MaterialPageRoute(builder: (context) => ElanPage());
+      case DetailElanPage.routeName:
+        return MaterialPageRoute(builder: (context) => DetailElanPage());
+
+      //****** new */
       default:
         return MaterialPageRoute(builder: (context) => ScanPage());
     }

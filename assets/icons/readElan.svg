@@ -1,0 +1,7 @@
+<svg id="sms" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35">
+  <path id="Vector" d="M0,0H35V35H0Z" fill="none" opacity="0"/>
+  <path id="Vector-2" data-name="Vector" d="M21.875,24.792H7.292C2.917,24.792,0,22.6,0,17.5V7.292C0,2.188,2.917,0,7.292,0H21.875c4.375,0,7.292,2.188,7.292,7.292V17.5C29.167,22.6,26.25,24.792,21.875,24.792Z" transform="translate(2.917 5.104)" fill="#a7a7a7" opacity="0.4"/>
+  <g id="Group" transform="translate(9.111 12.023)">
+    <path id="Vector-3" data-name="Vector" d="M8.389,6.746A5.421,5.421,0,0,1,4.977,5.594L.412,1.948A1.09,1.09,0,0,1,1.769.242L6.333,3.888a3.48,3.48,0,0,0,4.1,0L15,.242a1.076,1.076,0,0,1,1.531.175,1.076,1.076,0,0,1-.175,1.531L11.787,5.594A5.352,5.352,0,0,1,8.389,6.746Z" transform="translate(0 0)" fill="#a7a7a7"/>
+  </g>
+</svg>

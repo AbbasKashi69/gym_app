@@ -1,0 +1,9 @@
+<svg id="sms-notification" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35">
+  <path id="Vector" d="M0,0H35V35H0Z" fill="none" opacity="0"/>
+  <path id="Vector-2" data-name="Vector" d="M7.292,3.646A3.646,3.646,0,1,1,3.646,0,3.646,3.646,0,0,1,7.292,3.646Z" transform="translate(24.792 4.375)" fill="#ff003d"/>
+  <path id="Vector-3" data-name="Vector" d="M7.292,3.646A3.646,3.646,0,1,1,3.646,0,3.646,3.646,0,0,1,7.292,3.646Z" transform="translate(24.792 4.375)" fill="#ff003d"/>
+  <path id="Vector-4" data-name="Vector" d="M27.3,8.458a1.452,1.452,0,0,1,1.867,1.4V17.5c0,5.1-2.917,7.292-7.292,7.292H7.292C2.917,24.792,0,22.6,0,17.5V7.292C0,2.188,2.917,0,7.292,0h11.1A1.471,1.471,0,0,1,19.8,1.794,5.834,5.834,0,0,0,24,8.546,6,6,0,0,0,27.3,8.458Z" transform="translate(2.917 5.119)" fill="#ff003d" opacity="0.4"/>
+  <g id="Group" transform="translate(9.111 12.027)">
+    <path id="Vector-5" data-name="Vector" d="M8.389,6.741A5.421,5.421,0,0,1,4.977,5.589L.412,1.944A1.09,1.09,0,0,1,1.769.237L6.333,3.883a3.48,3.48,0,0,0,4.1,0l1.721-1.371a1.09,1.09,0,1,1,1.356,1.706L11.787,5.589A5.352,5.352,0,0,1,8.389,6.741Z" transform="translate(0 0)" fill="#ff003d"/>
+  </g>
+</svg>
