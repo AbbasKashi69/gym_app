@@ -227,16 +227,20 @@ class _TurnoverPageState extends State<TurnoverPage> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: Get.height * 0.035,
+              ),
               DottedBorder(
-                borderType: BorderType.Rect,
+                borderType: BorderType.RRect,
                 radius: Radius.circular(12),
                 padding: EdgeInsets.all(6),
+                color: Colors.grey,
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(12)),
                   child: Container(
-                    height: Get.height  * 0.02,
-                    width: 120,
-                    color: Colors.amber,
+                    height: Get.height  * 0.15,
+                    width: Get.width,
+
                   ),
                 ),
               )

@@ -266,7 +266,7 @@ class WalletPage extends StatelessWidget {
               SizedBox(height:  Get.height * 0.015,),
               InkWell(
                 onTap: (){
-                  // Get.to(TurnoverPage(),transition: Transition.downToUp);
+                  Get.to(TurnoverPage(),transition: Transition.downToUp);
                 },
                 child: Container(
                   height: Get.height * 0.08,
