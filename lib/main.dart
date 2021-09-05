@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gym_app/Router/rout_generate.dart';
-import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
-import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
-import 'package:gym_app/screen/Cv/cv_page.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
-import 'package:gym_app/screen/ListCoach/list_coach_page.dart';
-import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';
-import 'package:gym_app/screen/ProgramList/program_list_page.dart';
-import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
-import 'package:gym_app/screen/observeProgramBody/observe_program_body_page.dart';
-import 'package:gym_app/screen/observeProgramOtherSports/observe_other_sports_page.dart';
-import 'package:gym_app/screen/list_barnameha/list_barnameha.dart';
-import 'package:gym_app/screen/settings/setting_page.dart';
+import 'package:gym_app/screen/Wallet/wallet_page.dart';
+import 'package:get/get.dart';
 
-import 'extensions/ext.dart';
+import ' extensions/ext.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,7 +19,7 @@ void start() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'gym',
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [
@@ -36,7 +27,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [const Locale('fa', '')],
+      locale: Locale("fa", "IR"),
       initialRoute: HomePage.routeName,
       onGenerateRoute: MyRouter.onGenerateRoute,
       theme: ThemeData(fontFamily: 'IRANSans'),

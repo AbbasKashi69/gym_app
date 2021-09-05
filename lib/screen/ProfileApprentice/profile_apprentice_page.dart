@@ -441,7 +441,11 @@ class ProfileApprenticePage extends StatelessWidget {
                         child: Text(
                           'توضیحات',
                           style:
+<<<<<<< HEAD
                               textStyle.copyWith(fontWeight: FontWeight.w500),
+=======
+                              textStyle.copyWith(fontWeight: FontWeight.w700),
+>>>>>>> fc767eca8f0d8128c0214b4b5c59db51a56883fe
                         ),
                       ),
                       Container(
@@ -449,7 +453,11 @@ class ProfileApprenticePage extends StatelessWidget {
                           'متن توضیحات',
                           textAlign: TextAlign.justify,
                           style:
+<<<<<<< HEAD
                               textStyle.copyWith(fontWeight: FontWeight.w400),
+=======
+                              textStyle.copyWith(fontWeight: FontWeight.w500),
+>>>>>>> fc767eca8f0d8128c0214b4b5c59db51a56883fe
                         ),
                       ),
                     ],

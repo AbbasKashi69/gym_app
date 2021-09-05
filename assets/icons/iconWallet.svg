@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="67" height="70" viewBox="0 0 67 70">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#caf0f8"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_1660" data-name="Group 1660" transform="translate(-314.112 -795.32) rotate(-20)">
+    <g id="wallet" transform="translate(22.146 877.146)">
+      <path id="Vector" d="M38.136,9.534v9.534c0,5.72-3.814,9.534-9.534,9.534H9.534C3.814,28.6,0,24.788,0,19.068V9.534C0,4.347,3.127.725,7.989.114A10.148,10.148,0,0,1,9.534,0H28.6a8.72,8.72,0,0,1,1.43.1C34.951.667,38.136,4.309,38.136,9.534Z" transform="translate(3.814 13.347)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      <path id="Vector-2" data-name="Vector" d="M22.042,9.629a8.72,8.72,0,0,0-1.43-.1H1.544A10.148,10.148,0,0,0,0,9.648,5.8,5.8,0,0,1,1.106,8.161L7.3,1.945a6.721,6.721,0,0,1,9.458,0L20.1,5.32A6.434,6.434,0,0,1,22.042,9.629Z" transform="translate(11.806 3.814)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      <path id="Vector-3" data-name="Vector" d="M9.534,0H3.814a3.814,3.814,0,0,0,0,7.627h5.72" transform="translate(32.415 23.835)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+      <path id="Vector-4" data-name="Vector" d="M0,0H45.763V45.763H0Z" fill="none" opacity="0"/>
+    </g>
+    <circle id="Ellipse_30" data-name="Ellipse 30" cx="3" cy="3" r="3" transform="translate(18.178 921.085) rotate(20)" fill="url(#linear-gradient)"/>
+    <path id="Path_1513" data-name="Path 1513" d="M5.5,0A5.5,5.5,0,1,1,0,5.5,5.5,5.5,0,0,1,5.5,0Z" transform="translate(62.62 869.154) rotate(20)" fill="url(#linear-gradient)"/>
+    <circle id="Ellipse_32" data-name="Ellipse 32" cx="2" cy="2" r="2" transform="translate(4.684 905.532) rotate(20)" opacity="0.88" fill="url(#linear-gradient)"/>
+    <circle id="Ellipse_33" data-name="Ellipse 33" cx="2" cy="2" r="2" transform="translate(62.517 930.838) rotate(20)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

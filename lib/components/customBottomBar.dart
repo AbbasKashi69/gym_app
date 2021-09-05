@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
+import 'package:gym_app/screen/Wallet/wallet_page.dart';
 import 'package:gym_app/screen/profile_page/profile_page.dart';
 import 'package:gym_app/screen/subscription_page/subscription_page.dart';
 
 class CustomAppBarWidget extends StatelessWidget {
   int initialTab = 0;
-
 
   CustomAppBarWidget(this.initialTab);
 
@@ -50,11 +50,15 @@ class CustomAppBarWidget extends StatelessWidget {
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => HomePage()));
           } else if (i == 1) {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => SubscriptionPage()));
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => SubscriptionPage()));
           } else if (i == 3) {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => ProfilePage()));
+          } else if (i == 4) {
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => ProfilePage()));
+                context, MaterialPageRoute(builder: (context) => WalletPage()));
+            //todo be in tartib
           }
         });
   }

@@ -16,6 +16,7 @@ dependencies:
   shared_preferences: ^2.0.7
   percent_indicator: ^3.0.1
   dotted_border: ^2.0.0+1
+  persian_number_utility: ^0.3.4
 
 
   get: ^4.3.8
