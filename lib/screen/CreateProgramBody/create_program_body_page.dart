@@ -4,6 +4,7 @@ import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customeTextField.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 class CreateProgramBodyPage extends StatelessWidget {
   const CreateProgramBodyPage({Key? key}) : super(key: key);
@@ -96,12 +97,36 @@ class CreateProgramBodyPage extends StatelessWidget {
                     hintText: 'نام برنامه',
                   ),
                   SizedBox(height: padding * 2),
-                  CustomeTextField(
-                    hintText: 'تاریخ شروع',
+                  GestureDetector(
+                    onTap: () async {
+                      await showPersianDatePicker(
+                        context: context,
+                        initialDate: Jalali.now(),
+                        firstDate: Jalali(1400, 1, 8),
+                        lastDate: Jalali(1405, 12),
+                      );
+                    },
+                    child: CustomeTextField(
+                      isReadOnly: true,
+                      isEnable: false,
+                      hintText: 'تاریخ شروع',
+                    ),
                   ),
                   SizedBox(height: padding * 2),
-                  CustomeTextField(
-                    hintText: 'تاریخ پایان',
+                  GestureDetector(
+                    onTap: () async {
+                      await showPersianDatePicker(
+                        context: context,
+                        initialDate: Jalali.now(),
+                        firstDate: Jalali(1400, 1, 8),
+                        lastDate: Jalali(1405, 12),
+                      );
+                    },
+                    child: CustomeTextField(
+                      isReadOnly: true,
+                      isEnable: false,
+                      hintText: 'تاریخ پایان',
+                    ),
                   ),
                   SizedBox(height: padding * 2),
                   Container(

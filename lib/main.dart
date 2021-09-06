@@ -4,6 +4,7 @@ import 'package:gym_app/Router/rout_generate.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
+import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 import 'package:gym_app/screen/Wallet/wallet_page.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       locale: Locale("fa", "IR"),
-      initialRoute: HomePage.routeName,
+      initialRoute: CreateProgramBodyPage.routeName,
       onGenerateRoute: MyRouter.onGenerateRoute,
       theme: ThemeData(fontFamily: 'IRANSans'),
     );

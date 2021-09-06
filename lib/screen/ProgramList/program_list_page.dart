@@ -3,7 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/extensions/ext.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
-import 'package:gym_app/screen/ProgramList/filter_screen.dart';
+import 'package:gym_app/screen/ProgramList/components/all_apprentice_scree.dart';
+import 'package:gym_app/screen/ProgramList/components/filter_screen.dart';
 import 'package:gym_app/screen/observeProgramBody/observe_program_body_page.dart';
 
 class ProgramListPage extends StatefulWidget {
@@ -244,18 +245,25 @@ class ItemDietary extends StatelessWidget {
                             Container(
                               child: Stack(
                                   children: List.generate(
-                                      // data['apprentice'].length(),
-                                      3,
+                                      data['apprentice'].length > 3
+                                          ? 3
+                                          : data['apprentice'].length,
                                       (index) => ItemRequestInStack(
                                           index: index + 1,
                                           sizeScreen: sizeScreen,
                                           image: data['apprentice'][index]))),
                             ),
                             Spacer(),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              color: Color(0xff00B4D8),
-                              size: kFontSizeText(sizeScreen, FontSize.title),
+                            InkWell(
+                              onTap: () async {
+                                await AllApprenticeScreen()
+                                    .allApprentice(context, sizeScreen, data);
+                              },
+                              child: Icon(
+                                Icons.arrow_forward_ios,
+                                color: Color(0xff00B4D8),
+                                size: kFontSizeText(sizeScreen, FontSize.title),
+                              ),
                             )
                           ],
                         ),
@@ -409,7 +417,8 @@ class ItemRequestInStack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: index * 20),
+      margin: EdgeInsets.only(
+          right: sizeScreen.width > 550 ? index * 35 : index * 20),
       padding: EdgeInsets.all(2),
       decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
       child: CircleAvatar(
@@ -426,7 +435,11 @@ List listItem = [
     'apprentice': [
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU'
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
     ],
     'typeProgram': 'تمرینی',
     'start': '12/05/1398',
@@ -439,7 +452,9 @@ List listItem = [
     'apprentice': [
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU'
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
     ],
     'typeProgram': 'مسابقه ای',
     'start': '19/08/1397',
@@ -452,7 +467,6 @@ List listItem = [
     'apprentice': [
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU'
     ],
     'typeProgram': 'تمرینی',
     'start': '05/05/1395',
