@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gym_app/Router/rout_generate.dart';
+import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
+import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
 import 'package:gym_app/screen/Wallet/wallet_page.dart';
 import 'package:get/get.dart';
+import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
 
 import ' extensions/ext.dart';
 

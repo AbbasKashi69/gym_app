@@ -85,6 +85,7 @@ class CreateProgramBodySettingPage extends StatelessWidget {
                             ),
                             Spacer(),
                             IconButton(
+                                splashRadius: 10,
                                 onPressed: () {},
                                 icon: Icon(
                                   Icons.arrow_forward_ios,

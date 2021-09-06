@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customBottomBar.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
+import 'package:gym_app/screen/Elanha/elan_page.dart';
 import 'package:gym_app/screen/ListCoach/list_coach_page.dart';
 import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 
@@ -82,12 +83,18 @@ class HomePage extends StatelessWidget {
                                         padding: EdgeInsets.only(
                                             bottom: Get.height * 0.025,
                                             left: Get.width * 0.05),
-                                        child: SvgPicture.asset(
-                                            "assets/icons/notification.svg",
-                                            height: 30,
-                                            width: 30,
-                                            color:
-                                                Colors.white.withOpacity(0.7)),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context)
+                                                .pushNamed(ElanPage.routeName);
+                                          },
+                                          child: SvgPicture.asset(
+                                              "assets/icons/notification.svg",
+                                              height: 30,
+                                              width: 30,
+                                              color: Colors.white
+                                                  .withOpacity(0.7)),
+                                        ),
                                       )
                                     ],
                                   )

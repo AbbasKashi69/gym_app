@@ -1,17 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 import 'package:gym_app/screen/DetailElan/detail_elan_page.dart';
 import 'package:gym_app/screen/Elanha/elan_page.dart';
-=======
->>>>>>> fc767eca8f0d8128c0214b4b5c59db51a56883fe
 import 'package:gym_app/screen/Home/home_page.dart';
 import 'package:gym_app/screen/Cv/cv_page.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:gym_app/screen/ListApprentice/requests_page.dart';
-<<<<<<< HEAD
 import 'package:gym_app/screen/ListCoach/list_coach_page.dart';
 import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
 import 'package:gym_app/screen/PersonalInfoCoach/personal_info_coach_page.dart';
@@ -26,12 +22,10 @@ import 'package:gym_app/screen/list_barnameha/list_barnameha.dart';
 import 'package:gym_app/screen/profile_page/profile_page.dart';
 import 'package:gym_app/screen/settings/setting_page.dart';
 import 'package:gym_app/screen/subscription_page/subscription_page.dart';
-=======
 import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
 import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';
 import 'package:gym_app/screen/Scan/scan_page.dart';
 import 'package:gym_app/screen/Wallet/wallet_page.dart';
->>>>>>> fc767eca8f0d8128c0214b4b5c59db51a56883fe
 
 class MyRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings routeSettings) {
@@ -52,7 +46,7 @@ class MyRouter {
         return MaterialPageRoute(builder: (context) => ProfileApprenticePage());
       case ProfileApprenticePage.routeName:
         return MaterialPageRoute(builder: (context) => ProfileApprenticePage());
-        case WalletPage.routeName:
+      case WalletPage.routeName:
         return MaterialPageRoute(builder: (context) => WalletPage());
       case CvPage.routeName:
         return MaterialPageRoute(builder: (context) => CvPage());

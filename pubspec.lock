@@ -7,7 +7,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.8.1"
+    version: "2.6.1"
   auto_size_text:
     dependency: "direct main"
     description:
@@ -35,11 +35,7 @@ packages:
       name: charcode
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "1.3.1"
-=======
     version: "1.2.0"
->>>>>>> fc767eca8f0d8128c0214b4b5c59db51a56883fe
   clock:
     dependency: transitive
     description:
@@ -157,11 +153,7 @@ packages:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "1.7.0"
-=======
     version: "1.3.0"
->>>>>>> fc767eca8f0d8128c0214b4b5c59db51a56883fe
   path:
     dependency: transitive
     description:
@@ -211,8 +203,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-<<<<<<< HEAD
-=======
   persian_number_utility:
     dependency: "direct main"
     description:
@@ -220,7 +210,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.4"
->>>>>>> fc767eca8f0d8128c0214b4b5c59db51a56883fe
   petitparser:
     dependency: transitive
     description:
@@ -337,11 +326,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "0.4.2"
-=======
     version: "0.3.0"
->>>>>>> fc767eca8f0d8128c0214b4b5c59db51a56883fe
   typed_data:
     dependency: transitive
     description:
@@ -362,11 +347,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "2.2.6"
-=======
     version: "2.2.8"
->>>>>>> fc767eca8f0d8128c0214b4b5c59db51a56883fe
   xdg_directories:
     dependency: transitive
     description:
