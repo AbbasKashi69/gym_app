@@ -27,6 +27,8 @@ dependencies:
   universal_platform: any
   persian_datetime_picker: any
   get: ^4.3.8
+  custom_timer: any
+  flutter_custom_clippers: any
 
   flutter:
     sdk: flutter
