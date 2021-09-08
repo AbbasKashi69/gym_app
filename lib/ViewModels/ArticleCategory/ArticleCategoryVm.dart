@@ -1,79 +1,98 @@
+
+
 import '../BaseViewModel.dart';
 
 class ArticleCategoryVm extends BaseViewModel {
-  int? id;
-  int? parentId;
-  int? adminId;
-  String? title;
-  String? description;
-  int? displayOrder;
-  String? pic;
-  String? icon;
-  bool? isActive;
-  String? creationDate;
-  String? nCreationDate;
 
-  ArticleCategoryVm(
-      {this.id,
-      this.parentId,
-      this.adminId,
-      this.title,
-      this.description,
-      this.displayOrder,
-      this.pic,
-      this.icon,
-      this.isActive,
-      this.creationDate,
-      this.nCreationDate});
 
-  ArticleCategoryVm.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    int? id;
+int? parentId;
+int? adminId;
+String? title;
+String? description;
+int? displayOrder;
+String? pic;
+String? icon;
+bool? isActive;
+String? creationDate;
+String? nCreationDate;
 
-    parentId = json['parentId'];
 
-    adminId = json['adminId'];
 
-    title = json['title'];
 
-    description = json['description'];
+    ArticleCategoryVm(
+    {
+        this.id, 
+this.parentId, 
+this.adminId, 
+this.title, 
+this.description, 
+this.displayOrder, 
+this.pic, 
+this.icon, 
+this.isActive, 
+this.creationDate, 
+this.nCreationDate, 
 
-    displayOrder = json['displayOrder'];
+    });
 
-    pic = json['pic'];
 
-    icon = json['icon'];
+    ArticleCategoryVm.fromJson(Map<String, dynamic> json) {
+        
+        id = json['id'];
 
-    isActive = json['isActive'];
+parentId = json['parentId'];
 
-    creationDate = json['creationDate'];
+adminId = json['adminId'];
 
-    nCreationDate = json['nCreationDate'];
-  }
+title = json['title'];
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+description = json['description'];
 
-    data['id'] = this.id;
+displayOrder = json['displayOrder'];
 
-    data['parentId'] = this.parentId;
+pic = json['pic'];
 
-    data['adminId'] = this.adminId;
+icon = json['icon'];
 
-    data['title'] = this.title;
+isActive = json['isActive'];
 
-    data['description'] = this.description;
+creationDate = json['creationDate'];
 
-    data['displayOrder'] = this.displayOrder;
+nCreationDate = json['nCreationDate'];
 
-    data['pic'] = this.pic;
 
-    data['icon'] = this.icon;
+    }
 
-    data['isActive'] = this.isActive;
+    Map<String, dynamic> toJson() {
+        final Map<String, dynamic> data = new Map<String, dynamic>();
 
-    data['creationDate'] = this.creationDate;
 
-    data['nCreationDate'] = this.nCreationDate;
-    return data;
-  }
+        data['id'] = this.id;
+
+data['parentId'] = this.parentId;
+
+data['adminId'] = this.adminId;
+
+data['title'] = this.title;
+
+data['description'] = this.description;
+
+data['displayOrder'] = this.displayOrder;
+
+data['pic'] = this.pic;
+
+data['icon'] = this.icon;
+
+data['isActive'] = this.isActive;
+
+data['creationDate'] = this.creationDate;
+
+data['nCreationDate'] = this.nCreationDate;
+
+
+
+
+        return data;
+    }
 }

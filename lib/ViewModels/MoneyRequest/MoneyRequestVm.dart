@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class MoneyRequestVm extends BaseViewModel {
 
@@ -27,84 +28,69 @@ int? bankCardId;
 
     MoneyRequestVm(
     {
-        this.id,
-
-this.userId,
-
-this.transactionId,
-
-this.status,
-
-this.nStatus,
-
-this.description,
-
-this.adminDescription,
-
-this.creationDate,
-
-this.nCreationDate,
-
-this.paymentType,
-
-this.nPaymentType,
-
-this.trackingCode,
-
-this.deposit,
-
-this.nDeposit,
-
-this.withdraw,
-
-this.nWithdraw,
-
-this.bankCardId
+        this.id, 
+this.userId, 
+this.transactionId, 
+this.status, 
+this.nStatus, 
+this.description, 
+this.adminDescription, 
+this.creationDate, 
+this.nCreationDate, 
+this.paymentType, 
+this.nPaymentType, 
+this.trackingCode, 
+this.deposit, 
+this.nDeposit, 
+this.withdraw, 
+this.nWithdraw, 
+this.bankCardId, 
 
     });
 
 
     MoneyRequestVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['userId'];
+userId = json['userId'];
 
-json['transactionId'];
+transactionId = json['transactionId'];
 
-json['status'];
+status = json['status'];
 
-json['nStatus'];
+nStatus = json['nStatus'];
 
-json['description'];
+description = json['description'];
 
-json['adminDescription'];
+adminDescription = json['adminDescription'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
-json['paymentType'];
+paymentType = json['paymentType'];
 
-json['nPaymentType'];
+nPaymentType = json['nPaymentType'];
 
-json['trackingCode'];
+trackingCode = json['trackingCode'];
 
-super.intToDouble(json['deposit']);
+deposit = super.intToDouble(json['deposit']);
 
-json['nDeposit'];
+nDeposit = json['nDeposit'];
 
-super.intToDouble(json['withdraw']);
+withdraw = super.intToDouble(json['withdraw']);
 
-json['nWithdraw'];
+nWithdraw = json['nWithdraw'];
 
-json['bankCardId'];
+bankCardId = json['bankCardId'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -141,5 +127,8 @@ data['nWithdraw'] = this.nWithdraw;
 data['bankCardId'] = this.bankCardId;
 
 
+
+
+        return data;
     }
 }

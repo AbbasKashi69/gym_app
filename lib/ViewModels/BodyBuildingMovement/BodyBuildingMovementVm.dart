@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class BodyBuildingMovementVm extends BaseViewModel {
 
@@ -21,59 +22,51 @@ String? nCreationDate;
 
     BodyBuildingMovementVm(
     {
-        this.id,
-
-this.userId,
-
-this.adminId,
-
-this.title,
-
-this.description,
-
-this.filePath,
-
-this.status,
-
-this.nStatus,
-
-this.isActive,
-
-this.creationDate
-this.nCreationDate
+        this.id, 
+this.userId, 
+this.adminId, 
+this.title, 
+this.description, 
+this.filePath, 
+this.status, 
+this.nStatus, 
+this.isActive, 
+this.creationDate, 
+this.nCreationDate, 
 
     });
 
 
     BodyBuildingMovementVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['userId'];
+userId = json['userId'];
 
-json['adminId'];
+adminId = json['adminId'];
 
-json['title'];
+title = json['title'];
 
-json['description'];
+description = json['description'];
 
-json['filePath'];
+filePath = json['filePath'];
 
-json['status'];
+status = json['status'];
 
-json['nStatus'];
+nStatus = json['nStatus'];
 
-json['isActive'];
+isActive = json['isActive'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -98,5 +91,8 @@ data['creationDate'] = this.creationDate;
 data['nCreationDate'] = this.nCreationDate;
 
 
+
+
+        return data;
     }
 }

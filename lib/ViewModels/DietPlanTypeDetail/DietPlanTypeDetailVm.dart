@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class DietPlanTypeDetailVm extends BaseViewModel {
 
@@ -19,51 +20,45 @@ String? nCreationDate;
 
     DietPlanTypeDetailVm(
     {
-        this.id,
-
-this.dietPlanTypeId,
-
-this.dayNumber,
-
-this.mealNumber,
-
-this.displayOrder,
-
-this.title,
-
-this.description,
-
-this.creationDate
-this.nCreationDate
+        this.id, 
+this.dietPlanTypeId, 
+this.dayNumber, 
+this.mealNumber, 
+this.displayOrder, 
+this.title, 
+this.description, 
+this.creationDate, 
+this.nCreationDate, 
 
     });
 
 
     DietPlanTypeDetailVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['dietPlanTypeId'];
+dietPlanTypeId = json['dietPlanTypeId'];
 
-json['dayNumber'];
+dayNumber = json['dayNumber'];
 
-json['mealNumber'];
+mealNumber = json['mealNumber'];
 
-json['displayOrder'];
+displayOrder = json['displayOrder'];
 
-json['title'];
+title = json['title'];
 
-json['description'];
+description = json['description'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -84,5 +79,8 @@ data['creationDate'] = this.creationDate;
 data['nCreationDate'] = this.nCreationDate;
 
 
+
+
+        return data;
     }
 }

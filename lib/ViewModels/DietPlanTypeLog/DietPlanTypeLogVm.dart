@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class DietPlanTypeLogVm extends BaseViewModel {
 
@@ -24,71 +25,60 @@ String? nTotalTerm;
 
     DietPlanTypeLogVm(
     {
-        this.id,
-
-this.dietPlanTypeId,
-
-this.userId,
-
-this.transactionId,
-
-this.creationDate,
-
-this.nCreationDate,
-
-this.startDate,
-
-this.nStartDate,
-
-this.endDate,
-
-this.nEndDate,
-
-this.totalPrice,
-
-this.nTotalPrice,
-
-this.totalTerm
-this.nTotalTerm
+        this.id, 
+this.dietPlanTypeId, 
+this.userId, 
+this.transactionId, 
+this.creationDate, 
+this.nCreationDate, 
+this.startDate, 
+this.nStartDate, 
+this.endDate, 
+this.nEndDate, 
+this.totalPrice, 
+this.nTotalPrice, 
+this.totalTerm, 
+this.nTotalTerm, 
 
     });
 
 
     DietPlanTypeLogVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['dietPlanTypeId'];
+dietPlanTypeId = json['dietPlanTypeId'];
 
-json['userId'];
+userId = json['userId'];
 
-json['transactionId'];
+transactionId = json['transactionId'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
-json['startDate'];
+startDate = json['startDate'];
 
-json['nStartDate'];
+nStartDate = json['nStartDate'];
 
-json['endDate'];
+endDate = json['endDate'];
 
-json['nEndDate'];
+nEndDate = json['nEndDate'];
 
-super.intToDouble(json['totalPrice']);
+totalPrice = super.intToDouble(json['totalPrice']);
 
-json['nTotalPrice'];
+nTotalPrice = json['nTotalPrice'];
 
-super.intToDouble(json['totalTerm']);
+totalTerm = super.intToDouble(json['totalTerm']);
 
-json['nTotalTerm'];
+nTotalTerm = json['nTotalTerm'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -119,5 +109,8 @@ data['totalTerm'] = this.totalTerm;
 data['nTotalTerm'] = this.nTotalTerm;
 
 
+
+
+        return data;
     }
 }

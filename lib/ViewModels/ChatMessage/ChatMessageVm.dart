@@ -1,117 +1,75 @@
-
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+import '../BaseViewModel.dart';
 
 class ChatMessageVm extends BaseViewModel {
+  int? id;
+  int? senderId;
+  int? receiverId;
+  String? textMessage;
+  String? filePath;
+  String? seenDateTime;
+  String? nSeenDateTime;
+  int? parentId;
+  String? creationDate;
+  String? nCreationDate;
 
+  ChatMessageVm({
+    this.id,
+    this.senderId,
+    this.receiverId,
+    this.textMessage,
+    this.filePath,
+    this.seenDateTime,
+    this.nSeenDateTime,
+    this.parentId,
+    this.creationDate,
+    this.nCreationDate,
+  });
 
-    int? id;
-int? senderId;
-int? receiverId;
-String? textMessage;
-String? filePath;
-String? seenDateTime;
-String? nSeenDateTime;
-int? parentId;
-String? creationDate;
-String? nCreationDate;
-? chatMessage1;
-? sender;
-? receiver;
+  ChatMessageVm.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
 
+    senderId = json['senderId'];
 
+    receiverId = json['receiverId'];
 
+    textMessage = json['textMessage'];
 
-    ChatMessageVm(
-    {
-        this.id,
+    filePath = json['filePath'];
 
-this.senderId,
+    seenDateTime = json['seenDateTime'];
 
-this.receiverId,
+    nSeenDateTime = json['nSeenDateTime'];
 
-this.textMessage,
+    parentId = json['parentId'];
 
-this.filePath,
+    creationDate = json['creationDate'];
 
-this.seenDateTime,
+    nCreationDate = json['nCreationDate'];
+  }
 
-this.nSeenDateTime,
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
 
-this.parentId,
+    data['id'] = this.id;
 
-this.creationDate,
+    data['senderId'] = this.senderId;
 
-this.nCreationDate,
+    data['receiverId'] = this.receiverId;
 
-this.chatMessage1,
+    data['textMessage'] = this.textMessage;
 
-this.sender,
+    data['filePath'] = this.filePath;
 
-this.receiver
+    data['seenDateTime'] = this.seenDateTime;
 
-    });
+    data['nSeenDateTime'] = this.nSeenDateTime;
 
+    data['parentId'] = this.parentId;
 
-    ChatMessageVm.fromJson(Map<String, dynamic> json) {
-        
-        json['id'];
+    data['creationDate'] = this.creationDate;
 
-json['senderId'];
+    data['nCreationDate'] = this.nCreationDate;
 
-json['receiverId'];
-
-json['textMessage'];
-
-json['filePath'];
-
-json['seenDateTime'];
-
-json['nSeenDateTime'];
-
-json['parentId'];
-
-json['creationDate'];
-
-json['nCreationDate'];
-
-json['chatMessage1'];
-
-json['sender'];
-
-json['receiver'];
-
-
-    }
-
-    Map<String, dynamic> toJson() {
-        final Map<String, dynamic> data = new Map<String, dynamic>();
-
-        data['id'] = this.id;
-
-data['senderId'] = this.senderId;
-
-data['receiverId'] = this.receiverId;
-
-data['textMessage'] = this.textMessage;
-
-data['filePath'] = this.filePath;
-
-data['seenDateTime'] = this.seenDateTime;
-
-data['nSeenDateTime'] = this.nSeenDateTime;
-
-data['parentId'] = this.parentId;
-
-data['creationDate'] = this.creationDate;
-
-data['nCreationDate'] = this.nCreationDate;
-
-data['chatMessage1'] = this.chatMessage1;
-
-data['sender'] = this.sender;
-
-data['receiver'] = this.receiver;
-
-
-    }
+    return data;
+  }
 }

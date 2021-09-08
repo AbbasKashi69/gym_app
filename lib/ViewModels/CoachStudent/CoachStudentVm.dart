@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class CoachStudentVm extends BaseViewModel {
 
@@ -17,43 +18,39 @@ String? nCreationDate;
 
     CoachStudentVm(
     {
-        this.id,
-
-this.coachId,
-
-this.studentId,
-
-this.status,
-
-this.nStatus,
-
-this.creationDate
-this.nCreationDate
+        this.id, 
+this.coachId, 
+this.studentId, 
+this.status, 
+this.nStatus, 
+this.creationDate, 
+this.nCreationDate, 
 
     });
 
 
     CoachStudentVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['coachId'];
+coachId = json['coachId'];
 
-json['studentId'];
+studentId = json['studentId'];
 
-json['status'];
+status = json['status'];
 
-json['nStatus'];
+nStatus = json['nStatus'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -70,5 +67,8 @@ data['creationDate'] = this.creationDate;
 data['nCreationDate'] = this.nCreationDate;
 
 
+
+
+        return data;
     }
 }

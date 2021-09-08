@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class SubscriptionTypeVm extends BaseViewModel {
 
@@ -25,76 +26,63 @@ String? pic;
 
     SubscriptionTypeVm(
     {
-        this.id,
-
-this.adminId,
-
-this.dayCount,
-
-this.title,
-
-this.description,
-
-this.creationDate,
-
-this.nCreationDate,
-
-this.priceAmount,
-
-this.nPriceAmount,
-
-this.discountAmount,
-
-this.nDiscountAmount,
-
-this.colorCode,
-
-this.isActive,
-
-this.icon,
-
-this.pic
+        this.id, 
+this.adminId, 
+this.dayCount, 
+this.title, 
+this.description, 
+this.creationDate, 
+this.nCreationDate, 
+this.priceAmount, 
+this.nPriceAmount, 
+this.discountAmount, 
+this.nDiscountAmount, 
+this.colorCode, 
+this.isActive, 
+this.icon, 
+this.pic, 
 
     });
 
 
     SubscriptionTypeVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['adminId'];
+adminId = json['adminId'];
 
-json['dayCount'];
+dayCount = json['dayCount'];
 
-json['title'];
+title = json['title'];
 
-json['description'];
+description = json['description'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
-super.intToDouble(json['priceAmount']);
+priceAmount = super.intToDouble(json['priceAmount']);
 
-json['nPriceAmount'];
+nPriceAmount = json['nPriceAmount'];
 
-super.intToDouble(json['discountAmount']);
+discountAmount = super.intToDouble(json['discountAmount']);
 
-json['nDiscountAmount'];
+nDiscountAmount = json['nDiscountAmount'];
 
-json['colorCode'];
+colorCode = json['colorCode'];
 
-json['isActive'];
+isActive = json['isActive'];
 
-json['icon'];
+icon = json['icon'];
 
-json['pic'];
+pic = json['pic'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -127,5 +115,8 @@ data['icon'] = this.icon;
 data['pic'] = this.pic;
 
 
+
+
+        return data;
     }
 }

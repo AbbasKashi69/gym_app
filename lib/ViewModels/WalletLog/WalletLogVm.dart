@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class WalletLogVm extends BaseViewModel {
 
@@ -18,48 +19,42 @@ String? description;
 
     WalletLogVm(
     {
-        this.id,
-
-this.userId,
-
-this.transactionId,
-
-this.walletValue,
-
-this.nWalletValue,
-
-this.creationDate,
-
-this.nCreationDate,
-
-this.description
+        this.id, 
+this.userId, 
+this.transactionId, 
+this.walletValue, 
+this.nWalletValue, 
+this.creationDate, 
+this.nCreationDate, 
+this.description, 
 
     });
 
 
     WalletLogVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['userId'];
+userId = json['userId'];
 
-json['transactionId'];
+transactionId = json['transactionId'];
 
-super.intToDouble(json['walletValue']);
+walletValue = super.intToDouble(json['walletValue']);
 
-json['nWalletValue'];
+nWalletValue = json['nWalletValue'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
-json['description'];
+description = json['description'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -78,5 +73,8 @@ data['nCreationDate'] = this.nCreationDate;
 data['description'] = this.description;
 
 
+
+
+        return data;
     }
 }

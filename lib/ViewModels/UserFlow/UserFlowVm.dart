@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class UserFlowVm extends BaseViewModel {
 
@@ -14,32 +15,30 @@ String? description;
 
     UserFlowVm(
     {
-        this.id,
-
-this.userId,
-
-this.weight,
-
-this.description
+        this.id, 
+this.userId, 
+this.weight, 
+this.description, 
 
     });
 
 
     UserFlowVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['userId'];
+userId = json['userId'];
 
-json['weight'];
+weight = json['weight'];
 
-json['description'];
+description = json['description'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -50,5 +49,8 @@ data['weight'] = this.weight;
 data['description'] = this.description;
 
 
+
+
+        return data;
     }
 }

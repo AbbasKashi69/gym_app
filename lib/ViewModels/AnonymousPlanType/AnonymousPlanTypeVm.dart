@@ -1,85 +1,104 @@
+
+
 import '../BaseViewModel.dart';
 
 class AnonymousPlanTypeVm extends BaseViewModel {
-  int? id;
-  int? coachId;
-  String? title;
-  String? description;
-  bool? isActive;
-  String? creationDate;
-  String? nCreationDate;
-  double? totalPrice;
-  String? nTotalPrice;
-  double? totalTerm;
-  String? nTotalTerm;
-  int? dayCount;
 
-  AnonymousPlanTypeVm(
-      {this.id,
-      this.coachId,
-      this.title,
-      this.description,
-      this.isActive,
-      this.creationDate,
-      this.nCreationDate,
-      this.totalPrice,
-      this.nTotalPrice,
-      this.totalTerm,
-      this.nTotalTerm,
-      this.dayCount});
 
-  AnonymousPlanTypeVm.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    int? id;
+int? coachId;
+String? title;
+String? description;
+bool? isActive;
+String? creationDate;
+String? nCreationDate;
+double? totalPrice;
+String? nTotalPrice;
+double? totalTerm;
+String? nTotalTerm;
+int? dayCount;
 
-    coachId = json['coachId'];
 
-    title = json['title'];
 
-    description = json['description'];
 
-    isActive = json['isActive'];
+    AnonymousPlanTypeVm(
+    {
+        this.id, 
+this.coachId, 
+this.title, 
+this.description, 
+this.isActive, 
+this.creationDate, 
+this.nCreationDate, 
+this.totalPrice, 
+this.nTotalPrice, 
+this.totalTerm, 
+this.nTotalTerm, 
+this.dayCount, 
 
-    creationDate = json['creationDate'];
+    });
 
-    nCreationDate = json['nCreationDate'];
 
-    super.intToDouble(json['totalPrice']);
+    AnonymousPlanTypeVm.fromJson(Map<String, dynamic> json) {
+        
+        id = json['id'];
 
-    nTotalPrice = json['nTotalPrice'];
+coachId = json['coachId'];
 
-    super.intToDouble(json['totalTerm']);
+title = json['title'];
 
-    nTotalTerm = json['nTotalTerm'];
+description = json['description'];
 
-    dayCount = json['dayCount'];
-  }
+isActive = json['isActive'];
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+creationDate = json['creationDate'];
 
-    data['id'] = this.id;
+nCreationDate = json['nCreationDate'];
 
-    data['coachId'] = this.coachId;
+totalPrice = super.intToDouble(json['totalPrice']);
 
-    data['title'] = this.title;
+nTotalPrice = json['nTotalPrice'];
 
-    data['description'] = this.description;
+totalTerm = super.intToDouble(json['totalTerm']);
 
-    data['isActive'] = this.isActive;
+nTotalTerm = json['nTotalTerm'];
 
-    data['creationDate'] = this.creationDate;
+dayCount = json['dayCount'];
 
-    data['nCreationDate'] = this.nCreationDate;
 
-    data['totalPrice'] = this.totalPrice;
+    }
 
-    data['nTotalPrice'] = this.nTotalPrice;
+    Map<String, dynamic> toJson() {
+        final Map<String, dynamic> data = new Map<String, dynamic>();
 
-    data['totalTerm'] = this.totalTerm;
 
-    data['nTotalTerm'] = this.nTotalTerm;
+        data['id'] = this.id;
 
-    data['dayCount'] = this.dayCount;
-    return data;
-  }
+data['coachId'] = this.coachId;
+
+data['title'] = this.title;
+
+data['description'] = this.description;
+
+data['isActive'] = this.isActive;
+
+data['creationDate'] = this.creationDate;
+
+data['nCreationDate'] = this.nCreationDate;
+
+data['totalPrice'] = this.totalPrice;
+
+data['nTotalPrice'] = this.nTotalPrice;
+
+data['totalTerm'] = this.totalTerm;
+
+data['nTotalTerm'] = this.nTotalTerm;
+
+data['dayCount'] = this.dayCount;
+
+
+
+
+        return data;
+    }
 }

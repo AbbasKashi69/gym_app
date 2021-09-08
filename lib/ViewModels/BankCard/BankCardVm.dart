@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class BankCardVm extends BaseViewModel {
 
@@ -19,52 +20,45 @@ String? pic;
 
     BankCardVm(
     {
-        this.id,
-
-this.userId,
-
-this.bankName,
-
-this.accountNumber,
-
-this.cardNumber,
-
-this.shababNumber,
-
-this.creationDate,
-
-this.nCreationDate,
-
-this.pic
+        this.id, 
+this.userId, 
+this.bankName, 
+this.accountNumber, 
+this.cardNumber, 
+this.shababNumber, 
+this.creationDate, 
+this.nCreationDate, 
+this.pic, 
 
     });
 
 
     BankCardVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['userId'];
+userId = json['userId'];
 
-json['bankName'];
+bankName = json['bankName'];
 
-json['accountNumber'];
+accountNumber = json['accountNumber'];
 
-json['cardNumber'];
+cardNumber = json['cardNumber'];
 
-json['shababNumber'];
+shababNumber = json['shababNumber'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
-json['pic'];
+pic = json['pic'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -85,5 +79,8 @@ data['nCreationDate'] = this.nCreationDate;
 data['pic'] = this.pic;
 
 
+
+
+        return data;
     }
 }

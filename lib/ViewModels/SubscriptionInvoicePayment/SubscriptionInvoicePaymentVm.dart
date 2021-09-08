@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class SubscriptionInvoicePaymentVm extends BaseViewModel {
 
@@ -17,43 +18,39 @@ String? nCreationDate;
 
     SubscriptionInvoicePaymentVm(
     {
-        this.id,
-
-this.subInvoiceId,
-
-this.payAmount,
-
-this.nPayAmount,
-
-this.transactionId,
-
-this.creationDate
-this.nCreationDate
+        this.id, 
+this.subInvoiceId, 
+this.payAmount, 
+this.nPayAmount, 
+this.transactionId, 
+this.creationDate, 
+this.nCreationDate, 
 
     });
 
 
     SubscriptionInvoicePaymentVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['subInvoiceId'];
+subInvoiceId = json['subInvoiceId'];
 
-super.intToDouble(json['payAmount']);
+payAmount = super.intToDouble(json['payAmount']);
 
-json['nPayAmount'];
+nPayAmount = json['nPayAmount'];
 
-json['transactionId'];
+transactionId = json['transactionId'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -70,5 +67,8 @@ data['creationDate'] = this.creationDate;
 data['nCreationDate'] = this.nCreationDate;
 
 
+
+
+        return data;
     }
 }

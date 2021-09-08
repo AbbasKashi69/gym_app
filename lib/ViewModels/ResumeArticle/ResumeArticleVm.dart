@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class ResumeArticleVm extends BaseViewModel {
 
@@ -15,36 +16,33 @@ String? description;
 
     ResumeArticleVm(
     {
-        this.id,
-
-this.resumeId,
-
-this.link,
-
-this.title,
-
-this.description
+        this.id, 
+this.resumeId, 
+this.link, 
+this.title, 
+this.description, 
 
     });
 
 
     ResumeArticleVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['resumeId'];
+resumeId = json['resumeId'];
 
-json['link'];
+link = json['link'];
 
-json['title'];
+title = json['title'];
 
-json['description'];
+description = json['description'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -57,5 +55,8 @@ data['title'] = this.title;
 data['description'] = this.description;
 
 
+
+
+        return data;
     }
 }

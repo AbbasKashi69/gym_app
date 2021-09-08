@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class NotificationVm extends BaseViewModel {
 
@@ -26,79 +27,66 @@ String? nSeenDate;
 
     NotificationVm(
     {
-        this.id,
-
-this.userId,
-
-this.resturantInvoiceId,
-
-this.chatMessageId,
-
-this.subscriptionTypeInvoiceId,
-
-this.walletLogId,
-
-this.bodyBuildingTypeLogId,
-
-this.dietPlanTypeLogId,
-
-this.anonymousTypePlanLogId,
-
-this.title,
-
-this.description,
-
-this.isActive,
-
-this.creationDate,
-
-this.nCreationDate,
-
-this.seenDate
-this.nSeenDate
+        this.id, 
+this.userId, 
+this.resturantInvoiceId, 
+this.chatMessageId, 
+this.subscriptionTypeInvoiceId, 
+this.walletLogId, 
+this.bodyBuildingTypeLogId, 
+this.dietPlanTypeLogId, 
+this.anonymousTypePlanLogId, 
+this.title, 
+this.description, 
+this.isActive, 
+this.creationDate, 
+this.nCreationDate, 
+this.seenDate, 
+this.nSeenDate, 
 
     });
 
 
     NotificationVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['userId'];
+userId = json['userId'];
 
-json['resturantInvoiceId'];
+resturantInvoiceId = json['resturantInvoiceId'];
 
-json['chatMessageId'];
+chatMessageId = json['chatMessageId'];
 
-json['subscriptionTypeInvoiceId'];
+subscriptionTypeInvoiceId = json['subscriptionTypeInvoiceId'];
 
-json['walletLogId'];
+walletLogId = json['walletLogId'];
 
-json['bodyBuildingTypeLogId'];
+bodyBuildingTypeLogId = json['bodyBuildingTypeLogId'];
 
-json['dietPlanTypeLogId'];
+dietPlanTypeLogId = json['dietPlanTypeLogId'];
 
-json['anonymousTypePlanLogId'];
+anonymousTypePlanLogId = json['anonymousTypePlanLogId'];
 
-json['title'];
+title = json['title'];
 
-json['description'];
+description = json['description'];
 
-json['isActive'];
+isActive = json['isActive'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
-json['seenDate'];
+seenDate = json['seenDate'];
 
-json['nSeenDate'];
+nSeenDate = json['nSeenDate'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -133,5 +121,8 @@ data['seenDate'] = this.seenDate;
 data['nSeenDate'] = this.nSeenDate;
 
 
+
+
+        return data;
     }
 }

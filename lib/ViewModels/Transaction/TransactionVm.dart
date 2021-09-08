@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class TransactionVm extends BaseViewModel {
 
@@ -23,68 +24,57 @@ int? userId;
 
     TransactionVm(
     {
-        this.id,
-
-this.parentId,
-
-this.bankName,
-
-this.trackingCode,
-
-this.amount,
-
-this.nAmount,
-
-this.creationDate,
-
-this.nCreationDate,
-
-this.isSuccess,
-
-this.description,
-
-this.type,
-
-this.nType,
-
-this.userId
+        this.id, 
+this.parentId, 
+this.bankName, 
+this.trackingCode, 
+this.amount, 
+this.nAmount, 
+this.creationDate, 
+this.nCreationDate, 
+this.isSuccess, 
+this.description, 
+this.type, 
+this.nType, 
+this.userId, 
 
     });
 
 
     TransactionVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['parentId'];
+parentId = json['parentId'];
 
-json['bankName'];
+bankName = json['bankName'];
 
-json['trackingCode'];
+trackingCode = json['trackingCode'];
 
-super.intToDouble(json['amount']);
+amount = super.intToDouble(json['amount']);
 
-json['nAmount'];
+nAmount = json['nAmount'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
-json['isSuccess'];
+isSuccess = json['isSuccess'];
 
-json['description'];
+description = json['description'];
 
-json['type'];
+type = json['type'];
 
-json['nType'];
+nType = json['nType'];
 
-json['userId'];
+userId = json['userId'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -113,5 +103,8 @@ data['nType'] = this.nType;
 data['userId'] = this.userId;
 
 
+
+
+        return data;
     }
 }

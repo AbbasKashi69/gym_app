@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class ResturantFoodVm extends BaseViewModel {
 
@@ -19,52 +20,45 @@ bool? isActive;
 
     ResturantFoodVm(
     {
-        this.id,
-
-this.adminId,
-
-this.title,
-
-this.price,
-
-this.nPrice,
-
-this.pic,
-
-this.creationDate,
-
-this.nCreationDate,
-
-this.isActive
+        this.id, 
+this.adminId, 
+this.title, 
+this.price, 
+this.nPrice, 
+this.pic, 
+this.creationDate, 
+this.nCreationDate, 
+this.isActive, 
 
     });
 
 
     ResturantFoodVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['adminId'];
+adminId = json['adminId'];
 
-json['title'];
+title = json['title'];
 
-super.intToDouble(json['price']);
+price = super.intToDouble(json['price']);
 
-json['nPrice'];
+nPrice = json['nPrice'];
 
-json['pic'];
+pic = json['pic'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
-json['isActive'];
+isActive = json['isActive'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -85,5 +79,8 @@ data['nCreationDate'] = this.nCreationDate;
 data['isActive'] = this.isActive;
 
 
+
+
+        return data;
     }
 }

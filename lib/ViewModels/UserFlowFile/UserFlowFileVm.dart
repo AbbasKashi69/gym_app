@@ -1,124 +1,99 @@
-
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+import '../BaseViewModel.dart';
 
 class UserFlowFileVm extends BaseViewModel {
+  int? id;
+  int? userFlowId;
+  String? title;
+  String? description;
+  int? fileType;
+  String? nFileType;
+  String? fileFormat;
+  String? path;
+  int? fileSize;
+  String? fileName;
+  String? creationDate;
+  String? nCreationDate;
+  int? displayOrder;
+  String? file;
 
+  UserFlowFileVm({
+    this.id,
+    this.userFlowId,
+    this.title,
+    this.description,
+    this.fileType,
+    this.nFileType,
+    this.fileFormat,
+    this.path,
+    this.fileSize,
+    this.fileName,
+    this.creationDate,
+    this.nCreationDate,
+    this.displayOrder,
+    this.file,
+  });
 
-    int? id;
-int? userFlowId;
-String? title;
-String? description;
-int? fileType;
-String? nFileType;
-String? fileFormat;
-String? path;
-int? fileSize;
-String? fileName;
-String? creationDate;
-String? nCreationDate;
-int? displayOrder;
-? file;
+  UserFlowFileVm.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
 
+    userFlowId = json['userFlowId'];
 
+    title = json['title'];
 
+    description = json['description'];
 
-    UserFlowFileVm(
-    {
-        this.id,
+    fileType = json['fileType'];
 
-this.userFlowId,
+    nFileType = json['nFileType'];
 
-this.title,
+    fileFormat = json['fileFormat'];
 
-this.description,
+    path = json['path'];
 
-this.fileType,
+    fileSize = json['fileSize'];
 
-this.nFileType,
+    fileName = json['fileName'];
 
-this.fileFormat,
+    creationDate = json['creationDate'];
 
-this.path,
+    nCreationDate = json['nCreationDate'];
 
-this.fileSize,
+    displayOrder = json['displayOrder'];
 
-this.fileName,
+    file = json['file'];
+  }
 
-this.creationDate,
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
 
-this.nCreationDate,
+    data['id'] = this.id;
 
-this.displayOrder,
+    data['userFlowId'] = this.userFlowId;
 
-this.file
+    data['title'] = this.title;
 
-    });
+    data['description'] = this.description;
 
+    data['fileType'] = this.fileType;
 
-    UserFlowFileVm.fromJson(Map<String, dynamic> json) {
-        
-        json['id'];
+    data['nFileType'] = this.nFileType;
 
-json['userFlowId'];
+    data['fileFormat'] = this.fileFormat;
 
-json['title'];
+    data['path'] = this.path;
 
-json['description'];
+    data['fileSize'] = this.fileSize;
 
-json['fileType'];
+    data['fileName'] = this.fileName;
 
-json['nFileType'];
+    data['creationDate'] = this.creationDate;
 
-json['fileFormat'];
+    data['nCreationDate'] = this.nCreationDate;
 
-json['path'];
+    data['displayOrder'] = this.displayOrder;
 
-json['fileSize'];
+    data['file'] = this.file;
 
-json['fileName'];
-
-json['creationDate'];
-
-json['nCreationDate'];
-
-json['displayOrder'];
-
-json['file'];
-
-
-    }
-
-    Map<String, dynamic> toJson() {
-        final Map<String, dynamic> data = new Map<String, dynamic>();
-
-        data['id'] = this.id;
-
-data['userFlowId'] = this.userFlowId;
-
-data['title'] = this.title;
-
-data['description'] = this.description;
-
-data['fileType'] = this.fileType;
-
-data['nFileType'] = this.nFileType;
-
-data['fileFormat'] = this.fileFormat;
-
-data['path'] = this.path;
-
-data['fileSize'] = this.fileSize;
-
-data['fileName'] = this.fileName;
-
-data['creationDate'] = this.creationDate;
-
-data['nCreationDate'] = this.nCreationDate;
-
-data['displayOrder'] = this.displayOrder;
-
-data['file'] = this.file;
-
-
-    }
+    return data;
+  }
 }

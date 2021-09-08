@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class PublicChatUserVm extends BaseViewModel {
 
@@ -15,35 +16,33 @@ String? nCreationDate;
 
     PublicChatUserVm(
     {
-        this.id,
-
-this.publicChatMessageId,
-
-this.roleId,
-
-this.creationDate
-this.nCreationDate
+        this.id, 
+this.publicChatMessageId, 
+this.roleId, 
+this.creationDate, 
+this.nCreationDate, 
 
     });
 
 
     PublicChatUserVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['publicChatMessageId'];
+publicChatMessageId = json['publicChatMessageId'];
 
-json['roleId'];
+roleId = json['roleId'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -56,5 +55,8 @@ data['creationDate'] = this.creationDate;
 data['nCreationDate'] = this.nCreationDate;
 
 
+
+
+        return data;
     }
 }

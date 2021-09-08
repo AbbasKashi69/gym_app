@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class ResumeMajorVm extends BaseViewModel {
 
@@ -15,35 +16,33 @@ String? nCreationDate;
 
     ResumeMajorVm(
     {
-        this.id,
-
-this.resumeId,
-
-this.majorId,
-
-this.creationDate
-this.nCreationDate
+        this.id, 
+this.resumeId, 
+this.majorId, 
+this.creationDate, 
+this.nCreationDate, 
 
     });
 
 
     ResumeMajorVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['resumeId'];
+resumeId = json['resumeId'];
 
-json['majorId'];
+majorId = json['majorId'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -56,5 +55,8 @@ data['creationDate'] = this.creationDate;
 data['nCreationDate'] = this.nCreationDate;
 
 
+
+
+        return data;
     }
 }

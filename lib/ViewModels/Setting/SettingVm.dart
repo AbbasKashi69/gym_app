@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class SettingVm extends BaseViewModel {
 
@@ -19,51 +20,45 @@ String? nCreationDate;
 
     SettingVm(
     {
-        this.id,
-
-this.type,
-
-this.nType,
-
-this.title,
-
-this.description,
-
-this.pic,
-
-this.adminId,
-
-this.creationDate
-this.nCreationDate
+        this.id, 
+this.type, 
+this.nType, 
+this.title, 
+this.description, 
+this.pic, 
+this.adminId, 
+this.creationDate, 
+this.nCreationDate, 
 
     });
 
 
     SettingVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['type'];
+type = json['type'];
 
-json['nType'];
+nType = json['nType'];
 
-json['title'];
+title = json['title'];
 
-json['description'];
+description = json['description'];
 
-json['pic'];
+pic = json['pic'];
 
-json['adminId'];
+adminId = json['adminId'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -84,5 +79,8 @@ data['creationDate'] = this.creationDate;
 data['nCreationDate'] = this.nCreationDate;
 
 
+
+
+        return data;
     }
 }

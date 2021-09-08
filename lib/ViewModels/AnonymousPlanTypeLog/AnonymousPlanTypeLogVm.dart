@@ -1,97 +1,116 @@
+
+
 import '../BaseViewModel.dart';
 
 class AnonymousPlanTypeLogVm extends BaseViewModel {
-  int? id;
-  int? anonymousPlanTypeId;
-  int? userId;
-  int? transactionId;
-  String? creationDate;
-  String? nCreationDate;
-  String? startDate;
-  String? nStartDate;
-  String? endDate;
-  String? nEndDate;
-  double? totalPrice;
-  String? nTotalPrice;
-  double? totalTerm;
-  String? nTotalTerm;
 
-  AnonymousPlanTypeLogVm(
-      {this.id,
-      this.anonymousPlanTypeId,
-      this.userId,
-      this.transactionId,
-      this.creationDate,
-      this.nCreationDate,
-      this.startDate,
-      this.nStartDate,
-      this.endDate,
-      this.nEndDate,
-      this.totalPrice,
-      this.nTotalPrice,
-      this.totalTerm,
-      this.nTotalTerm});
 
-  AnonymousPlanTypeLogVm.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    int? id;
+int? anonymousPlanTypeId;
+int? userId;
+int? transactionId;
+String? creationDate;
+String? nCreationDate;
+String? startDate;
+String? nStartDate;
+String? endDate;
+String? nEndDate;
+double? totalPrice;
+String? nTotalPrice;
+double? totalTerm;
+String? nTotalTerm;
 
-    anonymousPlanTypeId = json['anonymousPlanTypeId'];
 
-    userId = json['userId'];
 
-    transactionId = json['transactionId'];
 
-    creationDate = json['creationDate'];
+    AnonymousPlanTypeLogVm(
+    {
+        this.id, 
+this.anonymousPlanTypeId, 
+this.userId, 
+this.transactionId, 
+this.creationDate, 
+this.nCreationDate, 
+this.startDate, 
+this.nStartDate, 
+this.endDate, 
+this.nEndDate, 
+this.totalPrice, 
+this.nTotalPrice, 
+this.totalTerm, 
+this.nTotalTerm, 
 
-    nCreationDate = json['nCreationDate'];
+    });
 
-    startDate = json['startDate'];
 
-    nStartDate = json['nStartDate'];
+    AnonymousPlanTypeLogVm.fromJson(Map<String, dynamic> json) {
+        
+        id = json['id'];
 
-    endDate = json['endDate'];
+anonymousPlanTypeId = json['anonymousPlanTypeId'];
 
-    nEndDate = json['nEndDate'];
+userId = json['userId'];
 
-    totalPrice = super.intToDouble(json['totalPrice']);
+transactionId = json['transactionId'];
 
-    nTotalPrice = json['nTotalPrice'];
+creationDate = json['creationDate'];
 
-    totalTerm = super.intToDouble(json['totalTerm']);
+nCreationDate = json['nCreationDate'];
 
-    nTotalTerm = json['nTotalTerm'];
-  }
+startDate = json['startDate'];
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+nStartDate = json['nStartDate'];
 
-    data['id'] = this.id;
+endDate = json['endDate'];
 
-    data['anonymousPlanTypeId'] = this.anonymousPlanTypeId;
+nEndDate = json['nEndDate'];
 
-    data['userId'] = this.userId;
+totalPrice = super.intToDouble(json['totalPrice']);
 
-    data['transactionId'] = this.transactionId;
+nTotalPrice = json['nTotalPrice'];
 
-    data['creationDate'] = this.creationDate;
+totalTerm = super.intToDouble(json['totalTerm']);
 
-    data['nCreationDate'] = this.nCreationDate;
+nTotalTerm = json['nTotalTerm'];
 
-    data['startDate'] = this.startDate;
 
-    data['nStartDate'] = this.nStartDate;
+    }
 
-    data['endDate'] = this.endDate;
+    Map<String, dynamic> toJson() {
+        final Map<String, dynamic> data = new Map<String, dynamic>();
 
-    data['nEndDate'] = this.nEndDate;
 
-    data['totalPrice'] = this.totalPrice;
+        data['id'] = this.id;
 
-    data['nTotalPrice'] = this.nTotalPrice;
+data['anonymousPlanTypeId'] = this.anonymousPlanTypeId;
 
-    data['totalTerm'] = this.totalTerm;
+data['userId'] = this.userId;
 
-    data['nTotalTerm'] = this.nTotalTerm;
-    return data;
-  }
+data['transactionId'] = this.transactionId;
+
+data['creationDate'] = this.creationDate;
+
+data['nCreationDate'] = this.nCreationDate;
+
+data['startDate'] = this.startDate;
+
+data['nStartDate'] = this.nStartDate;
+
+data['endDate'] = this.endDate;
+
+data['nEndDate'] = this.nEndDate;
+
+data['totalPrice'] = this.totalPrice;
+
+data['nTotalPrice'] = this.nTotalPrice;
+
+data['totalTerm'] = this.totalTerm;
+
+data['nTotalTerm'] = this.nTotalTerm;
+
+
+
+
+        return data;
+    }
 }

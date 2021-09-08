@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class CheckInCheckOutVm extends BaseViewModel {
 
@@ -17,43 +18,39 @@ String? nCheckType;
 
     CheckInCheckOutVm(
     {
-        this.id,
-
-this.userId,
-
-this.isCheckIn,
-
-this.creationDate,
-
-this.nCreationDate,
-
-this.checkType
-this.nCheckType
+        this.id, 
+this.userId, 
+this.isCheckIn, 
+this.creationDate, 
+this.nCreationDate, 
+this.checkType, 
+this.nCheckType, 
 
     });
 
 
     CheckInCheckOutVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['userId'];
+userId = json['userId'];
 
-json['isCheckIn'];
+isCheckIn = json['isCheckIn'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
-json['checkType'];
+checkType = json['checkType'];
 
-json['nCheckType'];
+nCheckType = json['nCheckType'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -70,5 +67,8 @@ data['checkType'] = this.checkType;
 data['nCheckType'] = this.nCheckType;
 
 
+
+
+        return data;
     }
 }

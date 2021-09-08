@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class BodyBuildingPlanTypeDetailVm extends BaseViewModel {
 
@@ -22,63 +23,54 @@ String? nCreationDate;
 
     BodyBuildingPlanTypeDetailVm(
     {
-        this.id,
-
-this.parentId,
-
-this.bodyBuildingPlanTypeId,
-
-this.dayNumber,
-
-this.termNumber,
-
-this.displayOrder,
-
-this.title,
-
-this.description,
-
-this.setCount,
-
-this.setDescription,
-
-this.creationDate
-this.nCreationDate
+        this.id, 
+this.parentId, 
+this.bodyBuildingPlanTypeId, 
+this.dayNumber, 
+this.termNumber, 
+this.displayOrder, 
+this.title, 
+this.description, 
+this.setCount, 
+this.setDescription, 
+this.creationDate, 
+this.nCreationDate, 
 
     });
 
 
     BodyBuildingPlanTypeDetailVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['parentId'];
+parentId = json['parentId'];
 
-json['bodyBuildingPlanTypeId'];
+bodyBuildingPlanTypeId = json['bodyBuildingPlanTypeId'];
 
-json['dayNumber'];
+dayNumber = json['dayNumber'];
 
-json['termNumber'];
+termNumber = json['termNumber'];
 
-json['displayOrder'];
+displayOrder = json['displayOrder'];
 
-json['title'];
+title = json['title'];
 
-json['description'];
+description = json['description'];
 
-json['setCount'];
+setCount = json['setCount'];
 
-json['setDescription'];
+setDescription = json['setDescription'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -105,5 +97,8 @@ data['creationDate'] = this.creationDate;
 data['nCreationDate'] = this.nCreationDate;
 
 
+
+
+        return data;
     }
 }

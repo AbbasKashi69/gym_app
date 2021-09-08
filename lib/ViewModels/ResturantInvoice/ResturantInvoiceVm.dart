@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class ResturantInvoiceVm extends BaseViewModel {
 
@@ -22,63 +23,54 @@ String? nCreationDate;
 
     ResturantInvoiceVm(
     {
-        this.id,
-
-this.userId,
-
-this.walletLogId,
-
-this.transactionId,
-
-this.totalQuantity,
-
-this.nTotalQuantity,
-
-this.totalPrice,
-
-this.nTotalPrice,
-
-this.totalTerm,
-
-this.nTotalTerm,
-
-this.creationDate
-this.nCreationDate
+        this.id, 
+this.userId, 
+this.walletLogId, 
+this.transactionId, 
+this.totalQuantity, 
+this.nTotalQuantity, 
+this.totalPrice, 
+this.nTotalPrice, 
+this.totalTerm, 
+this.nTotalTerm, 
+this.creationDate, 
+this.nCreationDate, 
 
     });
 
 
     ResturantInvoiceVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['userId'];
+userId = json['userId'];
 
-json['walletLogId'];
+walletLogId = json['walletLogId'];
 
-json['transactionId'];
+transactionId = json['transactionId'];
 
-super.intToDouble(json['totalQuantity']);
+totalQuantity = super.intToDouble(json['totalQuantity']);
 
-json['nTotalQuantity'];
+nTotalQuantity = json['nTotalQuantity'];
 
-super.intToDouble(json['totalPrice']);
+totalPrice = super.intToDouble(json['totalPrice']);
 
-json['nTotalPrice'];
+nTotalPrice = json['nTotalPrice'];
 
-super.intToDouble(json['totalTerm']);
+totalTerm = super.intToDouble(json['totalTerm']);
 
-json['nTotalTerm'];
+nTotalTerm = json['nTotalTerm'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -105,5 +97,8 @@ data['creationDate'] = this.creationDate;
 data['nCreationDate'] = this.nCreationDate;
 
 
+
+
+        return data;
     }
 }

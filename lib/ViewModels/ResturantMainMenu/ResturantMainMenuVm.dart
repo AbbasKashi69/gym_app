@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class ResturantMainMenuVm extends BaseViewModel {
 
@@ -14,31 +15,30 @@ String? nCreationDate;
 
     ResturantMainMenuVm(
     {
-        this.id,
-
-this.foodId,
-
-this.creationDate
-this.nCreationDate
+        this.id, 
+this.foodId, 
+this.creationDate, 
+this.nCreationDate, 
 
     });
 
 
     ResturantMainMenuVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['foodId'];
+foodId = json['foodId'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -49,5 +49,8 @@ data['creationDate'] = this.creationDate;
 data['nCreationDate'] = this.nCreationDate;
 
 
+
+
+        return data;
     }
 }

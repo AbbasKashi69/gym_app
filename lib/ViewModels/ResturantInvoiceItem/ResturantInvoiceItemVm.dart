@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class ResturantInvoiceItemVm extends BaseViewModel {
 
@@ -21,59 +22,51 @@ String? nCreationDate;
 
     ResturantInvoiceItemVm(
     {
-        this.id,
-
-this.invoiceId,
-
-this.foodId,
-
-this.quantity,
-
-this.nQuantity,
-
-this.price,
-
-this.nPrice,
-
-this.term,
-
-this.nTerm,
-
-this.creationDate
-this.nCreationDate
+        this.id, 
+this.invoiceId, 
+this.foodId, 
+this.quantity, 
+this.nQuantity, 
+this.price, 
+this.nPrice, 
+this.term, 
+this.nTerm, 
+this.creationDate, 
+this.nCreationDate, 
 
     });
 
 
     ResturantInvoiceItemVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['invoiceId'];
+invoiceId = json['invoiceId'];
 
-json['foodId'];
+foodId = json['foodId'];
 
-super.intToDouble(json['quantity']);
+quantity = super.intToDouble(json['quantity']);
 
-json['nQuantity'];
+nQuantity = json['nQuantity'];
 
-super.intToDouble(json['price']);
+price = super.intToDouble(json['price']);
 
-json['nPrice'];
+nPrice = json['nPrice'];
 
-super.intToDouble(json['term']);
+term = super.intToDouble(json['term']);
 
-json['nTerm'];
+nTerm = json['nTerm'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -98,5 +91,8 @@ data['creationDate'] = this.creationDate;
 data['nCreationDate'] = this.nCreationDate;
 
 
+
+
+        return data;
     }
 }

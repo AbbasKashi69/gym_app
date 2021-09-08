@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class SubscriptionTypeInvoiceVm extends BaseViewModel {
 
@@ -26,79 +27,66 @@ String? nEndDate;
 
     SubscriptionTypeInvoiceVm(
     {
-        this.id,
-
-this.userId,
-
-this.adminId,
-
-this.subscriptionTypeTitle,
-
-this.subscriptionTypeDescription,
-
-this.creationDate,
-
-this.nCreationDate,
-
-this.totalPrice,
-
-this.nTotalPrice,
-
-this.totalTerm,
-
-this.nTotalTerm,
-
-this.subscriptionTypeColorCode,
-
-this.startDate,
-
-this.nStartDate,
-
-this.endDate
-this.nEndDate
+        this.id, 
+this.userId, 
+this.adminId, 
+this.subscriptionTypeTitle, 
+this.subscriptionTypeDescription, 
+this.creationDate, 
+this.nCreationDate, 
+this.totalPrice, 
+this.nTotalPrice, 
+this.totalTerm, 
+this.nTotalTerm, 
+this.subscriptionTypeColorCode, 
+this.startDate, 
+this.nStartDate, 
+this.endDate, 
+this.nEndDate, 
 
     });
 
 
     SubscriptionTypeInvoiceVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['userId'];
+userId = json['userId'];
 
-json['adminId'];
+adminId = json['adminId'];
 
-json['subscriptionTypeTitle'];
+subscriptionTypeTitle = json['subscriptionTypeTitle'];
 
-json['subscriptionTypeDescription'];
+subscriptionTypeDescription = json['subscriptionTypeDescription'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
-super.intToDouble(json['totalPrice']);
+totalPrice = super.intToDouble(json['totalPrice']);
 
-json['nTotalPrice'];
+nTotalPrice = json['nTotalPrice'];
 
-super.intToDouble(json['totalTerm']);
+totalTerm = super.intToDouble(json['totalTerm']);
 
-json['nTotalTerm'];
+nTotalTerm = json['nTotalTerm'];
 
-json['subscriptionTypeColorCode'];
+subscriptionTypeColorCode = json['subscriptionTypeColorCode'];
 
-json['startDate'];
+startDate = json['startDate'];
 
-json['nStartDate'];
+nStartDate = json['nStartDate'];
 
-json['endDate'];
+endDate = json['endDate'];
 
-json['nEndDate'];
+nEndDate = json['nEndDate'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -133,5 +121,8 @@ data['endDate'] = this.endDate;
 data['nEndDate'] = this.nEndDate;
 
 
+
+
+        return data;
     }
 }

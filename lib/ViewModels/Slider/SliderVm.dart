@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class SliderVm extends BaseViewModel {
 
@@ -23,67 +24,57 @@ String? nEndDate;
 
     SliderVm(
     {
-        this.id,
-
-this.adminId,
-
-this.title,
-
-this.description,
-
-this.link,
-
-this.pic,
-
-this.isActive,
-
-this.creationDate,
-
-this.nCreationDate,
-
-this.startDate,
-
-this.nStartDate,
-
-this.endDate
-this.nEndDate
+        this.id, 
+this.adminId, 
+this.title, 
+this.description, 
+this.link, 
+this.pic, 
+this.isActive, 
+this.creationDate, 
+this.nCreationDate, 
+this.startDate, 
+this.nStartDate, 
+this.endDate, 
+this.nEndDate, 
 
     });
 
 
     SliderVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['adminId'];
+adminId = json['adminId'];
 
-json['title'];
+title = json['title'];
 
-json['description'];
+description = json['description'];
 
-json['link'];
+link = json['link'];
 
-json['pic'];
+pic = json['pic'];
 
-json['isActive'];
+isActive = json['isActive'];
 
-json['creationDate'];
+creationDate = json['creationDate'];
 
-json['nCreationDate'];
+nCreationDate = json['nCreationDate'];
 
-json['startDate'];
+startDate = json['startDate'];
 
-json['nStartDate'];
+nStartDate = json['nStartDate'];
 
-json['endDate'];
+endDate = json['endDate'];
 
-json['nEndDate'];
+nEndDate = json['nEndDate'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -112,5 +103,8 @@ data['endDate'] = this.endDate;
 data['nEndDate'] = this.nEndDate;
 
 
+
+
+        return data;
     }
 }

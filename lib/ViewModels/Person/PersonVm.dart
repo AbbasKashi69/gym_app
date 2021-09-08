@@ -1,5 +1,6 @@
 
-import 'package:gym_app/ViewModels/BaseViewModel.dart';
+
+import '../BaseViewModel.dart';
 
 class PersonVm extends BaseViewModel {
 
@@ -24,71 +25,60 @@ String? nGenderType;
 
     PersonVm(
     {
-        this.id,
-
-this.firstName,
-
-this.lastName,
-
-this.birthDate,
-
-this.nBirthDate,
-
-this.nationalCode,
-
-this.postalCode,
-
-this.wardrobeNumber,
-
-this.registeryDate,
-
-this.nRegisteryDate,
-
-this.pic,
-
-this.telphone,
-
-this.genderType
-this.nGenderType
+        this.id, 
+this.firstName, 
+this.lastName, 
+this.birthDate, 
+this.nBirthDate, 
+this.nationalCode, 
+this.postalCode, 
+this.wardrobeNumber, 
+this.registeryDate, 
+this.nRegisteryDate, 
+this.pic, 
+this.telphone, 
+this.genderType, 
+this.nGenderType, 
 
     });
 
 
     PersonVm.fromJson(Map<String, dynamic> json) {
         
-        json['id'];
+        id = json['id'];
 
-json['firstName'];
+firstName = json['firstName'];
 
-json['lastName'];
+lastName = json['lastName'];
 
-json['birthDate'];
+birthDate = json['birthDate'];
 
-json['nBirthDate'];
+nBirthDate = json['nBirthDate'];
 
-json['nationalCode'];
+nationalCode = json['nationalCode'];
 
-json['postalCode'];
+postalCode = json['postalCode'];
 
-json['wardrobeNumber'];
+wardrobeNumber = json['wardrobeNumber'];
 
-json['registeryDate'];
+registeryDate = json['registeryDate'];
 
-json['nRegisteryDate'];
+nRegisteryDate = json['nRegisteryDate'];
 
-json['pic'];
+pic = json['pic'];
 
-json['telphone'];
+telphone = json['telphone'];
 
-json['genderType'];
+genderType = json['genderType'];
 
-json['nGenderType'];
+nGenderType = json['nGenderType'];
 
 
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
 
         data['id'] = this.id;
 
@@ -119,5 +109,8 @@ data['genderType'] = this.genderType;
 data['nGenderType'] = this.nGenderType;
 
 
+
+
+        return data;
     }
 }
