@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       locale: Locale("fa", "IR"),
-      initialRoute: CreateProgramBodyPage.routeName,
+      initialRoute: HomePage.routeName,
       onGenerateRoute: MyRouter.onGenerateRoute,
       theme: ThemeData(fontFamily: 'IRANSans'),
     );

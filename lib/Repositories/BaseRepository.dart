@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'BaseRepository/IBaseRepository.dart';
 
 class BaseRepository implements IBaseRepository {
-  static String baseUrl = "https://api.taakapp.com";
+  static String baseUrl = "https://api.taakgym.ir";
   // static String baseUrl = "http://192.168.1.5:45455";
   // static String baseUrl = "https://192.168.1.4:45456";
   // static String baseUrl = "10.0.2.2";
@@ -75,7 +75,7 @@ class BaseRepository implements IBaseRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> delete(String url, int id) async {
+  Future<Map<String, dynamic>?> delete(String url, int id) async {
     Uri newUrl = Uri.parse(baseUrl + url + '?id=' + id.toString());
     http.Response response = await http.delete(newUrl, headers: headersList);
 
@@ -92,7 +92,7 @@ class BaseRepository implements IBaseRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> edit(
+  Future<Map<String, dynamic>?> edit(
       String url, Map<String, dynamic> jsonVm) async {
     Uri newUrl = Uri.parse(baseUrl + url);
     http.Response response =
@@ -106,9 +106,6 @@ class BaseRepository implements IBaseRepository {
         var result = {'success': true, 'message': ''};
         return result;
       }
-    } else if (response.statusCode == 800 || response.statusCode == 801) {
-      var result = {'success': false, 'message': 'ابتدا احراز هویت شوید'};
-      return result;
     }
     return {'success': false, 'message': ''};
   }
@@ -163,9 +160,6 @@ class BaseRepository implements IBaseRepository {
         var result = {'success': true, 'message': ''};
         return result;
       }
-    } else if (response.statusCode == 800 || response.statusCode == 801) {
-      var result = {'success': false, 'message': 'ابتدا احراز هویت شوید'};
-      return result;
     }
     return null;
   }
@@ -187,9 +181,6 @@ class BaseRepository implements IBaseRepository {
         var result = {'success': true, 'message': ''};
         return result;
       }
-    } else if (response.statusCode == 800 || response.statusCode == 801) {
-      var result = {'success': false, 'message': 'ابتدا احراز هویت شوید'};
-      return result;
     }
     return null;
   }
