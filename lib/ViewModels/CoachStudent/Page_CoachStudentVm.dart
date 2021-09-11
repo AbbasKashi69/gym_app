@@ -1,26 +1,27 @@
-import 'package:gym_app/ViewModels/AnonymousPlanTypeLog/AnonymousPlanTypeLogVm.dart';
+// ignore: camel_case_types
 import 'package:gym_app/ViewModels/BaseViewModel.dart';
+import 'package:gym_app/ViewModels/CoachStudent/CoachStudentVm.dart';
 
 // ignore: camel_case_types
-class Page_AnonymousPlanTypeLogVm extends BaseViewModel {
-  List<AnonymousPlanTypeLogVm>? items;
+class Page_CoachStudentVm extends BaseViewModel {
+  List<CoachStudentVm>? items;
   int? totalPage;
   int? totalCount;
   bool? hasNext;
   int? currentPage;
 
-  Page_AnonymousPlanTypeLogVm(
+  Page_CoachStudentVm(
       {this.items,
       this.totalCount,
       this.totalPage,
       this.hasNext,
       this.currentPage});
 
-  Page_AnonymousPlanTypeLogVm.fromJson(Map<String, dynamic> json) {
+  Page_CoachStudentVm.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
       items = [];
       json['items'].forEach((v) {
-        items!.add(AnonymousPlanTypeLogVm.fromJson(v));
+        items!.add(CoachStudentVm.fromJson(v));
       });
     }
     totalCount = json['metaData']['totalItemCount'];

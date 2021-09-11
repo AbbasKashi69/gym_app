@@ -16,7 +16,6 @@ class WalletPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CustomAppBarWidget(4),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(

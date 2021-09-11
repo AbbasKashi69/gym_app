@@ -64,269 +64,266 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: CustomAppBarWidget(1),
         body: SingleChildScrollView(
-          child: SafeArea(
-              child: Container(
-            width: gw(1),
-            child: Column(
-              children: [
-                Container(
-                    height: gh(0.38),
-                    child: Column(
+      child: SafeArea(
+          child: Container(
+        width: gw(1),
+        child: Column(
+          children: [
+            Container(
+                height: gh(0.38),
+                child: Column(
+                  children: [
+                    Stack(
                       children: [
-                        Stack(
-                          children: [
-                            Container(
-                              height: gh(0.135),
-                              width: gw(1),
-                              decoration: BoxDecoration(
+                        Container(
+                          height: gh(0.135),
+                          width: gw(1),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(25),
+                                  bottomLeft: Radius.circular(25))),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: gw(1),
+                                child: ClipRRect(
                                   borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(25),
-                                      bottomLeft: Radius.circular(25))),
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: gw(1),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(25),
-                                          bottomRight: Radius.circular(25)),
-                                      child: Image.asset(
-                                        "assets/images/appBar.png",
-                                        fit: BoxFit.fitWidth,
-                                      ),
-                                    ),
+                                      bottomLeft: Radius.circular(25),
+                                      bottomRight: Radius.circular(25)),
+                                  child: Image.asset(
+                                    "assets/images/appBar.png",
+                                    fit: BoxFit.fitWidth,
                                   ),
-                                  Container(
-                                    width: gw(1),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(25),
-                                          bottomRight: Radius.circular(25)),
-                                      child: Image.asset(
-                                        "assets/images/background.png",
-                                        fit: BoxFit.fitWidth,
-                                      ),
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            bottom: gh(0.025), right: gw(0.05)),
-                                        child: Text(
-                                          "LOGO",
-                                          style: TextStyle(
-                                              color:
-                                                  Colors.white,
-                                              fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                            bottom: gh(0.025), left: gw(0.05)),
-                                        child: SvgPicture.asset(
-                                            "assets/icons/notification.svg",
-                                            height: 30,
-                                            width: 30,
-                                            color:
-                                                Colors.white.withOpacity(0.7)),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            Center(
-                              child: Container(
-                                height: gh(0.25),
-                                margin: EdgeInsets.only(top: gh(0.1)),
-                                width: gw(0.9),
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        Colors.white,
-                                        parseColor('#ADE8F4'),
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  textDirection: TextDirection.rtl,
-                                  children: [
-                                    Expanded(
-                                        child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 10),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SvgPicture.asset(
-                                              'assets/icons/card-icon.svg'),
-                                          Text("اشتراک کنونی :",
-                                              style: textStyleSubscription),
-                                          Text("دو ماهه",
-                                              style: textStyleSubscription2),
-                                        ],
-                                      ),
-                                    )),
-                                    Expanded(
-                                        child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          randomNumber = random.nextInt(100);
-                                        });
-                                      },
-                                      child: CircularPercentIndicator(
-                                        startAngle: 0,
-                                        backgroundWidth: 12.0,
-                                        backgroundColor: Colors.white,
-                                        radius: 95.0,
-                                        animateFromLastPercent: true,
-                                        lineWidth: 12.0,
-                                        animation: true,
-                                        percent: (randomNumber / 100),
-                                        center: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              randomNumber.toString(),
-                                              style: textStyleSubscription,
-                                            ),
-                                            Text(
-                                              "روز",
-                                              style: textStyleSubscription,
-                                            ),
-                                          ],
-                                        ),
-                                        circularStrokeCap:
-                                            CircularStrokeCap.round,
-                                        progressColor: parseColor("#48CAE4"),
-                                      ),
-                                    )),
-                                  ],
                                 ),
                               ),
-                            )
-                          ],
-                        ),
-                      ],
-                    )),
-                Material(
-                  color: parseColor('#0096C7'),
-                  borderRadius: BorderRadius.circular(20),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(20),
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => BuySubscription(),));
-                    },
-                    child: Container(
-                      width: gw(0.9),
-                      height: gh(0.23),
-                      decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            flex: 58,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: parseColor('#21BEDD'),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black.withOpacity(0.16)),
-                                    BoxShadow(
-                                      color: CupertinoColors.black
-                                          .withOpacity(0.16),
-                                      spreadRadius: -12.0,
-                                      blurRadius: 12.0,
-                                    ),
-                                  ],
+                              Container(
+                                width: gw(1),
+                                child: ClipRRect(
                                   borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
-                                      topLeft: Radius.circular(20))),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
-                                child: Row(
-                                  textDirection: TextDirection.rtl,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
+                                      bottomLeft: Radius.circular(25),
+                                      bottomRight: Radius.circular(25)),
+                                  child: Image.asset(
+                                    "assets/images/background.png",
+                                    fit: BoxFit.fitWidth,
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: gh(0.025), right: gw(0.05)),
+                                    child: Text(
+                                      "LOGO",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: gh(0.025), left: gw(0.05)),
+                                    child: SvgPicture.asset(
+                                        "assets/icons/notification.svg",
+                                        height: 30,
+                                        width: 30,
+                                        color: Colors.white.withOpacity(0.7)),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Center(
+                          child: Container(
+                            height: gh(0.25),
+                            margin: EdgeInsets.only(top: gh(0.1)),
+                            width: gw(0.9),
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.white,
+                                    parseColor('#ADE8F4'),
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              textDirection: TextDirection.rtl,
+                              children: [
+                                Expanded(
+                                    child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SvgPicture.asset(
+                                          'assets/icons/card-icon.svg'),
+                                      Text("اشتراک کنونی :",
+                                          style: textStyleSubscription),
+                                      Text("دو ماهه",
+                                          style: textStyleSubscription2),
+                                    ],
+                                  ),
+                                )),
+                                Expanded(
+                                    child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      randomNumber = random.nextInt(100);
+                                    });
+                                  },
+                                  child: CircularPercentIndicator(
+                                    startAngle: 0,
+                                    backgroundWidth: 12.0,
+                                    backgroundColor: Colors.white,
+                                    radius: 95.0,
+                                    animateFromLastPercent: true,
+                                    lineWidth: 12.0,
+                                    animation: true,
+                                    percent: (randomNumber / 100),
+                                    center: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        SvgPicture.asset(
-                                            'assets/icons/wallet-icon.svg'),
                                         Text(
-                                          "اعتبار شما : ",
-                                          textDirection: TextDirection.rtl,
-                                          style: textStyleBuySubscription2,
-                                        )
+                                          randomNumber.toString(),
+                                          style: textStyleSubscription,
+                                        ),
+                                        Text(
+                                          "روز",
+                                          style: textStyleSubscription,
+                                        ),
                                       ],
                                     ),
+                                    circularStrokeCap: CircularStrokeCap.round,
+                                    progressColor: parseColor("#48CAE4"),
+                                  ),
+                                )),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                )),
+            Material(
+              color: parseColor('#0096C7'),
+              borderRadius: BorderRadius.circular(20),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(20),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BuySubscription(),
+                      ));
+                },
+                child: Container(
+                  width: gw(0.9),
+                  height: gh(0.23),
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 58,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: parseColor('#21BEDD'),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(0.16)),
+                                BoxShadow(
+                                  color:
+                                      CupertinoColors.black.withOpacity(0.16),
+                                  spreadRadius: -12.0,
+                                  blurRadius: 12.0,
+                                ),
+                              ],
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  topLeft: Radius.circular(20))),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Row(
+                              textDirection: TextDirection.rtl,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                        'assets/icons/wallet-icon.svg'),
                                     Text(
-                                      "1,300,000 تومان",
+                                      "اعتبار شما : ",
                                       textDirection: TextDirection.rtl,
                                       style: textStyleBuySubscription2,
                                     )
                                   ],
                                 ),
-                              ),
+                                Text(
+                                  "1,300,000 تومان",
+                                  textDirection: TextDirection.rtl,
+                                  style: textStyleBuySubscription2,
+                                )
+                              ],
                             ),
                           ),
-                          Expanded(
-                            flex: 42,
-                            child: Center(
-                              child: Text(
-                                "خرید اشتراک >",
-                                style: textStyleBuySubscription,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      Expanded(
+                        flex: 42,
+                        child: Center(
+                          child: Text(
+                            "خرید اشتراک >",
+                            style: textStyleBuySubscription,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: gh(0.05)),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        "تاریخچه اشتراک ها",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
-                      )),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(20),
-                  child: ListView.builder(
-                    itemCount: listItems.length,
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return item(listItems[index]);
-                    },
-                  ),
-                )
-              ],
+              ),
             ),
-          )),
-        ));
+            SizedBox(height: gh(0.05)),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    "تاریخچه اشتراک ها",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  )),
+            ),
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: ListView.builder(
+                itemCount: listItems.length,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return item(listItems[index]);
+                },
+              ),
+            )
+          ],
+        ),
+      )),
+    ));
   }
 
   Widget item(data) {

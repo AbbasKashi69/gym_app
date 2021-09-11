@@ -1,6 +1,8 @@
 import 'package:gym_app/ViewModels/ArticleComment/ArticleCommentVm.dart';
+import 'package:gym_app/ViewModels/BaseViewModel.dart';
 
-class Page_ArticleCommentVm {
+// ignore: camel_case_types
+class Page_ArticleCommentVm extends BaseViewModel {
   List<ArticleCommentVm>? items;
   int? totalPage;
   int? totalCount;

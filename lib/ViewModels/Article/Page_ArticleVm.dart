@@ -1,7 +1,9 @@
 import 'package:gym_app/ViewModels/AnonymousPlanTypeLog/AnonymousPlanTypeLogVm.dart';
 import 'package:gym_app/ViewModels/Article/ArticleVm.dart';
+import 'package:gym_app/ViewModels/BaseViewModel.dart';
 
-class Page_ArticleVm {
+// ignore: camel_case_types
+class Page_ArticleVm extends BaseViewModel {
   List<ArticleVm>? items;
   int? totalPage;
   int? totalCount;

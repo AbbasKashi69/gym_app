@@ -1,26 +1,26 @@
-import 'package:gym_app/ViewModels/AnonymousPlanTypeLog/AnonymousPlanTypeLogVm.dart';
 import 'package:gym_app/ViewModels/BaseViewModel.dart';
+import 'package:gym_app/ViewModels/Transaction/TransactionVm.dart';
 
 // ignore: camel_case_types
-class Page_AnonymousPlanTypeLogVm extends BaseViewModel {
-  List<AnonymousPlanTypeLogVm>? items;
+class Page_TransactionVm extends BaseViewModel {
+  List<TransactionVm>? items;
   int? totalPage;
   int? totalCount;
   bool? hasNext;
   int? currentPage;
 
-  Page_AnonymousPlanTypeLogVm(
+  Page_TransactionVm(
       {this.items,
       this.totalCount,
       this.totalPage,
       this.hasNext,
       this.currentPage});
 
-  Page_AnonymousPlanTypeLogVm.fromJson(Map<String, dynamic> json) {
+  Page_TransactionVm.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
       items = [];
       json['items'].forEach((v) {
-        items!.add(AnonymousPlanTypeLogVm.fromJson(v));
+        items!.add(TransactionVm.fromJson(v));
       });
     }
     totalCount = json['metaData']['totalItemCount'];

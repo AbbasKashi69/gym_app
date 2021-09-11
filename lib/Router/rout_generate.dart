@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_app/blocs/BottomNav/bloc/bottom_nav_bloc.dart';
+import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 import 'package:gym_app/screen/DetailElan/detail_elan_page.dart';
@@ -30,6 +33,13 @@ import 'package:gym_app/screen/Wallet/wallet_page.dart';
 class MyRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
+      case MyHomePage.routeName:
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                  create: (context) =>
+                      BottomNavBloc()..add(BottomNavLoadingEvent(index: 0)),
+                  child: MyHomePage(),
+                ));
       case ScanPage.routeName:
         return MaterialPageRoute(builder: (context) => ScanPage());
       case ListApprenticePage.routeName:

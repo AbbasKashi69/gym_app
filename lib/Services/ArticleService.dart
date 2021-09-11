@@ -61,10 +61,10 @@ class ArticleService {
     return null;
   }
 
-  Future<ResultObject?> findById(int id) async {
+  Future<ArticleVm?> findById(int id) async {
     var response = await repository!.get(url_findById + '?id=$id');
     if (response != null) {
-      ResultObject result = ResultObject.fromJson(response);
+      ArticleVm result = ArticleVm.fromJson(response);
       return result;
     }
     return null;
