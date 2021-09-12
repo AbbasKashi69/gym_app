@@ -8,6 +8,7 @@ const textStyle = TextStyle(
   fontWeight: FontWeight.w400,
   fontFamily: 'IRANSans',
 );
+
 const double padding = 10;
 const kColorBackGroundQrCode = Color(0xffF2F2F2);
 const kColorBackGround = Color(0xffffffff);
@@ -43,6 +44,7 @@ var textStyleBuySubscription2 = TextStyle(
     fontWeight: FontWeight.w500,
     fontFamily: 'IRANSans');
 enum FontSize { title, subTitle, normal }
+
 double kFontSizeText(Size sizeScreen, FontSize fontSize) {
   switch (fontSize) {
     case FontSize.title:
