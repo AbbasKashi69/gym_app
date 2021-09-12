@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gym_app/ViewModels/PlanTypeLog/PlanTypeLogVm.dart';
-import 'package:gym_app/blocs/BottomNav/bloc/PlanType/bloc/get_plans_by_sort_bloc.dart';
+import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/components/no_data.dart';
@@ -23,11 +23,20 @@ class _ProgramListPageState extends State<ProgramListPage> {
   late bool isAlign;
   late ScrollController _exerciseScrollController;
   late ScrollController _dietScrollController;
+  late TextEditingController searchTextEditingController;
+  int? coachId;
+  int? studentId;
+  int? planTypeId;
+  String? planStatusList;
+  String? searchText;
+  bool? setCoachId;
+  bool? setStudentId;
   @override
   void initState() {
     isAlign = true;
     _exerciseScrollController = ScrollController()..addListener(_listener);
     _dietScrollController = ScrollController()..addListener(_listenerDiet);
+    searchTextEditingController = TextEditingController();
     super.initState();
   }
 
@@ -90,10 +99,18 @@ class _ProgramListPageState extends State<ProgramListPage> {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
+                                        planTypeId = 1;
                                         BlocProvider.of<GetPlansBySortBloc>(
                                                 context)
                                             .add(GetPlansBySortLoadingEvent(
-                                                planType: 1));
+                                          planType: planTypeId,
+                                          coachId: coachId,
+                                          studentId: studentId,
+                                          planStatusList: planStatusList,
+                                          searchText: searchText,
+                                          setCoachId: setCoachId,
+                                          setStudentId: setStudentId,
+                                        ));
                                         setState(() {
                                           isAlign = true;
                                         });
@@ -112,10 +129,17 @@ class _ProgramListPageState extends State<ProgramListPage> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
+                                        planTypeId = 2;
                                         BlocProvider.of<GetPlansBySortBloc>(
                                                 context)
                                             .add(GetPlansBySortLoadingEvent(
-                                                planType: 2));
+                                                planType: planTypeId,
+                                                coachId: coachId,
+                                                studentId: studentId,
+                                                planStatusList: planStatusList,
+                                                searchText: searchText,
+                                                setCoachId: setCoachId,
+                                                setStudentId: setStudentId));
                                         setState(() {
                                           isAlign = false;
                                         });
@@ -166,9 +190,26 @@ class _ProgramListPageState extends State<ProgramListPage> {
                         ],
                       )),
                   InkWell(
-                    onTap: () async {
-                      await FilterScreen().filter(context, sizeScreen);
-                    },
+                    onTap: () => showModalBottomSheet(
+                        isDismissible: true,
+                        elevation: 20,
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (ctx) => BlocProvider.value(
+                              value:
+                                  BlocProvider.of<GetPlansBySortBloc>(context),
+                              child: FilterScreen(
+                                sizeScreen: sizeScreen,
+                                searchTextEditingController:
+                                    searchTextEditingController,
+                                planTypeId: planTypeId,
+                                coachId: coachId,
+                                studentId: studentId,
+                                planStatusList: planStatusList,
+                                setCoachId: setCoachId,
+                                setStudentId: setStudentId,
+                              ),
+                            )),
                     radius: 20,
                     child: Container(
                       margin: EdgeInsets.only(right: padding),
@@ -318,6 +359,16 @@ class ItemDietary extends StatelessWidget {
                             // radius: sizeScreen.width > 550 ? 25 : 15,
                             // backgroundImage: NetworkImage(planTypeLogVm.userPic),
                             // ),
+                            SizedBox(
+                              width: padding,
+                            ),
+                            Text(
+                              planTypeLogVm.userFullName ?? "",
+                              style: textStyle.copyWith(
+                                  fontSize: kFontSizeText(
+                                      sizeScreen, FontSize.subTitle),
+                                  fontWeight: FontWeight.w500),
+                            ),
                             // Container(
                             //   child: Stack(
                             //       children: List.generate(
