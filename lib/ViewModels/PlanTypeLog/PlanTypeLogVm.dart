@@ -21,6 +21,7 @@ class PlanTypeLogvm extends BaseViewModel {
   String? nTotalPrice;
   double? totalTerm;
   String? nTotalTerm;
+  String? userPic;
   int? planType;
   String? nPlanType;
 
@@ -45,6 +46,7 @@ class PlanTypeLogvm extends BaseViewModel {
       this.nTotalPrice,
       this.totalTerm,
       this.nTotalTerm,
+      this.userPic,
       this.planType,
       this.nPlanType});
 
@@ -71,6 +73,7 @@ class PlanTypeLogvm extends BaseViewModel {
     nTotalTerm = json['nTotalTerm'];
     planType = json['planType'];
     nPlanType = json['nPlanType'];
+    userPic = json['userPic'];
   }
 
   Map<String, dynamic> toJson() {

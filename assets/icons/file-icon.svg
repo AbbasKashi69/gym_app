@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="radial-gradient" cx="0.036" cy="0.22" r="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#00b4d8"/>
+      <stop offset="1" stop-color="#48cae4"/>
+    </radialGradient>
+  </defs>
+  <g id="Group_2023" data-name="Group 2023" transform="translate(0.082 0.398)">
+    <circle id="Ellipse_165" data-name="Ellipse 165" cx="32" cy="32" r="32" transform="translate(-0.082 -0.398)" fill="url(#radial-gradient)"/>
+    <g id="vuesax_bold_document" data-name="vuesax/bold/document" transform="translate(16.453 15.897)">
+      <g id="document" transform="translate(0 0)">
+        <path id="Vector" d="M23.682,10.775h-3.8a5.665,5.665,0,0,1-5.657-5.657v-3.8A1.32,1.32,0,0,0,12.907,0H7.328A6.943,6.943,0,0,0,0,7.328V18.985a6.943,6.943,0,0,0,7.328,7.328H17.669A6.943,6.943,0,0,0,25,18.985V12.091A1.32,1.32,0,0,0,23.682,10.775Z" transform="translate(3.289 2.631)" fill="#fff"/>
+        <path id="Vector-2" data-name="Vector" d="M1.474.256A.86.86,0,0,0,0,.835V5.427A3.587,3.587,0,0,0,3.618,8.94c1.25.013,2.987.013,4.473.013A.83.83,0,0,0,8.71,7.545C6.815,5.637,3.421,2.2,1.474.256Z" transform="translate(19.314 2.651)" fill="#fff"/>
+        <path id="Vector-3" data-name="Vector" d="M0,0H31.576V31.576H0Z" transform="translate(31.576 31.576) rotate(180)" fill="none" opacity="0"/>
+      </g>
+    </g>
+  </g>
+</svg>

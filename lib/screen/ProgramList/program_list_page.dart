@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gym_app/ViewModels/PlanTypeLog/PlanTypeLogVm.dart';
+import 'package:gym_app/blocs/BottomNav/bloc/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/components/constant.dart';
+import 'package:gym_app/components/myWaiting.dart';
+import 'package:gym_app/components/no_data.dart';
 import 'package:gym_app/extensions/ext.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
-import 'package:gym_app/screen/ProgramList/components/all_apprentice_scree.dart';
 import 'package:gym_app/screen/ProgramList/components/filter_screen.dart';
 import 'package:gym_app/screen/observeProgramBody/observe_program_body_page.dart';
 
@@ -16,7 +20,33 @@ class ProgramListPage extends StatefulWidget {
 }
 
 class _ProgramListPageState extends State<ProgramListPage> {
-  bool isAlign = true;
+  late bool isAlign;
+  late ScrollController _exerciseScrollController;
+  late ScrollController _dietScrollController;
+  @override
+  void initState() {
+    isAlign = true;
+    _exerciseScrollController = ScrollController()..addListener(_listener);
+    _dietScrollController = ScrollController()..addListener(_listenerDiet);
+    super.initState();
+  }
+
+  _listener() {
+    if (_exerciseScrollController.position.pixels ==
+        _exerciseScrollController.position.maxScrollExtent) {
+      BlocProvider.of<GetPlansBySortBloc>(context)
+        ..add(GetPlansBySortLoadedEvent(planType: 1));
+    }
+  }
+
+  _listenerDiet() {
+    if (_dietScrollController.position.pixels ==
+        _dietScrollController.position.maxScrollExtent) {
+      BlocProvider.of<GetPlansBySortBloc>(context)
+        ..add(GetPlansBySortLoadedEvent(planType: 2));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
@@ -60,6 +90,10 @@ class _ProgramListPageState extends State<ProgramListPage> {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
+                                        BlocProvider.of<GetPlansBySortBloc>(
+                                                context)
+                                            .add(GetPlansBySortLoadingEvent(
+                                                planType: 1));
                                         setState(() {
                                           isAlign = true;
                                         });
@@ -78,6 +112,10 @@ class _ProgramListPageState extends State<ProgramListPage> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
+                                        BlocProvider.of<GetPlansBySortBloc>(
+                                                context)
+                                            .add(GetPlansBySortLoadingEvent(
+                                                planType: 2));
                                         setState(() {
                                           isAlign = false;
                                         });
@@ -151,15 +189,48 @@ class _ProgramListPageState extends State<ProgramListPage> {
                 ],
               ),
             ),
-            Expanded(
-                child: ListView.builder(
-              padding: EdgeInsets.only(bottom: padding),
-              itemBuilder: (context, index) => ItemDietary(
-                sizeScreen: sizeScreen,
-                data: listItem[index],
-              ),
-              itemCount: listItem.length,
-            )),
+            BlocBuilder<GetPlansBySortBloc, GetPlansBySortState>(
+              builder: (context, state) {
+                if (state is GetPlansBySortLoadingState)
+                  return CircularProgressIndicator();
+                else if (state is GetPlansBySortLoadedState) {
+                  if (state.page_planTypeLogVm != null &&
+                      state.page_planTypeLogVm!.items != null &&
+                      state.page_planTypeLogVm!.items!.isNotEmpty) {
+                    return Expanded(
+                        child: ListView.builder(
+                      controller: isAlign
+                          ? _exerciseScrollController
+                          : _dietScrollController,
+                      padding: EdgeInsets.only(bottom: padding),
+                      itemBuilder: (context, index) {
+                        if (index < state.page_planTypeLogVm!.items!.length)
+                          return ItemDietary(
+                              sizeScreen: sizeScreen,
+                              planTypeLogVm:
+                                  state.page_planTypeLogVm!.items![index]);
+                        else
+                          return MyWaiting();
+                      },
+                      itemCount: state.page_planTypeLogVm!.hasNext!
+                          ? state.page_planTypeLogVm!.items!.length + 1
+                          : state.page_planTypeLogVm!.items!.length,
+                    ));
+                  } else
+                    return NoData();
+                } else
+                  return Container();
+              },
+            ),
+            // Expanded(
+            //     child: ListView.builder(
+            //   padding: EdgeInsets.only(bottom: padding),
+            //   itemBuilder: (context, index) => ItemDietary(
+            //     sizeScreen: sizeScreen,
+            //     data: listItem[index],
+            //   ),
+            //   itemCount: listItem.length,
+            // )),
             // ItemDietary(sizeScreen: sizeScreen,data: ,)
           ],
         ),
@@ -169,11 +240,12 @@ class _ProgramListPageState extends State<ProgramListPage> {
 }
 
 class ItemDietary extends StatelessWidget {
-  const ItemDietary({Key? key, required this.sizeScreen, required this.data})
+  const ItemDietary(
+      {Key? key, required this.sizeScreen, required this.planTypeLogVm})
       : super(key: key);
 
   final Size sizeScreen;
-  final dynamic data;
+  final PlanTypeLogvm planTypeLogVm;
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +277,7 @@ class ItemDietary extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'برنامه غذایی ماه ${data['month']}',
+                              planTypeLogVm.planTypeTitle ?? "",
                               style: textStyle.copyWith(
                                   fontSize: kFontSizeText(
                                       sizeScreen, FontSize.subTitle),
@@ -233,7 +305,7 @@ class ItemDietary extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              'شاگردان :',
+                              'شاگرد :',
                               style: textStyle.copyWith(
                                   fontSize: kFontSizeText(
                                       sizeScreen, FontSize.subTitle),
@@ -242,29 +314,33 @@ class ItemDietary extends StatelessWidget {
                             SizedBox(
                               width: padding,
                             ),
-                            Container(
-                              child: Stack(
-                                  children: List.generate(
-                                      data['apprentice'].length > 3
-                                          ? 3
-                                          : data['apprentice'].length,
-                                      (index) => ItemRequestInStack(
-                                          index: index + 1,
-                                          sizeScreen: sizeScreen,
-                                          image: data['apprentice'][index]))),
-                            ),
-                            Spacer(),
-                            InkWell(
-                              onTap: () async {
-                                await AllApprenticeScreen()
-                                    .allApprentice(context, sizeScreen, data);
-                              },
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                color: Color(0xff00B4D8),
-                                size: kFontSizeText(sizeScreen, FontSize.title),
-                              ),
-                            )
+                            //                     CircleAvatar(
+                            // radius: sizeScreen.width > 550 ? 25 : 15,
+                            // backgroundImage: NetworkImage(planTypeLogVm.userPic),
+                            // ),
+                            // Container(
+                            //   child: Stack(
+                            //       children: List.generate(
+                            //           data['apprentice'].length > 3
+                            //               ? 3
+                            //               : data['apprentice'].length,
+                            //           (index) => ItemRequestInStack(
+                            //               index: index + 1,
+                            //               sizeScreen: sizeScreen,
+                            //               image: data['apprentice'][index]))),
+                            // ),
+                            // Spacer(),
+                            // InkWell(
+                            //   onTap: () async {
+                            //     await AllApprenticeScreen()
+                            //         .allApprentice(context, sizeScreen, data);
+                            //   },
+                            //   child: Icon(
+                            //     Icons.arrow_forward_ios,
+                            //     color: Color(0xff00B4D8),
+                            //     size: kFontSizeText(sizeScreen, FontSize.title),
+                            //   ),
+                            // )
                           ],
                         ),
                       ),
@@ -282,26 +358,26 @@ class ItemDietary extends StatelessWidget {
                                         fontWeight: FontWeight.w500),
                                     children: [
                                   TextSpan(
-                                      text: data['typeProgram'],
+                                      text: planTypeLogVm.nPlanType ?? "",
                                       style: textStyle.copyWith(
                                           fontSize: kFontSizeText(
                                               sizeScreen, FontSize.subTitle),
                                           fontWeight: FontWeight.w400))
                                 ])),
                             Text(
-                              data['statusTypeProgram'],
+                              planTypeLogVm.nPlanStatus ?? "",
                               style: textStyle.copyWith(
                                   fontSize: kFontSizeText(
                                       sizeScreen, FontSize.subTitle),
-                                  color: data['statusTypeProgram'] ==
+                                  color: planTypeLogVm.nPlanStatus ==
                                           'شروع نشده'
                                       ? Color(0xffFFAA00)
-                                      : data['statusTypeProgram'] == 'تمام شده'
-                                          ? Color(0xffFF003D)
-                                          : data['statusTypeProgram'] ==
+                                      : planTypeLogVm.nPlanStatus == 'تمام شده'
+                                          ? Color(0xff01D43F)
+                                          : planTypeLogVm.nPlanStatus ==
                                                   'در حال انجام'
                                               ? Color(0xff48CAE4)
-                                              : Colors.black),
+                                              : Color(0xffFF003D)),
                             )
                           ],
                         ),
@@ -316,7 +392,8 @@ class ItemDietary extends StatelessWidget {
                                     fontSize: kFontSizeText(
                                         sizeScreen, FontSize.subTitle),
                                     fontWeight: FontWeight.w500)),
-                            Text('از ${data['start']} تا ${data['finish']}',
+                            Text(
+                                '${planTypeLogVm.nStartDate} تا ${planTypeLogVm.nEndDate}',
                                 style: textStyle.copyWith(
                                     fontSize: kFontSizeText(
                                         sizeScreen, FontSize.subTitle),
@@ -338,7 +415,8 @@ class ItemDietary extends StatelessWidget {
                                         fontWeight: FontWeight.w500),
                                     children: [
                                   TextSpan(
-                                      text: '${data['price']} تومان',
+                                      text:
+                                          '${planTypeLogVm.nTotalPrice} تومان',
                                       style: textStyle.copyWith(
                                           fontSize: kFontSizeText(
                                               sizeScreen, FontSize.subTitle),
@@ -428,50 +506,3 @@ class ItemRequestInStack extends StatelessWidget {
     );
   }
 }
-
-List listItem = [
-  {
-    'month': 'فروردین',
-    'apprentice': [
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-    ],
-    'typeProgram': 'تمرینی',
-    'start': '12/05/1398',
-    'finish': '08/09/1399',
-    'price': '320,000',
-    'statusTypeProgram': 'شروع نشده'
-  },
-  {
-    'month': 'شهریور',
-    'apprentice': [
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-    ],
-    'typeProgram': 'مسابقه ای',
-    'start': '19/08/1397',
-    'finish': '17/06/1399',
-    'price': '128,000',
-    'statusTypeProgram': 'تمام شده'
-  },
-  {
-    'month': 'آبان',
-    'apprentice': [
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU',
-    ],
-    'typeProgram': 'تمرینی',
-    'start': '05/05/1395',
-    'finish': '25/01/1396',
-    'price': '450,000',
-    'statusTypeProgram': 'در حال انجام'
-  },
-];

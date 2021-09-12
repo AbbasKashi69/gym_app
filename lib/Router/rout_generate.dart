@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_app/blocs/BottomNav/bloc/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/blocs/BottomNav/bloc/bottom_nav_bloc.dart';
 import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
@@ -21,6 +22,7 @@ import 'package:gym_app/screen/Scan/scan_page.dart';
 import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
 import 'package:gym_app/screen/observeProgramBody/observe_program_body_page.dart';
 import 'package:gym_app/screen/observeProgramOtherSports/observe_other_sports_page.dart';
+import 'package:gym_app/screen/chat/chat_list_page.dart';
 import 'package:gym_app/screen/list_barnameha/list_barnameha.dart';
 import 'package:gym_app/screen/profile_page/profile_page.dart';
 import 'package:gym_app/screen/settings/setting_page.dart';
@@ -69,7 +71,12 @@ class MyRouter {
       case CreateMovementPage.routeName:
         return MaterialPageRoute(builder: (context) => CreateMovementPage());
       case ProgramListPage.routeName:
-        return MaterialPageRoute(builder: (context) => ProgramListPage());
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                  create: (context) => GetPlansBySortBloc()
+                    ..add(GetPlansBySortLoadingEvent(planType: 1)),
+                  child: ProgramListPage(),
+                ));
       case CreateProgramBodySettingPage.routeName:
         return MaterialPageRoute(
             builder: (context) => CreateProgramBodySettingPage());
@@ -93,6 +100,8 @@ class MyRouter {
         return MaterialPageRoute(builder: (context) => DetailElanPage());
 
       //****** new */
+      case ChatListPage.routeName:
+        return MaterialPageRoute(builder: (context) => ChatListPage());
       default:
         return MaterialPageRoute(builder: (context) => ScanPage());
     }

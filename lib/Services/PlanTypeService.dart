@@ -7,17 +7,16 @@ class PlanTypeService extends BaseViewModel {
   PlanTypeService() {
     repository = BaseRepository();
   }
-  static const String url_getPlansBySort = 'api/TypePlan/GetPlansBySort';
-
+  static const String url_getPlansBySort = '/api/PlanType/GetPlansBySort';
   Future<Page_PlanTypeLogVm?> getPlansBySort(
-      int coachId,
-      int studentId,
-      int planType,
-      String planStatusList,
-      String searchText,
-      bool setCoachId,
-      bool setStudentId,
-      [int pageNumber = 1]) async {
+      [int? coachId,
+      int? studentId,
+      int? planType,
+      String? planStatusList,
+      String? searchText,
+      bool? setCoachId,
+      bool? setStudentId,
+      int pageNumber = 1]) async {
     var response = await repository!.get(url_getPlansBySort +
         '?coachId=$coachId&studentId=$studentId&planStatusList=$planStatusList&pageNumber=$pageNumber&searchText=$searchText&planType=$planType&setCoachId=$setCoachId&setStudentId=$setStudentId');
     if (response != null) {

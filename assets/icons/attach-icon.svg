@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28.028" height="28.028" viewBox="0 0 28.028 28.028">
+  <g id="vuesax_linear_paperclip" data-name="vuesax/linear/paperclip" transform="translate(0)">
+    <g id="paperclip" transform="translate(0)">
+      <path id="Vector" d="M8.175,10.511V14.6a4.087,4.087,0,1,0,8.175,0V8.175A8.175,8.175,0,1,0,0,8.175v7.007a7.013,7.013,0,0,0,7.007,7.007" transform="translate(5.804 3.504)" fill="none" stroke="#292d32" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+      <path id="Vector-2" data-name="Vector" d="M0,0H28.028V28.028H0Z" transform="translate(28.028 28.028) rotate(180)" fill="none" opacity="0"/>
+    </g>
+  </g>
+</svg>
