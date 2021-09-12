@@ -40,6 +40,10 @@ extension DynamicSize on State {
   }
 }
 
+extension E on String {
+  String lastChars(int n) => substring(length - n);
+}
+
 extension DynamicSizeStateless on StatelessWidget {
   double gw(double size, BuildContext context) {
     return MediaQuery.of(context).size.width * size;
@@ -52,8 +56,4 @@ extension DynamicSizeStateless on StatelessWidget {
 
 extension Ex on double {
   double toPrecision(int n) => double.parse(toStringAsFixed(n));
-}
-
-extension E on String {
-  String lastChars(int n) => substring(length - n);
 }
