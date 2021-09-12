@@ -2,6 +2,9 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:gym_app/%20extensions/ext.dart';
+import 'package:gym_app/components/constant.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class TurnoverPage extends StatefulWidget {
   const TurnoverPage({Key? key}) : super(key: key);
@@ -22,10 +25,10 @@ class _TurnoverPageState extends State<TurnoverPage> {
   }
 
   void initialChecked() {
-    _listChecked.add(false);
-    _listChecked.add(false);
-    _listChecked.add(false);
     _listChecked.add(true);
+    _listChecked.add(false);
+    _listChecked.add(false);
+    _listChecked.add(false);
     _listChecked.add(false);
   }
 
@@ -232,18 +235,19 @@ class _TurnoverPageState extends State<TurnoverPage> {
               ),
               DottedBorder(
                 borderType: BorderType.RRect,
+                color: parseColor('#CCCCCC'),
+                dashPattern: [5],
                 radius: Radius.circular(12),
-                padding: EdgeInsets.all(6),
-                color: Colors.grey,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  child: Container(
-                    height: Get.height  * 0.15,
-                    width: Get.width,
-
-                  ),
-                ),
-              )
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    child: Container(
+                      height: 100,
+                      decoration: BoxDecoration(
+                          border: Border(
+                              right:
+                              BorderSide(color: parseColor('#00B4D8'), width: 3))),
+                    )),
+              ),
             ],
           ),
         ),

@@ -17,7 +17,6 @@ dependencies:
   percent_indicator: ^3.0.1
   dotted_border: ^2.0.0+1
   persian_number_utility: ^0.3.4
-  sms: any
   http: any
   flutter_bloc: any
   url_launcher: any
