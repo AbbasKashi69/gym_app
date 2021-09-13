@@ -54,8 +54,8 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void initState() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.bottom]);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+    //     overlays: [SystemUiOverlay.bottom]);
     super.initState();
   }
 
@@ -317,9 +317,11 @@ class _ChatPageState extends State<ChatPage> {
                     ],
                   );
                 },
-                emptyState: Center(child: Text("هنوز پیامی ثبت نشده است ...", style: TextStyle(
-                  color: parseColor('#707070')
-                ),)),
+                emptyState: Center(
+                    child: Text(
+                  "هنوز پیامی ثبت نشده است ...",
+                  style: TextStyle(color: parseColor('#707070')),
+                )),
               ),
             ),
             AnimatedSizeAndFade(

@@ -1,101 +1,139 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 
-class FilterScreen {
-  Future<void> filter(BuildContext context, Size sizeScreen) async {
-    int itemSelected = 0;
-    showModalBottomSheet(
-      isDismissible: true,
-      elevation: 20,
-      backgroundColor: Colors.transparent,
-      context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (BuildContext context, setState) {
-          return SingleChildScrollView(
-            child: Container(
-              decoration: BoxDecoration(
-                  color: kColorBackGround,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10))),
-              child: Container(
-                padding:
-                    EdgeInsets.symmetric(horizontal: sizeScreen.width * 0.1),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: padding,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Color(0xffE8E8E8),
-                          borderRadius: BorderRadius.circular(10)),
-                      width: sizeScreen.width * 0.1,
-                      height: 5,
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: padding),
-                      child: Center(
-                        child: Text(
-                          'جستجوی فیلتر',
-                          style: textStyle.copyWith(
-                              fontSize:
-                                  kFontSizeText(sizeScreen, FontSize.title),
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: padding),
-                      child: TextField(
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: padding / 2, horizontal: padding),
-                              hintText: 'جستجوی شاگردان',
-                              hintStyle: textStyle.copyWith(
-                                  color: Color(0xff707070), fontSize: 12),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(14),
-                                  borderSide:
-                                      BorderSide(color: Color(0xff707070))))),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: padding),
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'وضعیت',
-                        style: textStyle.copyWith(
-                            fontSize:
-                                kFontSizeText(sizeScreen, FontSize.title)),
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(
-                          listItems.length,
-                          (index) => ItemFilteringStatus(
-                                data: listItems[index],
-                                itemSelected: itemSelected,
-                                onChange: (int value) {
-                                  setState(() {
-                                    itemSelected = value;
-                                  });
-                                },
-                              )),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: padding),
-                      child: CustomeButton(
-                          sizeScreen: sizeScreen, title: 'جستجو', onTap: () {}),
-                    )
-                  ],
+class FilterScreen extends StatefulWidget {
+  const FilterScreen(
+      {Key? key,
+      required this.coachId,
+      required this.planStatusList,
+      required this.planTypeId,
+      required this.searchTextEditingController,
+      required this.setCoachId,
+      required this.setStudentId,
+      required this.sizeScreen,
+      required this.studentId})
+      : super(key: key);
+  final Size sizeScreen;
+  final TextEditingController searchTextEditingController;
+  final int? planTypeId;
+  final int? coachId;
+  final int? studentId;
+  final String? planStatusList;
+  final bool? setCoachId;
+  final bool? setStudentId;
+
+  @override
+  _FilterScreenState createState() => _FilterScreenState();
+}
+
+class _FilterScreenState extends State<FilterScreen> {
+  late int itemSelected;
+  @override
+  void initState() {
+    itemSelected = 1;
+    widget.searchTextEditingController.clear();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        decoration: BoxDecoration(
+            color: kColorBackGround,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+        child: Container(
+          padding:
+              EdgeInsets.symmetric(horizontal: widget.sizeScreen.width * 0.1),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: padding,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    color: Color(0xffE8E8E8),
+                    borderRadius: BorderRadius.circular(10)),
+                width: widget.sizeScreen.width * 0.1,
+                height: 5,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: padding),
+                child: Center(
+                  child: Text(
+                    'جستجوی فیلتر',
+                    style: textStyle.copyWith(
+                        fontSize:
+                            kFontSizeText(widget.sizeScreen, FontSize.title),
+                        fontWeight: FontWeight.w500),
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+              Container(
+                margin: EdgeInsets.only(bottom: padding),
+                child: TextField(
+                    controller: widget.searchTextEditingController,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: padding / 2, horizontal: padding),
+                        hintText: 'جستجوی شاگردان',
+                        hintStyle: textStyle.copyWith(
+                            color: Color(0xff707070), fontSize: 12),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(color: Color(0xff707070))))),
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: padding),
+                alignment: Alignment.centerRight,
+                child: Text(
+                  'وضعیت',
+                  style: textStyle.copyWith(
+                      fontSize:
+                          kFontSizeText(widget.sizeScreen, FontSize.title)),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(
+                    listItems.length,
+                    (index) => ItemFilteringStatus(
+                          data: listItems[index],
+                          itemSelected: itemSelected,
+                          onChange: (int value) {
+                            setState(() {
+                              itemSelected = value;
+                            });
+                          },
+                        )),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: padding),
+                child: CustomeButton(
+                    sizeScreen: widget.sizeScreen,
+                    title: 'جستجو',
+                    onTap: () {
+                      BlocProvider.of<GetPlansBySortBloc>(context).add(
+                          GetPlansBySortLoadingEvent(
+                              searchText:
+                                  widget.searchTextEditingController.text,
+                              planType: widget.planTypeId,
+                              coachId: widget.coachId,
+                              studentId: widget.studentId,
+                              planStatusList: itemSelected.toString(),
+                              setCoachId: widget.setCoachId,
+                              setStudentId: widget.setStudentId));
+                      Navigator.of(context).pop();
+                    }),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -145,14 +183,18 @@ class ItemFilteringStatus extends StatelessWidget {
 List listItems = [
   {
     'name': 'درحال انجام',
-    'selected': 0,
-  },
-  {
-    'name': 'تمام شده',
     'selected': 1,
   },
   {
-    'name': 'شروع شده',
+    'name': 'شروع نشده',
     'selected': 2,
+  },
+  {
+    'name': 'تمام شده',
+    'selected': 3,
+  },
+  {
+    'name': 'پرداخت نشده',
+    'selected': 4,
   },
 ];

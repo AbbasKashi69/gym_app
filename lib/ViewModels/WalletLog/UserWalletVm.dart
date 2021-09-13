@@ -18,7 +18,7 @@ class UserWalletVm extends BaseViewModel {
     id = json['id'];
     userId = json['userId'];
     userFullName = json['userFullName'];
-    walletBallance = json['walletBallance'];
+    walletBallance = super.intToDouble(json['walletBallance']);
     nWalletBallance = json['nWalletBallance'];
   }
 

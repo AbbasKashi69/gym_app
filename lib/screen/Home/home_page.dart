@@ -1,9 +1,12 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/get_my_wallet_ballance_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customBottomBar.dart';
+import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 import 'package:gym_app/screen/Elanha/elan_page.dart';
 import 'package:gym_app/screen/ListCoach/list_coach_page.dart';
@@ -137,7 +140,27 @@ class HomePage extends StatelessWidget {
                           Spacer(),
                           Text("اشتراک کنونی :", style: textStyleHome),
                           Spacer(),
-                          Text("دو ماهه", style: textStyleHome),
+                          BlocBuilder<GetMyWalletBallanceBloc,
+                              GetMyWalletBallanceState>(
+                            builder: (context, state) {
+                              if (state is GetMyWalletBallanceLoadingState)
+                                return MyWaiting();
+                              else if (state
+                                  is GetMyWalletBallanceLoadedState) if (state
+                                      .userWalletVm !=
+                                  null)
+                                return Text(
+                                    '${state.userWalletVm!.nWalletBallance!} تومان',
+                                    style: textStyleHome);
+                              else
+                                return Text(
+                                  '0',
+                                  style: textStyleHome,
+                                );
+                              else
+                                return Container();
+                            },
+                          ),
                           Spacer(),
                           IconButton(
                             onPressed: () {},

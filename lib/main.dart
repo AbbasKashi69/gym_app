@@ -11,11 +11,13 @@ import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 import 'package:gym_app/screen/Scan/scan_page.dart';
 import 'package:gym_app/screen/Wallet/wallet_page.dart';
 import 'package:get/get.dart';
+import 'package:gym_app/screen/chat/chat_list_page.dart';
 import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
 import 'package:gym_app/screen/profile_page/profile_page.dart';
 import 'package:gym_app/screen/subscription_page/subscription_page.dart';
 
 import 'blocs/BottomNav/bloc/bottom_nav_bloc.dart';
+import 'blocs/WalletLog/bloc/get_my_wallet_ballance_bloc.dart';
 import ' extensions/ext.dart';
 
 void main() {
@@ -77,9 +79,17 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget loadScreen(int index) {
     switch (index) {
       case 0:
-        return HomePage();
+        return BlocProvider(
+          create: (context) =>
+              GetMyWalletBallanceBloc()..add(GetMyWalletBallanceLoadingEvent()),
+          child: HomePage(),
+        );
       case 1:
-        return SubscriptionPage();
+        return BlocProvider(
+          create: (context) =>
+              GetMyWalletBallanceBloc()..add(GetMyWalletBallanceLoadingEvent()),
+          child: SubscriptionPage(),
+        );
       case 2:
         return ScanPage();
       case 3:

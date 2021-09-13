@@ -14,7 +14,7 @@ class WalletLogService {
   static const String url_create = '/api/WalletLog/Create';
   static const String url_getAll = '/api/WalletLog/GetAll';
   static const String url_getMyWalletBallance =
-      '/api/WalletLog/GetMyWalletBalance';
+      '/api/WalletLog/GetMyWalletBallance';
   static const String url_increaseCredit = '/api/WalletLog/IncreaseCredit';
   static const String url_loadTransactionOfWallet =
       '/api/WalletLog/LoadTransactionOfWallet';
