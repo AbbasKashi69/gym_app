@@ -15,7 +15,7 @@ class TokenResponseVm {
 
   TokenResponseVm.fromJson(Map<String, dynamic> json) {
     // userId = json['phoneNumber'];
-    userName = json['username'];
+    userName = json['userName'];
     creationDate = json['creationDate'];
     nCreationDate = json['nCreationDate'];
     token = json['token'];

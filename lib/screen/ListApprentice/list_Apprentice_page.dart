@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gym_app/ViewModels/Person/PersonListVm.dart';
+import 'package:gym_app/blocs/CoachStudent/bloc/get_students_as_person_list_bloc.dart';
 import 'package:gym_app/components/constant.dart';
+import 'package:gym_app/components/myWaiting.dart';
+import 'package:gym_app/components/no_data.dart';
 import 'package:gym_app/extensions/ext.dart';
 
 class ListApprenticePage extends StatelessWidget {
@@ -11,8 +16,8 @@ class ListApprenticePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
     return Container(
-      // color: Color(0xffFBFBFB),
-      color: Color(0xffaaaaaa),
+      color: Color(0xffFBFBFB),
+      // color: Color(0xffaaaaaa),
       child: Scaffold(
         appBar: AppBarWidget(
           title: 'لیست شاگردان',
@@ -96,10 +101,27 @@ class ListApprenticePage extends StatelessWidget {
                   style: textStyle,
                 ),
               ),
-              Expanded(
-                  child: ListView.builder(
-                      itemCount: 10,
-                      itemBuilder: (ctx, idx) => ItemApprenticeList()))
+              BlocBuilder<GetStudentsAsPersonListBloc,
+                  GetStudentsAsPersonListState>(
+                builder: (context, state) {
+                  if (state is GetStudentsAsPersonListLoadingState)
+                    return MyWaiting();
+                  else if (state is GetStudentsAsPersonListLoadedState) {
+                    if (state.listPersonListVm != null &&
+                        state.listPersonListVm!.isNotEmpty) {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemBuilder: (context, index) => ItemApprenticeList(
+                              personListVm: state.listPersonListVm![index]),
+                          itemCount: state.listPersonListVm!.length,
+                        ),
+                      );
+                    } else
+                      return NoData();
+                  }
+                  return Container();
+                },
+              )
             ],
           ),
         ),
@@ -133,27 +155,29 @@ class ItemRequestInStack extends StatelessWidget {
 }
 
 class ItemApprenticeList extends StatelessWidget {
-  const ItemApprenticeList({
-    Key? key,
-  }) : super(key: key);
+  const ItemApprenticeList({Key? key, required this.personListVm})
+      : super(key: key);
+  final PersonListVm personListVm;
 
   @override
   Widget build(BuildContext context) {
+    final Size sizeScreen = MediaQuery.of(context).size;
     return Container(
       margin: EdgeInsets.symmetric(vertical: padding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           CircleAvatar(
-            backgroundImage: NetworkImage(
+            backgroundImage: NetworkImage(personListVm.pic ??
                 'https://i.pinimg.com/564x/5b/40/87/5b4087d0fc8d9d372c00a32bc08f818c.jpg'),
           ),
           SizedBox(
             width: padding,
           ),
           Text(
-            'محمد معین کیوانی پور',
-            style: textStyle,
+            personListVm.userFullName ?? "",
+            style: textStyle.copyWith(
+                fontSize: kFontSizeText(sizeScreen, FontSize.subTitle)),
           )
         ],
       ),

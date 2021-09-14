@@ -43,6 +43,17 @@ var textStyleBuySubscription2 = TextStyle(
     fontSize: Get.width * 0.05,
     fontWeight: FontWeight.w500,
     fontFamily: 'IRANSans');
+final InputDecoration kInputDecorationRegister = InputDecoration(
+    alignLabelWithHint: true,
+    labelStyle: textStyle.copyWith(
+      fontSize: 12,
+      color: Colors.grey,
+    ),
+    errorStyle: textStyle.copyWith(color: Color(0xffFF0034), fontSize: 12),
+    errorBorder: UnderlineInputBorder(
+        borderSide: BorderSide(
+      color: Color(0xffFF0034),
+    )));
 enum FontSize { title, subTitle, normal }
 
 double kFontSizeText(Size sizeScreen, FontSize fontSize) {

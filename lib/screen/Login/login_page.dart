@@ -1,212 +1,236 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:gym_app/ViewModels/Account/LoginVm.dart';
+import 'package:gym_app/blocs/Account/bloc/login_bloc.dart';
+import 'package:gym_app/components/myWaiting.dart';
+import 'package:gym_app/main.dart';
+import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 import 'package:gym_app/screen/Register/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
-  static const routeName = '/register';
+  static const routeName = '/loginPage';
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _editingController = TextEditingController();
-  TextEditingController _textEditingController = TextEditingController();
-  bool _isFill = false;
-  bool _sendCode = false;
-  bool _rePasswordVisible = false;
+  GlobalKey<FormState> loginKey = GlobalKey<FormState>();
+  late TextEditingController _phoneTextInputEditingController;
+  late TextEditingController _passTextInputEditingController;
+  late bool isVisiblePass;
+  @override
+  void initState() {
+    super.initState();
+    _phoneTextInputEditingController = TextEditingController();
+    _passTextInputEditingController = TextEditingController();
+    isVisiblePass = false;
+  }
+
+  @override
+  void dispose() {
+    _phoneTextInputEditingController.dispose();
+    _passTextInputEditingController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(120), // Set this height
-        child: ClipPath(
-          clipper: OvalBottomBorderClipper(),
-          child: Container(
-            height: Get.height * 0.25,
-            decoration: BoxDecoration(
-                color: Colors.black,
-                image: DecorationImage(
-                    image: AssetImage("assets/images/appBar.png"),
-                    fit: BoxFit.cover)),
-            child: Padding(
-              padding: EdgeInsets.only(top: Get.height * 0.05),
-              child: Center(
-                child: Text(
-                  "ورود به حساب کاربری",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: "IRANSans",
-                      fontSize: Get.height * 0.03,
-                      fontWeight: FontWeight.w600),
+    return WillPopScope(
+      onWillPop: () async {
+        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+        return false;
+      },
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(120), // Set this height
+          child: ClipPath(
+            clipper: OvalBottomBorderClipper(),
+            child: Container(
+              height: Get.height * 0.25,
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  image: DecorationImage(
+                      image: AssetImage("assets/images/appBar.png"),
+                      fit: BoxFit.cover)),
+              child: Padding(
+                padding: EdgeInsets.only(top: Get.height * 0.05),
+                child: Center(
+                  child: Text(
+                    "ورود به حساب کاربری",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: "IRANSans",
+                        fontSize: Get.height * 0.03,
+                        fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        physics: ScrollPhysics().parent,
-        child: Container(
-          width: Get.width,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: Get.width * 0.03),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: Get.height * 0.15,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                          child: TextField(
-                        onChanged: (value) {
-                          setState(() {
-                            _isFill = true;
-                            if (value.isEmpty) {
-                              setState(() {
-                                _isFill = false;
-                              });
-                            }
-                          });
-                        },
-                        controller: _editingController,
-                        keyboardType: TextInputType.phone,
-                        style: TextStyle(
-                            color: Colors.black, fontSize: Get.height * 0.03),
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(0),
-                            labelText: "شماره موبایل",
-                            prefixIcon: Icon(
-                              Icons.phone,
-                              color: Colors.grey,
-                            ),
-                            alignLabelWithHint: true,
-                            labelStyle: TextStyle(
-                                color: Colors.grey,
-                                fontSize: Get.height * 0.025,
-                                fontFamily: "IRANSans")),
-                      )),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: Get.height * 0.1),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "98+",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: Get.height * 0.025),
-                            ),
-                            Container(
-                              width: Get.width * 0.15,
-                              color: Colors.grey,
-                              height: 1,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
+        body: SingleChildScrollView(
+          physics: ScrollPhysics().parent,
+          child: Container(
+            width: Get.width,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: Get.width * 0.03),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: Get.height * 0.15,
                   ),
-                ),
-                SizedBox(
-                  height: Get.height * 0.025,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: TextField(
-                    obscureText: !_rePasswordVisible,
-                    controller: _textEditingController,
-                    keyboardType: TextInputType.phone,
-                    style: TextStyle(
-                        color: Colors.black, fontSize: Get.height * 0.025),
-                    decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _rePasswordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: Colors.grey,
+                  Form(
+                    key: loginKey,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                              child: CustomeRegisterTextField(
+                                  maxLength: 10,
+                                  isHaveIcon: true,
+                                  iconPrefix: Icons.call,
+                                  textEditingController:
+                                      _phoneTextInputEditingController,
+                                  validator: (String value) {
+                                    if (value.length < 10)
+                                      return 'تعداد کاراکتر کمتر از 10 است';
+                                    else
+                                      return null;
+                                  },
+                                  onSubmitted: (String value) {},
+                                  keyboardType: TextInputType.phone,
+                                  textInputAction: TextInputAction.next,
+                                  lableText: 'شماره موبایل')),
+                          SizedBox(
+                            width: 15,
                           ),
-                          onPressed: () {
-                            setState(() {
-                              _rePasswordVisible = !_rePasswordVisible;
-                            });
-                          },
-                        ),
-                        prefixIcon: Icon(Icons.lock_outline),
-                        contentPadding: EdgeInsets.all(0),
-                        labelText: "تکرار رمز عبور",
-                        alignLabelWithHint: true,
-                        labelStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: Get.height * 0.025,
-                            fontFamily: "IRANSans")),
-                  ),
-                ),
-                SizedBox(
-                  height: Get.height * 0.025,
-                ),
-                InkWell(
-                    onTap: () {
-                      setState(() {
-                        _sendCode = true;
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 10),
-                      height: Get.height * 0.08,
-                      width: Get.width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          gradient: LinearGradient(
-                              end: Alignment.topCenter,
-                              begin: Alignment.topCenter,
-                              colors: [
-                                _isFill
-                                    ? Color.fromRGBO(20, 186, 219, 1)
-                                    : Colors.grey.withOpacity(0.3),
-                                _isFill
-                                    ? Color.fromRGBO(60, 198, 226, 1)
-                                    : Colors.grey.withOpacity(0.2)
-                              ])),
-                      child: Center(
-                        child: Text(
-                          "ادامه",
-                          style: TextStyle(
-                              color: _isFill ? Colors.white : Colors.black,
-                              fontSize: Get.height * 0.025,
-                              fontFamily: "IRANSans"),
-                        ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                bottom: MediaQuery.of(context).size.width > 550
+                                    ? 31
+                                    : 26),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "98+",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: Get.height * 0.025),
+                                ),
+                                Container(
+                                  width: Get.width * 0.15,
+                                  color: Colors.grey,
+                                  height: 1,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                    )),
-                InkWell(
-                  onTap: () {
-                    Get.to(RegisterPage());
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: Get.height * 0.15),
-                    child: Text(
-                      "ثبت نام",
-                      style: TextStyle(
-                          color: Colors.blue.shade600,
-                          fontFamily: "IRANSans",
-                          fontSize: Get.height * 0.03),
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                              child: CustomeRegisterTextField(
+                                  isVisible: isVisiblePass,
+                                  changeVisibility: () {
+                                    setState(() {
+                                      isVisiblePass = !isVisiblePass;
+                                    });
+                                  },
+                                  isObsecure: isVisiblePass,
+                                  isHaveIcon: true,
+                                  iconPrefix: Icons.vpn_key_outlined,
+                                  textEditingController:
+                                      _passTextInputEditingController,
+                                  validator: (String value) {
+                                    if (value.length < 4)
+                                      return 'تعداد کاراکتر کمتر از 4 است';
+                                    else
+                                      return null;
+                                  },
+                                  onSubmitted: (String value) {
+                                    if (loginKey.currentState!.validate()) {}
+                                  },
+                                  keyboardType: TextInputType.name,
+                                  textInputAction: TextInputAction.send,
+                                  lableText: 'تایید رمز عبور')),
+                        ],
+                      )),
+                  SizedBox(
+                    height: Get.height * 0.1,
+                  ),
+                  BlocConsumer<LoginBloc, LoginState>(
+                    listener: (context, state) {
+                      if (state is LoginLoadedState) {
+                        if (state.resultObject!.success!) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              MyHomePage.routeName, (route) => false);
+                        }
+                        Fluttertoast.showToast(
+                            msg: state.resultObject!.message!);
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is LoginLoadingState)
+                        return MyWaiting();
+                      else
+                        return CustomeButton(
+                          sizeScreen: MediaQuery.of(context).size,
+                          title: 'ورود',
+                          onTap: () {
+                            if (loginKey.currentState!.validate()) {
+                              BlocProvider.of<LoginBloc>(context).add(
+                                  LoginLoadingEvent(
+                                      loginVm: LoginVm(
+                                          userName: '0' +
+                                              _phoneTextInputEditingController
+                                                  .text,
+                                          password:
+                                              _passTextInputEditingController
+                                                  .text)));
+                            }
+                          },
+                          isReject: true,
+                        );
+                    },
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Get.offAndToNamed(RegisterPage.routeName);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: Get.height * 0.2),
+                      child: Text(
+                        "ثبت نام",
+                        style: TextStyle(
+                            color: Colors.blue.shade600,
+                            fontFamily: "IRANSans",
+                            fontSize: Get.height * 0.03),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

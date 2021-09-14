@@ -28,13 +28,14 @@ class AccountService {
       'api/Account/SendCodeResetPassword';
   static const String url_selectProvider = '/api/Account/SelectProvider';
 
-  Future<ResultObject?> login(LoginVm loginVm) async {
+  Future<ResultObject> login(LoginVm loginVm) async {
     var response = await repository!.post(url_login, loginVm.toJson());
     if (response != null) {
       ResultObject result = ResultObject.fromJson(response);
       return result;
     }
-    return null;
+    var result = ResultObject(false, "عملیات ورود با شکست مواجه شد.");
+    return result;
   }
 
   Future<ResultObject?> register(String userName) async {

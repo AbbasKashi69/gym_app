@@ -21,9 +21,9 @@ class BaseRepository implements IBaseRepository {
     }
 
     headersList = {
-      // 'Authorization': 'Bearer ${CurrentUserVm.token}',
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMDAyIiwidW5pcXVlX25hbWUiOiIwOTEwMzU3NTA2MiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkNvYWNoIiwiZXhwIjoxNjYyODg0MDkyLCJpc3MiOiJHeW0uY29tIiwiYXVkIjoiR3ltLmNvbSJ9.j8-SCDJjNg93A3uAF3PiH-B_AFF8U2GLtgKtu_i8TWioi61alQsNPCDs6J7xgK1QjeWDuX6dSqdppwzLBstf0A',
+      'Authorization': 'Bearer ${CurrentUserVm.token}',
+      // 'Authorization':
+      //     'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMDAyIiwidW5pcXVlX25hbWUiOiIwOTEwMzU3NTA2MiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkNvYWNoIiwiZXhwIjoxNjYyODg0MDkyLCJpc3MiOiJHeW0uY29tIiwiYXVkIjoiR3ltLmNvbSJ9.j8-SCDJjNg93A3uAF3PiH-B_AFF8U2GLtgKtu_i8TWioi61alQsNPCDs6J7xgK1QjeWDuX6dSqdppwzLBstf0A',
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       // 'Accept': '*/*',

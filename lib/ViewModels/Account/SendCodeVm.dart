@@ -7,7 +7,10 @@ class SendCodeVm extends BaseViewModel {
   bool? rememberMe;
 
   SendCodeVm(
-      {this.selectedProvider, this.userId, this.returnUrl, this.rememberMe});
+      {this.selectedProvider,
+      this.userId,
+      this.returnUrl,
+      this.rememberMe = false});
 
   SendCodeVm.fromJson(Map<String, dynamic> json) {
     selectedProvider = json['selectedProvider'];
