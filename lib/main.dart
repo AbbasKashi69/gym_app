@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:gym_app/Router/rout_generate.dart';
 import 'package:gym_app/ViewModels/CurrentUserVm.dart';
 import 'package:gym_app/components/customBottomBar.dart';
@@ -73,6 +73,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   DateTime? currentBackPressTime;
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -118,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (currentBackPressTime == null ||
         now.difference(currentBackPressTime!) > Duration(seconds: 2)) {
       currentBackPressTime = now;
-      Fluttertoast.showToast(msg: 'برای خروج بازگشت را دوبار بزنید');
+      // Fluttertoast.showToast(msg: 'برای خروج بازگشت را دوبار بزنید');
       return Future.value(false);
     } else
       SystemChannels.platform.invokeMethod('SystemNavigator.pop');

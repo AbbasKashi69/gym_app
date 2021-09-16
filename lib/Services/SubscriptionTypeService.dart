@@ -13,6 +13,18 @@ class SubscriptionTypeService {
   static const String url_create = '/api/SubscriptionType/Create';
   static const String url_edit = '/api/SubscriptionType/Edit';
   static const String url_delete = '/api/SubscriptionType/Delete';
+  static const String url_getUserCurrentSubscription = '/api/SubscriptionType/Delete';
+
+
+  Future<ResultObject?> getUserCurrentSubscription() async {
+    var response =
+    await repository!.get(url_getUserCurrentSubscription);
+    if (response != null) {
+      ResultObject result = ResultObject.fromJson(response);
+      return result;
+    }
+    return null;
+  }
 
   Future<List<SubscriptionTypeVm>?> getAll([int pageNumber = 1]) async {
     var response =
