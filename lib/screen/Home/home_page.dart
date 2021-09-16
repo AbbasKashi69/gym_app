@@ -13,6 +13,7 @@ import 'package:gym_app/screen/Elanha/elan_page.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:gym_app/screen/ListCoach/list_coach_page.dart';
 import 'package:gym_app/screen/ProgramList/program_list_page.dart';
+import 'package:gym_app/screen/chat/chat_list_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -190,9 +191,16 @@ class HomePage extends StatelessWidget {
                     pic: "assets/icons/vuesax-linear-clipboard-tick.svg",
                   ),
                 ),
-                ItemWidget(
-                  title: "گفنگوها",
-                  pic: "assets/icons/vuesax-linear-message-text.svg",
+                Material(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(ChatListPage.routeName);
+                    },
+                    child: ItemWidget(
+                      title: "گفنگوها",
+                      pic: "assets/icons/vuesax-linear-message-text.svg",
+                    ),
+                  ),
                 ),
                 ItemWidget(
                   title: "برنامه های \n فعال ",

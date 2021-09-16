@@ -257,17 +257,14 @@ class _CreateProgramOtherSportsPageState
                                 child: SelectStudentScreen()));
                         if (x != null) {
                           x = x as PersonListVm;
-                          // if (anonymousPlantypeFormVm.students!.isNotEmpty) {
-                          //   for (PersonListVm item
-                          //       in anonymousPlantypeFormVm.students!) {
-                          //     if (item.userFullName == x.userFullName) break;
-                          anonymousPlantypeFormVm.students!.add(x);
-                          setState(() {});
-                          //   }
-                          // } else {
-                          //   anonymousPlantypeFormVm.students!.add(x);
-                          //   setState(() {});
-                          // }
+                          var isExist = anonymousPlantypeFormVm.students!
+                              .where((element) =>
+                                  element.userFullName == x.userFullName)
+                              .toList();
+                          if (isExist.isEmpty) {
+                            anonymousPlantypeFormVm.students!.add(x);
+                            setState(() {});
+                          }
                         }
                       },
                       child: Container(
@@ -373,15 +370,16 @@ class _CreateProgramOtherSportsPageState
                       sizeScreen: sizeScreen,
                       title: 'ادامه',
                       onTap: () {
-                        // if (_createOtherSportKey.currentState!.validate()) {
-                        anonymousPlantypeFormVm.dayTerms = [
-                          AnonymousPlanTypeDayTermVm(
-                              dayNumber: 1, termsCount: 1, currentTerm: 1)
-                        ];
-                        Navigator.of(context).pushNamed(
-                            CreateProgramOtherSportsSettingPage.routeName,
-                            arguments: anonymousPlantypeFormVm);
-                        // }
+                        if (_createOtherSportKey.currentState!.validate() &&
+                            anonymousPlantypeFormVm.students!.isNotEmpty) {
+                          anonymousPlantypeFormVm.dayTerms = [
+                            AnonymousPlanTypeDayTermVm(
+                                dayNumber: 1, termsCount: 1, currentTerm: 1)
+                          ];
+                          Navigator.of(context).pushNamed(
+                              CreateProgramOtherSportsSettingPage.routeName,
+                              arguments: anonymousPlantypeFormVm);
+                        }
                       },
                     )
                   ],

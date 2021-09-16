@@ -77,18 +77,18 @@ class _LoginPageState extends State<LoginPage> {
         ),
         body: SingleChildScrollView(
           physics: ScrollPhysics().parent,
-          child: Container(
-            width: Get.width,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: Get.width * 0.03),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: Get.height * 0.15,
-                  ),
-                  Form(
-                    key: loginKey,
-                    child: Padding(
+          child: Form(
+            key: loginKey,
+            child: Container(
+              width: Get.width,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: Get.width * 0.03),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: Get.height * 0.1,
+                    ),
+                    Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -139,97 +139,105 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(
-                              child: CustomeRegisterTextField(
-                                  isVisible: isVisiblePass,
-                                  changeVisibility: () {
-                                    setState(() {
-                                      isVisiblePass = !isVisiblePass;
-                                    });
-                                  },
-                                  isObsecure: isVisiblePass,
-                                  isHaveIcon: true,
-                                  iconPrefix: Icons.vpn_key_outlined,
-                                  textEditingController:
-                                      _passTextInputEditingController,
-                                  validator: (String value) {
-                                    if (value.length < 4)
-                                      return 'تعداد کاراکتر کمتر از 4 است';
-                                    else
-                                      return null;
-                                  },
-                                  onSubmitted: (String value) {
-                                    if (loginKey.currentState!.validate()) {}
-                                  },
-                                  keyboardType: TextInputType.name,
-                                  textInputAction: TextInputAction.send,
-                                  lableText: 'تایید رمز عبور')),
-                        ],
-                      )),
-                  SizedBox(
-                    height: Get.height * 0.1,
-                  ),
-                  BlocConsumer<LoginBloc, LoginState>(
-                    listener: (context, state) {
-                      if (state is LoginLoadedState) {
-                        if (state.resultObject!.success!) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              MyHomePage.routeName, (route) => false);
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                                child: CustomeRegisterTextField(
+                                    isVisible: isVisiblePass,
+                                    changeVisibility: () {
+                                      setState(() {
+                                        isVisiblePass = !isVisiblePass;
+                                      });
+                                    },
+                                    isObsecure: isVisiblePass,
+                                    isHaveIcon: true,
+                                    iconPrefix: Icons.vpn_key_outlined,
+                                    textEditingController:
+                                        _passTextInputEditingController,
+                                    validator: (String value) {
+                                      if (value.length < 4)
+                                        return 'تعداد کاراکتر کمتر از 4 است';
+                                      else
+                                        return null;
+                                    },
+                                    onSubmitted: (String value) {
+                                      if (loginKey.currentState!.validate()) {
+                                        BlocProvider.of<LoginBloc>(context).add(
+                                            LoginLoadingEvent(
+                                                loginVm: LoginVm(
+                                                    userName: '0' +
+                                                        _phoneTextInputEditingController
+                                                            .text,
+                                                    password:
+                                                        _passTextInputEditingController
+                                                            .text)));
+                                      }
+                                    },
+                                    keyboardType: TextInputType.name,
+                                    textInputAction: TextInputAction.send,
+                                    lableText: 'رمز عبور')),
+                          ],
+                        )),
+                    SizedBox(
+                      height: Get.height * 0.1,
+                    ),
+                    BlocConsumer<LoginBloc, LoginState>(
+                      listener: (context, state) {
+                        if (state is LoginLoadedState) {
+                          if (state.resultObject!.success!) {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                MyHomePage.routeName, (route) => false);
+                          }
+                          Fluttertoast.showToast(
+                              msg: state.resultObject!.message!);
                         }
-                        Fluttertoast.showToast(
-                            msg: state.resultObject!.message!);
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is LoginLoadingState)
-                        return MyWaiting();
-                      else
-                        return CustomeButton(
-                          sizeScreen: MediaQuery.of(context).size,
-                          title: 'ورود',
-                          onTap: () {
-                            if (loginKey.currentState!.validate()) {
-                              BlocProvider.of<LoginBloc>(context).add(
-                                  LoginLoadingEvent(
-                                      loginVm: LoginVm(
-                                          userName: '0' +
-                                              _phoneTextInputEditingController
-                                                  .text,
-                                          password:
-                                              _passTextInputEditingController
-                                                  .text)));
-                            }
-                          },
-                          isReject: true,
-                        );
-                    },
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.offAndToNamed(RegisterPage.routeName);
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: Get.height * 0.2),
-                      child: Text(
-                        "ثبت نام",
-                        style: TextStyle(
-                            color: Colors.blue.shade600,
-                            fontFamily: "IRANSans",
-                            fontSize: Get.height * 0.03),
+                      },
+                      builder: (context, state) {
+                        if (state is LoginLoadingState)
+                          return MyWaiting();
+                        else
+                          return CustomeButton(
+                            sizeScreen: MediaQuery.of(context).size,
+                            title: 'ورود',
+                            onTap: () {
+                              if (loginKey.currentState!.validate()) {
+                                BlocProvider.of<LoginBloc>(context).add(
+                                    LoginLoadingEvent(
+                                        loginVm: LoginVm(
+                                            userName: '0' +
+                                                _phoneTextInputEditingController
+                                                    .text,
+                                            password:
+                                                _passTextInputEditingController
+                                                    .text)));
+                              }
+                            },
+                            isReject: true,
+                          );
+                      },
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.offAndToNamed(RegisterPage.routeName);
+                      },
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: Get.height * 0.1),
+                        child: Text(
+                          "ثبت نام",
+                          style: TextStyle(
+                              color: Colors.blue.shade600,
+                              fontFamily: "IRANSans",
+                              fontSize: Get.height * 0.03),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
