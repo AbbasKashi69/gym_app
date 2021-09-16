@@ -1,17 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
+import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
 import 'package:gym_app/blocs/Account/bloc/login_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/register_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/send_code_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/submit_register_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/verify_code_bloc.dart';
+import 'package:gym_app/blocs/AnonymousPlanType/bloc/create_using_form_bloc.dart';
 import 'package:gym_app/blocs/BottomNav/bloc/bottom_nav_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_students_as_person_list_bloc.dart';
 import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
+import 'package:gym_app/screen/CreateMovementOtherSports/create_movement_other_sports_page.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
+import 'package:gym_app/screen/CreateProgramOtherSports/create_program_other_sports_page.dart';
+import 'package:gym_app/screen/CreateProgramOtherSportsSetting/create_program_other_sports_setting_pages.dart';
 import 'package:gym_app/screen/DetailElan/detail_elan_page.dart';
 import 'package:gym_app/screen/Elanha/elan_page.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
@@ -83,6 +89,15 @@ class MyRouter {
         return MaterialPageRoute(builder: (context) => CreateProgramBodyPage());
       case CreateMovementPage.routeName:
         return MaterialPageRoute(builder: (context) => CreateMovementPage());
+      case CreateMovementOtherSportsPage.routeName:
+        {
+          var myVm = routeSettings.arguments as MyVm;
+          return MaterialPageRoute(
+              builder: (context) => CreateMovementOtherSportsPage(
+                    anonymousPlanTypeDayTermVm: myVm.anonymousPlanTypeDayTermVm,
+                    anonymousPlantypeFormVm: myVm.anonymousPlantypeFormVm,
+                  ));
+        }
       case ProgramListPage.routeName:
         return MaterialPageRoute(
             builder: (context) => BlocProvider(
@@ -93,6 +108,14 @@ class MyRouter {
       case CreateProgramBodySettingPage.routeName:
         return MaterialPageRoute(
             builder: (context) => CreateProgramBodySettingPage());
+      case CreateProgramOtherSportsSettingPage.routeName:
+        {
+          var anonymousPlantypeFormVm = routeSettings.arguments;
+          return MaterialPageRoute(
+              builder: (context) => CreateProgramOtherSportsSettingPage(
+                  anonymousPlantypeFormVm:
+                      anonymousPlantypeFormVm as AnonymousPlantypeFormVm));
+        }
       case ObserveProgramBody.routeName:
         return MaterialPageRoute(builder: (context) => ObserveProgramBody());
       case ObserveOtherSportsPage.routeName:
@@ -121,6 +144,19 @@ class MyRouter {
                   create: (context) => LoginBloc(),
                   child: LoginPage(),
                 ));
+      case CreateProgramOtherSportsPage.routeName:
+        return MaterialPageRoute(
+            builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => CreateUsingFormBloc(),
+                    ),
+                    BlocProvider(
+                      create: (context) => GetStudentsAsPersonListBloc(),
+                    )
+                  ],
+                  child: CreateProgramOtherSportsPage(),
+                ));
       case RegisterPage.routeName:
         return MaterialPageRoute(
             builder: (context) => MultiBlocProvider(
@@ -140,6 +176,7 @@ class MyRouter {
                   ],
                   child: RegisterPage(),
                 ));
+
       default:
         return MaterialPageRoute(builder: (context) => ScanPage());
     }

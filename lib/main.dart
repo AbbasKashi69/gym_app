@@ -65,6 +65,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
   static const routeName = '/';
+  static int lastDisplayOtherSports = 0;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
