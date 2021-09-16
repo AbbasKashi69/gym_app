@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customBottomBar.dart';
 import 'package:gym_app/extensions/ext.dart';
-import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 import 'package:gym_app/screen/profile_page/password_settings_page.dart';
 
 enum GenderValues { men, women, free }

@@ -16,7 +16,7 @@ class CoachStudentService extends BaseViewModel {
   static const String url_loadCoachStudent =
       '​/api​/CoachStudent​/LoadCoachStudent';
   static const String url_getStudentsAsPersonList =
-      '​/api​/CoachStudent​/GetStudentsAsPersonList';
+      '/api/CoachStudent/GetStudentsAsPersonList';
 
   Future<ResultObject?> create(CoachStudentVm coachStudentVm) async {
     var response = await repository!.post(url_create, coachStudentVm.toJson());
@@ -49,7 +49,7 @@ class CoachStudentService extends BaseViewModel {
   }
 
   Future<List<PersonListVm>?> getStudentsAsPersonList(
-      int coachId, String searchText) async {
+      int? coachId, String? searchText) async {
     var response = await repository!.getAll(url_getStudentsAsPersonList +
         '?coachId=$coachId&searchText=$searchText');
     if (response != null) {

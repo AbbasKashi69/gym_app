@@ -8,7 +8,9 @@ import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customBottomBar.dart';
 import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
+import 'package:gym_app/screen/CreateProgramOtherSports/create_program_other_sports_page.dart';
 import 'package:gym_app/screen/Elanha/elan_page.dart';
+import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:gym_app/screen/ListCoach/list_coach_page.dart';
 import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 
@@ -218,9 +220,15 @@ class HomePage extends StatelessWidget {
                     pic: "assets/icons/vuesax-linear-weight.svg",
                   ),
                 ),
-                ItemWidget(
-                  title: "ایجاد برنامه\n سایر رشته",
-                  pic: "assets/icons/vuesax-linear-clipboard-text.svg",
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(CreateProgramOtherSportsPage.routeName);
+                  },
+                  child: ItemWidget(
+                    title: "ایجاد برنامه\n سایر رشته",
+                    pic: "assets/icons/vuesax-linear-clipboard-text.svg",
+                  ),
                 ),
               ],
             ),
@@ -233,6 +241,8 @@ class HomePage extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     Navigator.of(context).pushNamed(ListCoachPage.routeName);
+                    // Navigator.of(context)
+                    //     .pushNamed(ListApprenticePage.routeName);
                   },
                   child: ItemWidget(
                     title: "مربیان \n مشاهده",

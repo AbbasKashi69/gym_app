@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gym_app/components/constant.dart';
-import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 class WarningDelteTrunScreen {
   Future warningDeleteTrun(
-      BuildContext context, Size sizeScreen, dynamic data) async {
+      BuildContext context, Size sizeScreen, String turn) async {
     var result = await showModalBottomSheet(
         isDismissible: false,
         elevation: 20,
@@ -46,7 +46,9 @@ class WarningDelteTrunScreen {
                         height: 30,
                       ),
                       Text(
-                        'برنامه روز ${data['turn']} حذف شود ؟',
+                        turn != '3'
+                            ? 'برنامه روز ${turn.toWord()}م حذف شود ؟'
+                            : 'برنامه روز سوم حذف شود ؟',
                         style: textStyle.copyWith(
                             fontSize: kFontSizeText(sizeScreen, FontSize.title),
                             fontWeight: FontWeight.w500),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:gym_app/ViewModels/BaseViewModel.dart';
 
 class AnonymousPlanTypeDetailFormVm extends BaseViewModel {
@@ -8,6 +9,8 @@ class AnonymousPlanTypeDetailFormVm extends BaseViewModel {
   int? displayOrder;
   String? title;
   String? description;
+  TextEditingController? nameMovementController;
+  TextEditingController? descriptionController;
 
   AnonymousPlanTypeDetailFormVm(
       {this.id,
@@ -16,6 +19,8 @@ class AnonymousPlanTypeDetailFormVm extends BaseViewModel {
       this.termNumber,
       this.displayOrder,
       this.title,
+      this.descriptionController,
+      this.nameMovementController,
       this.description});
 
   AnonymousPlanTypeDetailFormVm.fromJson(Map<String, dynamic> json) {
