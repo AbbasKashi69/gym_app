@@ -5,7 +5,7 @@ import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customBottomBar.dart';
 import 'package:gym_app/screen/Wallet/tansfer_others_wallet.dart';
 import 'package:gym_app/screen/Wallet/transfer_page.dart';
-import 'package:gym_app/screen/Wallet/turnover_page.dart';
+// import 'package:gym_app/screen/Wallet/turnover_page.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 import 'Increase_page.dart';
@@ -360,7 +360,7 @@ class WalletPage extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Get.to(TurnoverPage(), transition: Transition.downToUp);
+                  // Get.to(TurnoverPage(), transition: Transition.downToUp);
                 },
                 child: Container(
                   height: Get.height * 0.08,
