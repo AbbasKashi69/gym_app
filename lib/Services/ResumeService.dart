@@ -15,12 +15,15 @@ class ResumeService {
   static const String url_delete = '/api/Resume/Delete';
 
   Future<ResumeVm?> getResumeByCoachId(int coachId) async {
+    print("null2");
     var response =
         await repository!.get(url_getResumeByCoachId + '?coachId=$coachId');
     if (response != null) {
+      print("nul3l");
       ResumeVm result = ResumeVm.fromJson(response);
       return result;
     }
+    print("null");
     return null;
   }
 

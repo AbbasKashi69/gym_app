@@ -164,8 +164,13 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              width: 10,
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: SizedBox(
+                                  width: 10,
+                                ),
+                              ),
                             ),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(10),
