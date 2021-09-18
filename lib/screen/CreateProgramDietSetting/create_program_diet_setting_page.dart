@@ -3,20 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
 import 'package:gym_app/blocs/AnonymousPlanType/bloc/create_using_form_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/main.dart';
-import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateMovementOtherSports/create_movement_other_sports_page.dart';
+import 'package:gym_app/screen/CreateProgramOtherSportsSetting/create_program_other_sports_setting_pages.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
-class CreateProgramOtherSportsSettingPage extends StatelessWidget {
-  static const routeName = '/CreateProgramOtherSportsSettingPage';
-  CreateProgramOtherSportsSettingPage(
+class CreateProgramDietSettingPage extends StatelessWidget {
+  static const routeName = '/CreateProgramDietSettingPage';
+  CreateProgramDietSettingPage(
       {Key? key, required this.anonymousPlantypeFormVm})
       : super(key: key);
   final AnonymousPlantypeFormVm? anonymousPlantypeFormVm;
@@ -41,7 +40,7 @@ class CreateProgramOtherSportsSettingPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'ایجاد برنامه سایر رشته ها',
+                            'ایجاد برنامه غذایی',
                             style: textStyle.copyWith(
                                 fontSize: kFontSizeText(
                                     sizeScreen, FontSize.subTitle),
@@ -352,12 +351,4 @@ class ItemDay extends StatelessWidget {
       ),
     );
   }
-}
-
-class MyVm {
-  final AnonymousPlantypeFormVm anonymousPlantypeFormVm;
-  final AnonymousPlanTypeDayTermVm anonymousPlanTypeDayTermVm;
-  MyVm(
-      {required this.anonymousPlanTypeDayTermVm,
-      required this.anonymousPlantypeFormVm});
 }

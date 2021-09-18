@@ -13,8 +13,8 @@ class AnonymousPlanTypeDetailFormVm extends BaseViewModel {
   TextEditingController? descriptionController;
 
   AnonymousPlanTypeDetailFormVm(
-      {this.id,
-      this.anonymousPlanTypeId,
+      {this.id = 0,
+      this.anonymousPlanTypeId = 0,
       this.dayNumber,
       this.termNumber,
       this.displayOrder,
@@ -40,8 +40,8 @@ class AnonymousPlanTypeDetailFormVm extends BaseViewModel {
     data['dayNumber'] = this.dayNumber;
     data['termNumber'] = this.termNumber;
     data['displayOrder'] = this.displayOrder;
-    data['title'] = this.title;
-    data['description'] = this.description;
+    data['title'] = this.nameMovementController!.text;
+    data['description'] = this.descriptionController!.text;
     return data;
   }
 }

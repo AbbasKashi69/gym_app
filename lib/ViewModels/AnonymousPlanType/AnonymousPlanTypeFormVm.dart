@@ -21,14 +21,14 @@ class AnonymousPlantypeFormVm {
   List<AnonymousPlanTypeDayTermVm>? dayTerms;
 
   AnonymousPlantypeFormVm(
-      {this.id,
-      this.coachId,
+      {this.id = 0,
+      this.coachId = 0,
       this.coachFullName,
       this.title,
       this.description,
       this.totalPrice,
-      this.totalTerm,
-      this.dayCount,
+      this.totalTerm = 0,
+      this.dayCount = 0,
       this.startDate,
       this.nStartDate,
       this.endDate,
@@ -83,9 +83,9 @@ class AnonymousPlantypeFormVm {
     data['totalPrice'] = this.totalPrice;
     data['totalTerm'] = this.totalTerm;
     data['dayCount'] = this.dayCount;
-    data['startDate'] = this.startDate;
+    // data['startDate'] = this.startDate;
     data['nStartDate'] = this.nStartDate;
-    data['endDate'] = this.endDate;
+    // data['endDate'] = this.endDate;
     data['nEndDate'] = this.nEndDate;
     data['isPrivate'] = this.isPrivate;
     if (this.anonymousPlanTypeDetailForms != null) {

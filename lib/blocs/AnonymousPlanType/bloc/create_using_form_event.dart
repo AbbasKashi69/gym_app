@@ -1,9 +1,11 @@
 part of 'create_using_form_bloc.dart';
 
 @immutable
-abstract class CreateUsingFormEvent {}
+abstract class CreateUsingFormOtherSportsEvent {}
 
-class CreateUsingFormLoadingEvent extends CreateUsingFormEvent {
+class CreateUsingFormOtherSportsLoadingEvent
+    extends CreateUsingFormOtherSportsEvent {
   final AnonymousPlantypeFormVm anonymousPlantypeFormVm;
-  CreateUsingFormLoadingEvent({required this.anonymousPlantypeFormVm});
+  CreateUsingFormOtherSportsLoadingEvent(
+      {required this.anonymousPlantypeFormVm});
 }

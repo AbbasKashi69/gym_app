@@ -13,24 +13,22 @@ import 'package:gym_app/screen/CreateProgramOtherSportsSetting/create_program_ot
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
-class CreateProgramOtherSportsPage extends StatefulWidget {
-  const CreateProgramOtherSportsPage({Key? key}) : super(key: key);
-  static const routeName = '/createProgramOtherSportsPage';
+class CreateProgramDietPage extends StatefulWidget {
+  const CreateProgramDietPage({Key? key}) : super(key: key);
+  static const routeName = '/createProgramDietPage';
 
   @override
-  _CreateProgramOtherSportsPageState createState() =>
-      _CreateProgramOtherSportsPageState();
+  _CreateProgramDietPageState createState() => _CreateProgramDietPageState();
 }
 
-class _CreateProgramOtherSportsPageState
-    extends State<CreateProgramOtherSportsPage> {
+class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
   late TextEditingController _priceTextEditingController;
   late TextEditingController _titleTextEditingController;
   late TextEditingController _startDateTextEditingController;
   late TextEditingController _endDateTextEditingController;
   late TextEditingController _descriptionTextEditingController;
   late AnonymousPlantypeFormVm anonymousPlantypeFormVm;
-  GlobalKey<FormState> _createOtherSportKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _dietProgramKey = GlobalKey<FormState>();
   @override
   void initState() {
     _priceTextEditingController = TextEditingController();
@@ -86,11 +84,11 @@ class _CreateProgramOtherSportsPageState
     return Scaffold(
       backgroundColor: kColorAppbar,
       appBar: AppBarWidget(
-        title: 'ایجاد برنامه سایر رشته ها',
+        title: 'ایجاد برنامه غذایی',
       ),
       body: SingleChildScrollView(
         child: Form(
-          key: _createOtherSportKey,
+          key: _dietProgramKey,
           child: Container(
             padding: EdgeInsets.symmetric(
                 horizontal: padding * 2, vertical: padding),
@@ -373,7 +371,7 @@ class _CreateProgramOtherSportsPageState
                       sizeScreen: sizeScreen,
                       title: 'ادامه',
                       onTap: () {
-                        if (_createOtherSportKey.currentState!.validate()) {
+                        if (_dietProgramKey.currentState!.validate()) {
                           anonymousPlantypeFormVm.dayTerms = [
                             AnonymousPlanTypeDayTermVm(
                                 dayNumber: 1, termsCount: 1, currentTerm: 1)

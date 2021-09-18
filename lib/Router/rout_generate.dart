@@ -82,11 +82,10 @@ class MyRouter {
         return MaterialPageRoute(builder: (context) => WalletPage());
       case CvPage.routeName:
         return MaterialPageRoute(
-            builder: (context) =>
-                BlocProvider(
-                    create: (context) => GetResumeBloc()..add(GetResumeLoadingEvent()),
-                    child: CvPage()
-                ));
+            builder: (context) => BlocProvider(
+                create: (context) =>
+                    GetResumeBloc()..add(GetResumeLoadingEvent()),
+                child: CvPage()));
       case PersonalInfoPage.routeName:
         return MaterialPageRoute(builder: (context) => PersonalInfoPage());
       case SettingPage.routeName:
@@ -118,9 +117,12 @@ class MyRouter {
         {
           var anonymousPlantypeFormVm = routeSettings.arguments;
           return MaterialPageRoute(
-              builder: (context) => CreateProgramOtherSportsSettingPage(
-                  anonymousPlantypeFormVm:
-                      anonymousPlantypeFormVm as AnonymousPlantypeFormVm));
+              builder: (context) => BlocProvider(
+                    create: (context) => CreateUsingFormOthersSportsBloc(),
+                    child: CreateProgramOtherSportsSettingPage(
+                        anonymousPlantypeFormVm:
+                            anonymousPlantypeFormVm as AnonymousPlantypeFormVm),
+                  ));
         }
       case ObserveProgramBody.routeName:
         return MaterialPageRoute(builder: (context) => ObserveProgramBody());
@@ -155,7 +157,7 @@ class MyRouter {
             builder: (context) => MultiBlocProvider(
                   providers: [
                     BlocProvider(
-                      create: (context) => CreateUsingFormBloc(),
+                      create: (context) => CreateUsingFormOthersSportsBloc(),
                     ),
                     BlocProvider(
                       create: (context) => GetStudentsAsPersonListBloc(),
