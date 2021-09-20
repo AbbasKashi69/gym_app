@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
-import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeDayMealVm.dart';
+import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeFormVm.dart';
 import 'package:gym_app/ViewModels/Person/PersonListVm.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_students_as_person_list_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customeTextField.dart';
+import 'package:gym_app/screen/CreateProgramDietSetting/create_program_diet_setting_page.dart';
 import 'package:gym_app/screen/CreateProgramOtherSports/components/select_student_screen.dart';
-import 'package:gym_app/screen/CreateProgramOtherSportsSetting/create_program_other_sports_setting_pages.dart';
+import 'package:gym_app/screen/CreateProgramOtherSports/create_program_other_sports_page.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
@@ -27,7 +28,7 @@ class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
   late TextEditingController _startDateTextEditingController;
   late TextEditingController _endDateTextEditingController;
   late TextEditingController _descriptionTextEditingController;
-  late AnonymousPlantypeFormVm anonymousPlantypeFormVm;
+  late DietPlanTypeFormVm dietPlantypeFormVm;
   GlobalKey<FormState> _dietProgramKey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -38,9 +39,9 @@ class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
     _endDateTextEditingController = TextEditingController(
         text: Jalali.now().toJalaliDateTime().split(' ')[0]);
     _descriptionTextEditingController = TextEditingController();
-    anonymousPlantypeFormVm = AnonymousPlantypeFormVm(students: [], dayTerms: [
-      AnonymousPlanTypeDayTermVm(dayNumber: 1, termsCount: 1, currentTerm: 1)
-    ], anonymousPlanTypeDetailForms: []);
+    dietPlantypeFormVm = DietPlanTypeFormVm(students: [], dayMeals: [
+      DietPlanTypeDayMealVm(dayNumber: 1, mealsCount: 1, currentTerm: 1)
+    ], dietPlanTypeDetailForms: []);
     super.initState();
   }
 
@@ -258,12 +259,12 @@ class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
                                 child: SelectStudentScreen()));
                         if (x != null) {
                           x = x as PersonListVm;
-                          var isExist = anonymousPlantypeFormVm.students!
+                          var isExist = dietPlantypeFormVm.students!
                               .where((element) =>
                                   element.userFullName == x.userFullName)
                               .toList();
                           if (isExist.isEmpty) {
-                            anonymousPlantypeFormVm.students!.add(x);
+                            dietPlantypeFormVm.students!.add(x);
                             setState(() {});
                           }
                         }
@@ -319,15 +320,15 @@ class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
                       crossAxisAlignment: WrapCrossAlignment.start,
                       runAlignment: WrapAlignment.start,
                       spacing: padding,
-                      children: anonymousPlantypeFormVm.students != null &&
-                              anonymousPlantypeFormVm.students!.isNotEmpty
+                      children: dietPlantypeFormVm.students != null &&
+                              dietPlantypeFormVm.students!.isNotEmpty
                           ? List.generate(
-                              anonymousPlantypeFormVm.students!.length,
+                              dietPlantypeFormVm.students!.length,
                               (index) => AddedStudent(
-                                    personListVm: anonymousPlantypeFormVm
-                                        .students![index],
+                                    personListVm:
+                                        dietPlantypeFormVm.students![index],
                                     removeItem: (PersonListVm personListVm) {
-                                      anonymousPlantypeFormVm.students!
+                                      dietPlantypeFormVm.students!
                                           .remove(personListVm);
                                       setState(() {});
                                     },
@@ -372,27 +373,27 @@ class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
                       title: 'ادامه',
                       onTap: () {
                         if (_dietProgramKey.currentState!.validate()) {
-                          anonymousPlantypeFormVm.dayTerms = [
-                            AnonymousPlanTypeDayTermVm(
-                                dayNumber: 1, termsCount: 1, currentTerm: 1)
+                          dietPlantypeFormVm.dayMeals = [
+                            DietPlanTypeDayMealVm(
+                                dayNumber: 1, mealsCount: 1, currentTerm: 1)
                           ];
-                          anonymousPlantypeFormVm.title =
+                          dietPlantypeFormVm.title =
                               _titleTextEditingController.text;
-                          anonymousPlantypeFormVm.totalPrice = int.tryParse(
+                          dietPlantypeFormVm.totalPrice = int.tryParse(
                               _priceTextEditingController.text.isEmpty
                                   ? '0'
                                   : _priceTextEditingController.text);
-                          anonymousPlantypeFormVm.nStartDate =
+                          dietPlantypeFormVm.nStartDate =
                               _startDateTextEditingController.text;
-                          anonymousPlantypeFormVm.nEndDate =
+                          dietPlantypeFormVm.nEndDate =
                               _endDateTextEditingController.text;
-                          anonymousPlantypeFormVm.description =
+                          dietPlantypeFormVm.description =
                               _descriptionTextEditingController.text;
-                          anonymousPlantypeFormVm.isPrivate = true;
+                          dietPlantypeFormVm.isPrivate = true;
                           FocusScope.of(context).unfocus();
                           Navigator.of(context).pushNamed(
-                              CreateProgramOtherSportsSettingPage.routeName,
-                              arguments: anonymousPlantypeFormVm);
+                              CreateProgramDietSettingPage.routeName,
+                              arguments: dietPlantypeFormVm);
                         }
                       },
                     )
@@ -402,52 +403,6 @@ class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class AddedStudent extends StatelessWidget {
-  const AddedStudent(
-      {Key? key, required this.personListVm, required this.removeItem})
-      : super(key: key);
-  final PersonListVm personListVm;
-  final Function removeItem;
-
-  @override
-  Widget build(BuildContext context) {
-    final Size sizeScreen = MediaQuery.of(context).size;
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: padding),
-      padding: EdgeInsets.symmetric(horizontal: padding, vertical: padding),
-      decoration: ShapeDecoration(
-          color: Color(0xfffBfBfB),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(color: Color(0xffEBEBEB)))),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            personListVm.userFullName!,
-            style: textStyle.copyWith(
-                fontSize: kFontSizeText(sizeScreen, FontSize.subTitle)),
-          ),
-          SizedBox(
-            width: padding,
-          ),
-          InkWell(
-            onTap: () {
-              removeItem(personListVm);
-            },
-            child: Container(
-              width: 10,
-              height: 2,
-              color: Colors.black,
-            ),
-          )
-        ],
       ),
     );
   }

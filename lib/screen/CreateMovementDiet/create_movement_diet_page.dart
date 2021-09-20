@@ -3,48 +3,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
-import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
-import 'package:gym_app/ViewModels/AnonymousPlanTypeDetail/AnonymousPlanTypeDetailFormVm.dart';
+import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeDayMealVm.dart';
+import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/DietPlanTypeDetail/DietPlanTypeDetailFormVm.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/no_data.dart';
 import 'package:gym_app/extensions/ext.dart';
 import 'package:gym_app/main.dart';
-import 'package:gym_app/screen/CreateMovement/components/warning_delete_trun_screen.dart';
+import 'package:gym_app/screen/CreateMovementOtherSports/create_movement_other_sports_page.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
-class CreateMovementOtherSportsPage extends StatefulWidget {
-  static const routeName = '/CreateMovementOtherSportsPage';
-  const CreateMovementOtherSportsPage(
+class CreateMovementDietPage extends StatefulWidget {
+  static const routeName = '/CreateMovementDietPage';
+  const CreateMovementDietPage(
       {Key? key,
-      required this.anonymousPlanTypeDayTermVm,
-      required this.anonymousPlantypeFormVm})
+      required this.dietPlanTypeDayTermVm,
+      required this.dietPlanTypeFormVm})
       : super(key: key);
-  final AnonymousPlanTypeDayTermVm anonymousPlanTypeDayTermVm;
-  final AnonymousPlantypeFormVm anonymousPlantypeFormVm;
+  final DietPlanTypeDayMealVm dietPlanTypeDayTermVm;
+  final DietPlanTypeFormVm dietPlanTypeFormVm;
 
   @override
-  _CreateMovementOtherSportsPageState createState() =>
-      _CreateMovementOtherSportsPageState();
+  _CreateMovementDietPageState createState() => _CreateMovementDietPageState();
 }
 
-class _CreateMovementOtherSportsPageState
-    extends State<CreateMovementOtherSportsPage> {
+class _CreateMovementDietPageState extends State<CreateMovementDietPage> {
   bool isEmptyTextField = true;
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async {
-        List<AnonymousPlanTypeDetailFormVm> x = widget
-            .anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+        List<DietPlanTypeDetailFormVm> x = widget
+            .dietPlanTypeFormVm.dietPlanTypeDetailForms!
             .where((element) =>
-                element.dayNumber ==
-                widget.anonymousPlanTypeDayTermVm.dayNumber)
+                element.dayNumber == widget.dietPlanTypeDayTermVm.dayNumber)
             .toList();
         for (int i = 0; i < x.length; i++) {
-          x[i].nameMovementController!.clear();
+          x[i].nameDietController!.clear();
           x[i].descriptionController!.clear();
         }
         return Future.value(true);
@@ -53,18 +50,17 @@ class _CreateMovementOtherSportsPageState
         resizeToAvoidBottomInset: true,
         backgroundColor: kColorAppbar,
         appBar: AppBarWidget(
-          title: widget.anonymousPlanTypeDayTermVm.dayNumber != 3
-              ? 'روز ${widget.anonymousPlanTypeDayTermVm.dayNumber.toString().toWord()}م'
+          title: widget.dietPlanTypeDayTermVm.dayNumber != 3
+              ? 'روز ${widget.dietPlanTypeDayTermVm.dayNumber.toString().toWord()}م'
               : 'روز سوم',
           onBack: () async {
-            List<AnonymousPlanTypeDetailFormVm> x = widget
-                .anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+            List<DietPlanTypeDetailFormVm> x = widget
+                .dietPlanTypeFormVm.dietPlanTypeDetailForms!
                 .where((element) =>
-                    element.dayNumber ==
-                    widget.anonymousPlanTypeDayTermVm.dayNumber)
+                    element.dayNumber == widget.dietPlanTypeDayTermVm.dayNumber)
                 .toList();
             for (int i = 0; i < x.length; i++) {
-              x[i].nameMovementController!.clear();
+              x[i].nameDietController!.clear();
               x[i].descriptionController!.clear();
             }
             Navigator.of(context).pop();
@@ -83,36 +79,34 @@ class _CreateMovementOtherSportsPageState
                     child: Row(children: [
                       Row(
                         children: List.generate(
-                          widget.anonymousPlanTypeDayTermVm.termsCount!,
+                          widget.dietPlanTypeDayTermVm.mealsCount!,
                           (index) => ItemFilterChip(
                               index: index + 1,
                               onChangeValue: () {
                                 setState(() {
-                                  widget.anonymousPlanTypeDayTermVm
-                                      .currentTerm = index + 1;
+                                  widget.dietPlanTypeDayTermVm.currentTerm =
+                                      index + 1;
                                 });
                               },
                               deleteItemfunc: (idx) {
-                                widget.anonymousPlanTypeDayTermVm.termsCount =
-                                    widget.anonymousPlanTypeDayTermVm
-                                            .termsCount! -
+                                widget.dietPlanTypeDayTermVm.mealsCount =
+                                    widget.dietPlanTypeDayTermVm.mealsCount! -
                                         1;
-                                widget.anonymousPlantypeFormVm
-                                    .anonymousPlanTypeDetailForms!
-                                    .removeWhere((s) => s.termNumber == idx);
-                                widget.anonymousPlanTypeDayTermVm.currentTerm =
-                                    1;
+                                widget
+                                    .dietPlanTypeFormVm.dietPlanTypeDetailForms!
+                                    .removeWhere((s) => s.mealNumber == idx);
+                                widget.dietPlanTypeDayTermVm.currentTerm = 1;
 
                                 setState(() {});
                               },
-                              isSelected: widget
-                                  .anonymousPlanTypeDayTermVm.currentTerm!),
+                              isSelected:
+                                  widget.dietPlanTypeDayTermVm.currentTerm!),
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
-                          widget.anonymousPlanTypeDayTermVm.termsCount =
-                              widget.anonymousPlanTypeDayTermVm.termsCount! + 1;
+                          widget.dietPlanTypeDayTermVm.mealsCount =
+                              widget.dietPlanTypeDayTermVm.mealsCount! + 1;
                           setState(() {});
                         },
                         child: DottedBorder(
@@ -133,12 +127,12 @@ class _CreateMovementOtherSportsPageState
                     ]),
                   ),
                 ),
-                widget.anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                widget.dietPlanTypeFormVm.dietPlanTypeDetailForms!
                         .where((s) =>
                             s.dayNumber ==
-                                widget.anonymousPlanTypeDayTermVm.dayNumber &&
-                            s.termNumber ==
-                                widget.anonymousPlanTypeDayTermVm.currentTerm)
+                                widget.dietPlanTypeDayTermVm.dayNumber &&
+                            s.mealNumber ==
+                                widget.dietPlanTypeDayTermVm.currentTerm)
                         .toList()
                         .isEmpty
                     ? Center(
@@ -148,15 +142,14 @@ class _CreateMovementOtherSportsPageState
                       ))
                     : Column(
                         children: List.generate(
-                            widget.anonymousPlantypeFormVm
-                                .anonymousPlanTypeDetailForms!
+                            widget.dietPlanTypeFormVm.dietPlanTypeDetailForms!
                                 .where((s) =>
                                     s.dayNumber ==
-                                        widget.anonymousPlanTypeDayTermVm
-                                            .dayNumber &&
-                                    s.termNumber ==
-                                        widget.anonymousPlanTypeDayTermVm
-                                            .currentTerm)
+                                        widget
+                                            .dietPlanTypeDayTermVm.dayNumber &&
+                                    s.mealNumber ==
+                                        widget
+                                            .dietPlanTypeDayTermVm.currentTerm)
                                 .toList()
                                 .length,
                             (index) => ItemAddedMovementOtherSports(
@@ -164,39 +157,36 @@ class _CreateMovementOtherSportsPageState
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     setState(() {
-                                      widget.anonymousPlantypeFormVm
-                                          .anonymousPlanTypeDetailForms!
+                                      widget.dietPlanTypeFormVm
+                                          .dietPlanTypeDetailForms!
                                           .removeWhere((s) =>
                                               s.displayOrder == displayOrder);
                                     });
                                   },
-                                  data: widget.anonymousPlantypeFormVm
-                                      .anonymousPlanTypeDetailForms!
+                                  data: widget.dietPlanTypeFormVm
+                                      .dietPlanTypeDetailForms!
                                       .where((s) =>
                                           s.dayNumber ==
-                                              widget.anonymousPlanTypeDayTermVm
+                                              widget.dietPlanTypeDayTermVm
                                                   .dayNumber &&
-                                          s.termNumber ==
-                                              widget.anonymousPlanTypeDayTermVm
+                                          s.mealNumber ==
+                                              widget.dietPlanTypeDayTermVm
                                                   .currentTerm)
                                       .toList()[index],
                                 )),
                       ),
                 GestureDetector(
                   onTap: () {
-                    AnonymousPlanTypeDetailFormVm data =
-                        AnonymousPlanTypeDetailFormVm();
+                    DietPlanTypeDetailFormVm data = DietPlanTypeDetailFormVm();
                     data.descriptionController = TextEditingController();
-                    data.nameMovementController = TextEditingController();
-                    data.dayNumber =
-                        widget.anonymousPlanTypeDayTermVm.dayNumber;
-                    data.termNumber =
-                        widget.anonymousPlanTypeDayTermVm.currentTerm;
+                    data.nameDietController = TextEditingController();
+                    data.dayNumber = widget.dietPlanTypeDayTermVm.dayNumber;
+                    data.mealNumber = widget.dietPlanTypeDayTermVm.currentTerm;
                     data.displayOrder = MyHomePage.lastDisplayOtherSports += 1;
-                    widget.anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                    widget.dietPlanTypeFormVm.dietPlanTypeDetailForms!
                         .removeWhere(
                             (s) => s.displayOrder == data.displayOrder);
-                    widget.anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                    widget.dietPlanTypeFormVm.dietPlanTypeDetailForms!
                         .add(data);
                     setState(() {});
                   },
@@ -230,19 +220,18 @@ class _CreateMovementOtherSportsPageState
                       sizeScreen: sizeScreen,
                       title: 'ثبت برنامه',
                       onTap: () async {
-                        List<AnonymousPlanTypeDetailFormVm> x = widget
-                            .anonymousPlantypeFormVm
-                            .anonymousPlanTypeDetailForms!
+                        List<DietPlanTypeDetailFormVm> x = widget
+                            .dietPlanTypeFormVm.dietPlanTypeDetailForms!
                             .where((element) =>
                                 element.dayNumber ==
-                                widget.anonymousPlanTypeDayTermVm.dayNumber)
+                                widget.dietPlanTypeDayTermVm.dayNumber)
                             .toList();
                         if (x.isNotEmpty) {
                           for (int i = 0; i < x.length; i++) {
-                            if (x[i].nameMovementController!.text.isEmpty) {
+                            if (x[i].nameDietController!.text.isEmpty) {
                               await Fluttertoast.showToast(
                                   msg:
-                                      'نام حرکت در روز ${x[i].dayNumber.toString().toWord()}م و نوبت ${x[i].termNumber.toString().toWord()}م خالی است');
+                                      'نام حرکت در روز ${x[i].dayNumber.toString().toWord()}م و نوبت ${x[i].mealNumber.toString().toWord()}م خالی است');
                               isEmptyTextField = true;
                               break;
                             }
@@ -254,7 +243,7 @@ class _CreateMovementOtherSportsPageState
                               backgroundColor: Colors.black,
                               snackStyle: SnackStyle.FLOATING,
                               message:
-                                  'برنامه ی روز ${widget.anonymousPlanTypeDayTermVm.dayNumber.toString().toWord()}م ثبت شد',
+                                  'برنامه ی روز ${widget.dietPlanTypeDayTermVm.dayNumber.toString().toWord()}م ثبت شد',
                             ));
                             Future.delayed(Duration(seconds: 1), () {
                               Navigator.of(context).pop(true);
@@ -278,7 +267,7 @@ class ItemAddedMovementOtherSports extends StatelessWidget {
     required this.data,
     required this.deleteMovement,
   }) : super(key: key);
-  final AnonymousPlanTypeDetailFormVm data;
+  final DietPlanTypeDetailFormVm data;
   final Function deleteMovement;
 
   @override
@@ -328,7 +317,7 @@ class ItemAddedMovementOtherSports extends StatelessWidget {
                                   style: textStyle.copyWith(
                                       fontSize: kFontSizeText(
                                           sizeScreen, FontSize.subTitle)),
-                                  controller: data.nameMovementController,
+                                  controller: data.nameDietController,
                                   decoration: InputDecoration(
                                       suffix: Padding(
                                           padding:
@@ -344,7 +333,7 @@ class ItemAddedMovementOtherSports extends StatelessWidget {
                                               height: 20,
                                             ),
                                           )),
-                                      hintText: 'نام حرکت',
+                                      hintText: 'نام وعده',
                                       hintStyle: textStyle.copyWith(
                                           color: Colors.black45,
                                           fontSize: kFontSizeText(
@@ -360,7 +349,7 @@ class ItemAddedMovementOtherSports extends StatelessWidget {
                                           sizeScreen, FontSize.subTitle)),
                                   controller: data.descriptionController,
                                   decoration: InputDecoration(
-                                      hintText: 'توضیحات حرکت',
+                                      hintText: 'توضیحات',
                                       hintStyle: textStyle.copyWith(
                                           color: Colors.black45,
                                           fontSize: kFontSizeText(
@@ -372,78 +361,5 @@ class ItemAddedMovementOtherSports extends StatelessWidget {
                         ],
                       ))),
             )));
-  }
-}
-
-class ItemFilterChip extends StatelessWidget {
-  const ItemFilterChip(
-      {Key? key,
-      required this.onChangeValue,
-      required this.deleteItemfunc,
-      required this.index,
-      required this.isSelected})
-      : super(key: key);
-
-  final Function onChangeValue;
-  final int isSelected;
-  final int index;
-  final Function deleteItemfunc;
-  @override
-  Widget build(BuildContext context) {
-    final Size sizeScreen = MediaQuery.of(context).size;
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: padding / 2),
-      padding: EdgeInsets.fromLTRB(5, 5, 30, 5),
-      decoration: BoxDecoration(
-        color: index == isSelected ? Color(0xff00B4D8) : Color(0xffEEEEEE),
-        borderRadius: BorderRadius.horizontal(
-            right: Radius.circular(40), left: Radius.circular(40)),
-      ),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              onChangeValue();
-            },
-            child: Center(
-              child: Text(
-                index != 3
-                    ? 'نوبت ${(index).toString().toWord()}م'
-                    : 'نوبت سوم',
-                style: textStyle.copyWith(
-                    fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
-                    color: index == isSelected
-                        ? Color(0xffffffff)
-                        : Color(0xff959595)),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: padding,
-          ),
-          GestureDetector(
-            onTap: () async {
-              bool result = await WarningDelteTrunScreen()
-                  .warningDeleteTrun(context, sizeScreen, (index).toString());
-              if (result) {
-                deleteItemfunc(index);
-              }
-            },
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Container(
-                child: Center(
-                  child: SvgPicture.asset(
-                    'assets/icons/trash.svg',
-                    width: kFontSizeText(sizeScreen, FontSize.title),
-                    height: kFontSizeText(sizeScreen, FontSize.title),
-                  ),
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
   }
 }

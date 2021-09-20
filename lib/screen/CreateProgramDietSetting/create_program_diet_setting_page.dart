@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
-import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
-import 'package:gym_app/blocs/AnonymousPlanType/bloc/create_using_form_bloc.dart';
+import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeDayMealVm.dart';
+import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeFormVm.dart';
+import 'package:gym_app/blocs/DietPlanType/bloc/create_using_form_diet_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/main.dart';
+import 'package:gym_app/screen/CreateMovementDiet/create_movement_diet_page.dart';
 import 'package:gym_app/screen/CreateMovementOtherSports/create_movement_other_sports_page.dart';
 import 'package:gym_app/screen/CreateProgramOtherSportsSetting/create_program_other_sports_setting_pages.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 class CreateProgramDietSettingPage extends StatelessWidget {
   static const routeName = '/CreateProgramDietSettingPage';
-  CreateProgramDietSettingPage(
-      {Key? key, required this.anonymousPlantypeFormVm})
+  CreateProgramDietSettingPage({Key? key, required this.dietPlanTypeFormVm})
       : super(key: key);
-  final AnonymousPlantypeFormVm? anonymousPlantypeFormVm;
+  final DietPlanTypeFormVm? dietPlanTypeFormVm;
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +114,7 @@ class CreateProgramDietSettingPage extends StatelessWidget {
             ),
             DaysTask(
               sizeScreen: sizeScreen,
-              anonymousPlantypeFormVm: anonymousPlantypeFormVm!,
+              dietPlanTypeFormVm: dietPlanTypeFormVm!,
             )
           ],
         ),
@@ -125,13 +125,11 @@ class CreateProgramDietSettingPage extends StatelessWidget {
 
 class DaysTask extends StatefulWidget {
   const DaysTask(
-      {Key? key,
-      required this.sizeScreen,
-      required this.anonymousPlantypeFormVm})
+      {Key? key, required this.sizeScreen, required this.dietPlanTypeFormVm})
       : super(key: key);
 
   final Size sizeScreen;
-  final AnonymousPlantypeFormVm anonymousPlantypeFormVm;
+  final DietPlanTypeFormVm dietPlanTypeFormVm;
 
   @override
   _DaysTaskState createState() => _DaysTaskState();
@@ -170,45 +168,44 @@ class _DaysTaskState extends State<DaysTask> {
               ),
               Column(
                 children: List.generate(
-                    widget.anonymousPlantypeFormVm.dayTerms!.length,
+                    widget.dietPlanTypeFormVm.dayMeals!.length,
                     (index) => Material(
                           color: Colors.transparent,
                           child: Container(
                             child: InkWell(
                               onTap: () {
-                                // widget.anonymousPlantypeFormVm
+                                // widget.dietPlanTypeFormVm
                                 //     .anonymousPlanTypeDetailForms = [];
                                 // MyHomePage.lastDisplayOtherSports = 0;
-                                MyVm myVm = MyVm(
-                                    anonymousPlanTypeDayTermVm: widget
-                                        .anonymousPlantypeFormVm
-                                        .dayTerms![index],
-                                    anonymousPlantypeFormVm:
-                                        widget.anonymousPlantypeFormVm);
+                                MyDietVm myVm = MyDietVm(
+                                    dietPlanTypeDayMealVm: widget
+                                        .dietPlanTypeFormVm.dayMeals![index],
+                                    dietPlanTypeFormVm:
+                                        widget.dietPlanTypeFormVm);
                                 Navigator.of(context).pushNamed(
-                                    CreateMovementOtherSportsPage.routeName,
+                                    CreateMovementDietPage.routeName,
                                     arguments: myVm);
                               },
                               child: ItemDay(
-                                  title: widget.anonymousPlantypeFormVm
-                                      .dayTerms![index].dayNumber
+                                  title: widget.dietPlanTypeFormVm
+                                      .dayMeals![index].dayNumber
                                       .toString()
                                       .toWord(),
                                   deleteItem: () {
-                                    widget.anonymousPlantypeFormVm.dayTerms!
+                                    widget.dietPlanTypeFormVm.dayMeals!
                                         .removeAt(index);
-                                    if (widget.anonymousPlantypeFormVm.dayTerms!
+                                    if (widget.dietPlanTypeFormVm.dayMeals!
                                             .length >
                                         index) {
                                       for (int i = index;
                                           i <
-                                              widget.anonymousPlantypeFormVm
-                                                  .dayTerms!.length;
+                                              widget.dietPlanTypeFormVm
+                                                  .dayMeals!.length;
                                           i += 1) {
-                                        widget.anonymousPlantypeFormVm
-                                            .dayTerms![i].dayNumber = widget
-                                                .anonymousPlantypeFormVm
-                                                .dayTerms![i]
+                                        widget.dietPlanTypeFormVm.dayMeals![i]
+                                            .dayNumber = widget
+                                                .dietPlanTypeFormVm
+                                                .dayMeals![i]
                                                 .dayNumber! -
                                             1;
                                       }
@@ -223,13 +220,13 @@ class _DaysTaskState extends State<DaysTask> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    widget.anonymousPlantypeFormVm.dayTerms!.add(
-                        AnonymousPlanTypeDayTermVm(
+                    widget.dietPlanTypeFormVm.dayMeals!.add(
+                        DietPlanTypeDayMealVm(
                             currentTerm: 1,
-                            termsCount: 1,
-                            dayNumber: widget
-                                    .anonymousPlantypeFormVm.dayTerms!.length +
-                                1));
+                            mealsCount: 1,
+                            dayNumber:
+                                widget.dietPlanTypeFormVm.dayMeals!.length +
+                                    1));
                   });
                 },
                 child: Container(
@@ -260,10 +257,9 @@ class _DaysTaskState extends State<DaysTask> {
               SizedBox(
                 height: 20,
               ),
-              BlocConsumer<CreateUsingFormOthersSportsBloc,
-                  CreateUsingFormOthersSportsState>(
+              BlocConsumer<CreateUsingFormDietBloc, CreateUsingFormDietState>(
                 listener: (context, state) async {
-                  if (state is CreateUsingFormOthersSportsLoadedState) {
+                  if (state is CreateUsingFormDietLoadedState) {
                     if (state.resultObject != null &&
                         state.resultObject!.success!) {
                       await Fluttertoast.showToast(
@@ -277,28 +273,25 @@ class _DaysTaskState extends State<DaysTask> {
                   }
                 },
                 builder: (context, state) {
-                  if (state is CreateUsingFormOthersSportsLoadingState)
+                  if (state is CreateUsingFormDietLoadingState)
                     return MyWaiting();
                   else
                     return CustomeButton(
                         sizeScreen: widget.sizeScreen,
                         title: "ثبت",
                         onTap: () {
-                          if (widget.anonymousPlantypeFormVm.dayTerms!
+                          if (widget.dietPlanTypeFormVm.dayMeals!.isNotEmpty &&
+                              widget.dietPlanTypeFormVm.dietPlanTypeDetailForms!
                                   .isNotEmpty &&
-                              widget.anonymousPlantypeFormVm
-                                  .anonymousPlanTypeDetailForms!.isNotEmpty &&
-                              widget.anonymousPlantypeFormVm
-                                  .anonymousPlanTypeDetailForms!
+                              widget.dietPlanTypeFormVm.dietPlanTypeDetailForms!
                                   .where((element) => element
-                                      .nameMovementController!.text.isNotEmpty)
+                                      .nameDietController!.text.isNotEmpty)
                                   .toList()
                                   .isNotEmpty) {
-                            BlocProvider.of<CreateUsingFormOthersSportsBloc>(
-                                    context)
-                                .add(CreateUsingFormOtherSportsLoadingEvent(
-                                    anonymousPlantypeFormVm:
-                                        widget.anonymousPlantypeFormVm));
+                            BlocProvider.of<CreateUsingFormDietBloc>(context)
+                                .add(CreateUsingFormDietLoadingEvent(
+                                    dietPlanTypeFormVm:
+                                        widget.dietPlanTypeFormVm));
                           } else
                             Fluttertoast.showToast(
                                 msg: 'برنامه باید حداقل یک آیتم داشته باشد');
@@ -313,42 +306,9 @@ class _DaysTaskState extends State<DaysTask> {
   }
 }
 
-class ItemDay extends StatelessWidget {
-  const ItemDay({
-    Key? key,
-    required this.deleteItem,
-    required this.title,
-  }) : super(key: key);
-  final String title;
-  final Function deleteItem;
-  @override
-  Widget build(BuildContext context) {
-    final Size sizeScreen = MediaQuery.of(context).size;
-    return Container(
-      decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.black12))),
-      padding: EdgeInsets.symmetric(vertical: padding, horizontal: padding),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title != "سه" ? 'روز $titleم' : 'روز سوم',
-            style: textStyle.copyWith(
-              fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              deleteItem();
-            },
-            child: SvgPicture.asset(
-              'assets/icons/trash.svg',
-              width: kFontSizeText(sizeScreen, FontSize.title) + 8,
-              height: kFontSizeText(sizeScreen, FontSize.title) + 8,
-            ),
-          )
-        ],
-      ),
-    );
-  }
+class MyDietVm {
+  final DietPlanTypeFormVm dietPlanTypeFormVm;
+  final DietPlanTypeDayMealVm dietPlanTypeDayMealVm;
+  MyDietVm(
+      {required this.dietPlanTypeDayMealVm, required this.dietPlanTypeFormVm});
 }

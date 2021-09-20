@@ -8,6 +8,7 @@ import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customBottomBar.dart';
 import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
+import 'package:gym_app/screen/CreateProgramDiet/create_program_diet_page.dart';
 import 'package:gym_app/screen/CreateProgramOtherSports/create_program_other_sports_page.dart';
 import 'package:gym_app/screen/Elanha/elan_page.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
@@ -214,9 +215,15 @@ class HomePage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ItemWidget(
-                  title: "ایجاد برنامه\n غذایی",
-                  pic: "assets/icons/vuesax-linear-reserve.svg",
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(CreateProgramDietPage.routeName);
+                  },
+                  child: ItemWidget(
+                    title: "ایجاد برنامه\n غذایی",
+                    pic: "assets/icons/vuesax-linear-reserve.svg",
+                  ),
                 ),
                 InkWell(
                   onTap: () {
