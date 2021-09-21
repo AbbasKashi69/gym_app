@@ -13,7 +13,7 @@ class SubscriptionTypeService {
   static const String url_create = '/api/SubscriptionType/Create';
   static const String url_edit = '/api/SubscriptionType/Edit';
   static const String url_delete = '/api/SubscriptionType/Delete';
-  static const String url_getUserCurrentSubscription = '/api/SubscriptionType/Delete';
+  static const String url_getUserCurrentSubscription = '/api/SubscriptionType/GetUserCurrentSubscription';
 
 
   Future<ResultObject?> getUserCurrentSubscription() async {

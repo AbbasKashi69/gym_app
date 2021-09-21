@@ -6,13 +6,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gym_app/ViewModels/PlanTypeLog/PlanTypeLogVm.dart';
+import 'package:gym_app/ViewModels/SubscriptionTypeInvoice/SubscriptionTypeInvoiceListVm.dart';
+import 'package:gym_app/ViewModels/SubscriptionTypeInvoice/SubscriptionTypeInvoiceVm.dart';
+import 'package:gym_app/blocs/Subscription/bloc/get_subscription_bloc.dart';
+import 'package:gym_app/blocs/Subscription/bloc/get_subscription_invoice_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customBottomBar.dart';
+import 'package:gym_app/components/myWaiting.dart';
+import 'package:gym_app/components/no_data.dart';
 import 'package:gym_app/extensions/ext.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'buy_subscription.dart';
-
+import 'package:get/get.dart';
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({Key? key}) : super(key: key);
   static const routeName = '/subscription';
@@ -22,6 +30,9 @@ class SubscriptionPage extends StatefulWidget {
 }
 
 class _SubscriptionPageState extends State<SubscriptionPage> {
+  late bool isAlign;
+  late ScrollController _exerciseScrollController;
+  late ScrollController _dietScrollController;
   Random random = new Random();
   int randomNumber = 0;
   List listItems = [
@@ -57,12 +68,32 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
   @override
   void initState() {
-    randomNumber = random.nextInt(100);
+    isAlign = true;
+    _exerciseScrollController = ScrollController()..addListener(_listener);
+    _dietScrollController = ScrollController()..addListener(_listenerDiet);
     super.initState();
+  }
+
+  _listener() {
+    if (_exerciseScrollController.position.pixels ==
+        _exerciseScrollController.position.maxScrollExtent) {
+      BlocProvider.of<SubscriptionBloc>(context)
+        ..add(SubscriptionLoadingEvent());
+    }
+  }
+
+  _listenerDiet() {
+    if (_dietScrollController.position.pixels ==
+        _dietScrollController.position.maxScrollExtent) {
+      BlocProvider.of<SubscriptionBloc>(context)
+        ..add(SubscriptionLoadingEvent());
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final Size sizeScreen = MediaQuery.of(context).size;
+
     return Scaffold(
         body: SingleChildScrollView(
       child: SafeArea(
@@ -170,45 +201,100 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                           'assets/icons/card-icon.svg'),
                                       Text("اشتراک کنونی :",
                                           style: textStyleSubscription),
-                                      Text("دو ماهه",
-                                          style: textStyleSubscription2),
+                                      BlocBuilder<SubscriptionBloc,
+                                          SubscriptionState>(
+                                        builder: (context, state) {
+                                          if (state
+                                              is SubscriptionLoadingState) {
+                                            return Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Center(child: CircularProgressIndicator()),
+                                            );
+                                          } else if (state
+                                              is SubscriptionLoadedState) {
+
+                                            if (state.resultObject != null) {
+                                              if (state.resultObject!.success ==
+                                                  true) {
+                                                SubscriptionTypeInvoiceVm
+                                                    subscriptionTypeInvoiceVm =
+                                                    SubscriptionTypeInvoiceVm
+                                                        .fromJson(state
+                                                                .resultObject!
+                                                                .extra
+                                                            as Map<String,
+                                                                dynamic>);
+                                                return Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Text("${subscriptionTypeInvoiceVm.subscriptionTypeTitle}",style: TextStyle(color: Colors.black,fontSize: 15),),
+                                                );
+                                              }else{
+                                                return Container(
+
+                                                );
+                                              }
+                                            }else{
+                                              return Container(
+
+                                              );
+                                            }
+                                          } else {
+                                            return Container(
+
+                                            );
+                                          }
+                                        },
+                                      )
                                     ],
                                   ),
                                 )),
-                                Expanded(
-                                    child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      randomNumber = random.nextInt(100);
-                                    });
+                                BlocBuilder<GetSubscriptionInvoiceBloc, GetSubscriptionInvoiceState>(
+                                  builder: (context, state) {
+                                    if (state is GetSubscriptionInvoiceLoadingState)
+                                      return  Padding(
+                                        padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.18),
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    else if (state is GetSubscriptionInvoiceLoadedState) {
+                                      if (state.page_subscriptionTypeInvoiceListVm != null &&
+                                          state.page_subscriptionTypeInvoiceListVm!.items != null &&
+                                          state.page_subscriptionTypeInvoiceListVm!.items!.isNotEmpty) {
+                                        return  Expanded(
+                                            child: GestureDetector(
+                                              child: CircularPercentIndicator(
+                                                startAngle: 0,
+                                                backgroundWidth: 12.0,
+                                                backgroundColor: Colors.white,
+                                                radius: 95.0,
+                                                animateFromLastPercent: true,
+                                                lineWidth: 12.0,
+                                                animation: true,
+                                                percent: (state.page_subscriptionTypeInvoiceListVm!.items![0].dayCount! / 100),
+                                                center: Column(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(state.page_subscriptionTypeInvoiceListVm!.items![0].dayCount.toString(),style: textStyleSubscription,),
+                                                    Text(
+                                                      "روز",
+                                                      style: textStyleSubscription,
+                                                    ),
+                                                  ],
+                                                ),
+                                                circularStrokeCap: CircularStrokeCap.round,
+                                                progressColor: parseColor("#48CAE4"),
+                                              ),
+                                            ));
+                                      } else
+                                        return Container(
+                                        );
+                                    } else
+                                      return Container(
+
+                                      );
                                   },
-                                  child: CircularPercentIndicator(
-                                    startAngle: 0,
-                                    backgroundWidth: 12.0,
-                                    backgroundColor: Colors.white,
-                                    radius: 95.0,
-                                    animateFromLastPercent: true,
-                                    lineWidth: 12.0,
-                                    animation: true,
-                                    percent: (randomNumber / 100),
-                                    center: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          randomNumber.toString(),
-                                          style: textStyleSubscription,
-                                        ),
-                                        Text(
-                                          "روز",
-                                          style: textStyleSubscription,
-                                        ),
-                                      ],
-                                    ),
-                                    circularStrokeCap: CircularStrokeCap.round,
-                                    progressColor: parseColor("#48CAE4"),
-                                  ),
-                                )),
+                                ),
+
                               ],
                             ),
                           ),
@@ -263,6 +349,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                             child: Row(
                               textDirection: TextDirection.rtl,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Row(
                                   children: [
@@ -275,11 +362,32 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                     )
                                   ],
                                 ),
-                                Text(
-                                  "1,300,000 تومان",
-                                  textDirection: TextDirection.rtl,
-                                  style: textStyleBuySubscription2,
-                                )
+                                BlocBuilder<GetSubscriptionInvoiceBloc, GetSubscriptionInvoiceState>(
+                                  builder: (context, state) {
+                                    if (state is GetSubscriptionInvoiceLoadingState)
+                                      return Padding(
+                                        padding:  EdgeInsets.symmetric (horizontal: Get.width * 0.1),
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    else if (state is GetSubscriptionInvoiceLoadedState) {
+                                      if (state.page_subscriptionTypeInvoiceListVm != null &&
+                                          state.page_subscriptionTypeInvoiceListVm!.items != null &&
+                                          state.page_subscriptionTypeInvoiceListVm!.items!.isNotEmpty) {
+                                        return Padding(
+                                          padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.05),
+                                          child: Text("${state.page_subscriptionTypeInvoiceListVm!.items![0].nTotalPrice} تومان ",style: textStyleSubscription.copyWith(color: Colors.white),textAlign: TextAlign.left),
+                                        );
+                                      } else
+                                        return Container(
+
+                                        );
+                                    } else
+                                      return Container(
+
+                                      );
+                                  },
+                                ),
+
                               ],
                             ),
                           ),
@@ -309,24 +417,158 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   )),
             ),
-            Padding(
-              padding: EdgeInsets.all(20),
-              child: ListView.builder(
-                itemCount: listItems.length,
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return item(listItems[index]);
-                },
-              ),
-            )
+            BlocBuilder<GetSubscriptionInvoiceBloc, GetSubscriptionInvoiceState>(
+              builder: (context, state) {
+                if (state is GetSubscriptionInvoiceLoadingState)
+                  return CircularProgressIndicator();
+                else if (state is GetSubscriptionInvoiceLoadedState) {
+                  if (state.page_subscriptionTypeInvoiceListVm != null &&
+                      state.page_subscriptionTypeInvoiceListVm!.items != null &&
+                      state.page_subscriptionTypeInvoiceListVm!.items!.isNotEmpty) {
+                    return ListView.builder(
+                      controller: isAlign
+                          ? _exerciseScrollController
+                          : _dietScrollController,
+                   shrinkWrap: true,
+                      padding: EdgeInsets.only(bottom: padding),
+                      itemBuilder: (context, index) {
+                        if (index < state.page_subscriptionTypeInvoiceListVm!.items!.length)
+                          return ItemDietary(
+                              sizeScreen: sizeScreen,
+                              subscriptionTypeInvoiceListVm:
+                              state.page_subscriptionTypeInvoiceListVm!.items![index]
+                          );
+                        else
+                          return Container();
+                      },
+                      itemCount: state.page_subscriptionTypeInvoiceListVm!.hasNext!
+                          ? state.page_subscriptionTypeInvoiceListVm!.items!.length + 1
+                          : state.page_subscriptionTypeInvoiceListVm!.items!.length,
+                    );
+                  } else
+                    return NoData();
+                } else
+                  return Container();
+              },
+            ),
           ],
         ),
       )),
     ));
   }
 
-  Widget item(data) {
+  // Widget item(data) {
+  //   return                                         BlocBuilder<GetSubscriptionInvoiceBloc, GetSubscriptionInvoiceState>(
+  //     builder: (context, state) {
+  //       if (state is GetSubscriptionInvoiceLoadingState)
+  //         return Center(child: CircularProgressIndicator());
+  //       else if (state is GetSubscriptionInvoiceLoadedState) {
+  //         if (state.page_subscriptionTypeInvoiceListVm != null &&
+  //             state.page_subscriptionTypeInvoiceListVm!.items != null &&
+  //             state.page_subscriptionTypeInvoiceListVm!.items!.isNotEmpty) {
+  //           return Padding(
+  //             padding: EdgeInsets.symmetric(vertical: 5),
+  //             child: DottedBorder(
+  //               borderType: BorderType.RRect,
+  //               color: parseColor('#CCCCCC'),
+  //               dashPattern: [5],
+  //               radius: Radius.circular(12),
+  //               child: ClipRRect(
+  //                   borderRadius: BorderRadius.all(Radius.circular(12)),
+  //                   child: Container(
+  //                     decoration: BoxDecoration(
+  //                         border: Border(
+  //                             right:
+  //                             BorderSide(color: parseColor('#00B4D8'), width: 3))),
+  //                     child: Padding(
+  //                       padding: EdgeInsets.all(15),
+  //                       child: Row(
+  //                         mainAxisAlignment: MainAxisAlignment.start,
+  //                         children: [
+  //                           Expanded(
+  //                             child: Column(
+  //                               crossAxisAlignment: CrossAxisAlignment.start,
+  //                               children: [
+  //                                 Text(
+  //                                   data['title'],
+  //                                   style: TextStyle(color: parseColor('#0077B6')),
+  //                                 ),
+  //                                 SizedBox(
+  //                                   height: 10,
+  //                                 ),
+  //                                 Text(
+  //                                   data['boxName'],
+  //                                 ),
+  //                                 data['type'].isNotEmpty
+  //                                     ? Column(
+  //                                   children: [
+  //                                     SizedBox(
+  //                                       height: 10,
+  //                                     ),
+  //                                     Text(
+  //                                       data['type'],
+  //                                     ),
+  //                                   ],
+  //                                 )
+  //                                     : SizedBox()
+  //                               ],
+  //                             ),
+  //                           ),
+  //                           Expanded(
+  //                             child: Column(
+  //                               mainAxisAlignment: MainAxisAlignment.start,
+  //                               crossAxisAlignment: CrossAxisAlignment.end,
+  //                               children: [
+  //                                 Text(data['date']),
+  //                                 data['price'].isNotEmpty
+  //                                     ? Column(
+  //                                   children: [
+  //                                     SizedBox(
+  //                                       height: 10,
+  //                                     ),
+  //                                     Text(
+  //                                       data['price'],
+  //                                     ),
+  //                                   ],
+  //                                 )
+  //                                     : SizedBox()
+  //                               ],
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                   )),
+  //             ),
+  //           );
+  //         } else
+  //           return Container(
+  //             height: 20,
+  //             width: 20,
+  //             color: Colors.red,
+  //           );
+  //       } else
+  //         return Container(
+  //           height: 10,
+  //           width: 10,
+  //           color: Colors.blue,
+  //         );
+  //     },
+  //   );
+  //
+  // }
+
+}
+class ItemDietary extends StatelessWidget {
+  const ItemDietary(
+      {Key? key, required this.sizeScreen, required this.subscriptionTypeInvoiceListVm})
+      : super(key: key);
+
+  final Size sizeScreen;
+  final SubscriptionTypeInvoiceListVm subscriptionTypeInvoiceListVm;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5),
       child: DottedBorder(
@@ -340,7 +582,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               decoration: BoxDecoration(
                   border: Border(
                       right:
-                          BorderSide(color: parseColor('#00B4D8'), width: 3))),
+                      BorderSide(color: parseColor('#00B4D8'), width: 3))),
               child: Padding(
                 padding: EdgeInsets.all(15),
                 child: Row(
@@ -351,26 +593,26 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            data['title'],
+                            subscriptionTypeInvoiceListVm.subscriptionTypeTitle.toString(),
                             style: TextStyle(color: parseColor('#0077B6')),
                           ),
                           SizedBox(
                             height: 10,
                           ),
                           Text(
-                            data['boxName'],
+                            subscriptionTypeInvoiceListVm.subscriptionTypeDescription.toString(),
                           ),
-                          data['type'].isNotEmpty
+                          subscriptionTypeInvoiceListVm.subscriptionTypeTitle!.isNotEmpty
                               ? Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      data['type'],
-                                    ),
-                                  ],
-                                )
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                subscriptionTypeInvoiceListVm.subscriptionTypeTitle.toString()
+                              ),
+                            ],
+                          )
                               : SizedBox()
                         ],
                       ),
@@ -380,18 +622,18 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(data['date']),
-                          data['price'].isNotEmpty
+                          Text(subscriptionTypeInvoiceListVm.nCreationDate.toString()),
+                          subscriptionTypeInvoiceListVm.nTotalPrice!.isNotEmpty
                               ? Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      data['price'],
-                                    ),
-                                  ],
-                                )
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "${subscriptionTypeInvoiceListVm.nTotalPrice.toString()} تومان "
+                              ),
+                            ],
+                          )
                               : SizedBox()
                         ],
                       ),

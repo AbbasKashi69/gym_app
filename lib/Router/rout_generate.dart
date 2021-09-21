@@ -13,6 +13,7 @@ import 'package:gym_app/blocs/BottomNav/bloc/bottom_nav_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_students_as_person_list_bloc.dart';
 import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/blocs/Resume/bloc/get_resume_bloc.dart';
+import 'package:gym_app/blocs/Subscription/bloc/get_subscription_bloc.dart';
 import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateMovementOtherSports/create_movement_other_sports_page.dart';
@@ -71,7 +72,12 @@ class MyRouter {
       case HomePage.routeName:
         return MaterialPageRoute(builder: (context) => HomePage());
       case SubscriptionPage.routeName:
-        return MaterialPageRoute(builder: (context) => SubscriptionPage());
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                create: (context) =>
+                SubscriptionBloc()..add(SubscriptionLoadingEvent()),
+                child: SubscriptionPage())
+        );
       case ProfilePage.routeName:
         return MaterialPageRoute(builder: (context) => ProfilePage());
       case ProfileApprenticePage.routeName:
@@ -82,11 +88,11 @@ class MyRouter {
         return MaterialPageRoute(builder: (context) => WalletPage());
       case CvPage.routeName:
         return MaterialPageRoute(
-            builder: (context) =>
-                BlocProvider(
-                    create: (context) => GetResumeBloc()..add(GetResumeLoadingEvent()),
-                    child: CvPage()
-                ));
+            builder: (context) => BlocProvider(
+                create: (context) =>
+                    GetResumeBloc()..add(GetResumeLoadingEvent()),
+                child: CvPage())
+        );
       case PersonalInfoPage.routeName:
         return MaterialPageRoute(builder: (context) => PersonalInfoPage());
       case SettingPage.routeName:

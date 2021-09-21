@@ -21,7 +21,7 @@ String? startDate;
 String? nStartDate;
 String? endDate;
 String? nEndDate;
-
+int? dayCount;
 
 
 
@@ -37,7 +37,8 @@ this.nCreationDate,
 this.totalPrice, 
 this.nTotalPrice, 
 this.totalTerm, 
-this.nTotalTerm, 
+this.nTotalTerm,
+        this.dayCount,
 this.subscriptionTypeColorCode, 
 this.startDate, 
 this.nStartDate, 
