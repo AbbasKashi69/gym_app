@@ -197,6 +197,7 @@ class _CreateProgramOtherSportsPageState
                     ),
                     SizedBox(height: padding * 2),
                     CustomeTextField(
+                      onChange: (String vlaue) {},
                       validator: (String value) {
                         if (value.isEmpty)
                           return 'نام برنامه نمیتواند خالی باشد';
@@ -432,7 +433,7 @@ class AddedStudent extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            personListVm.userFullName!,
+            personListVm.userFullName ?? "",
             style: textStyle.copyWith(
                 fontSize: kFontSizeText(sizeScreen, FontSize.subTitle)),
           ),

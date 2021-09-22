@@ -127,39 +127,19 @@ class ItemRequest extends StatelessWidget {
               Expanded(
                   child: Row(
                 children: [
-                  BlocConsumer<ChangeStatusBloc, ChangeStatusState>(
-                    listener: (context, state) {
-                      if (state is ChangeStatusLoadedState) {
-                        if (state.resultObject != null) {
-                          if (state.resultObject!.success!)
-                            BlocProvider.of<GetCoachStudentsBloc>(context)
-                                .add(GetCoachStudentsLoadingEvent());
-                          Fluttertoast.showToast(
-                              msg: state.resultObject!.message!);
+                  BlocListener<ChangeStatusBloc, ChangeStatusState>(
+                      listener: (context, state) {
+                        if (state is ChangeStatusLoadedState) {
+                          if (state.resultObject != null) {
+                            if (state.resultObject!.success!)
+                              BlocProvider.of<GetCoachStudentsBloc>(context)
+                                  .add(GetCoachStudentsLoadingEvent());
+                            Fluttertoast.showToast(
+                                msg: state.resultObject!.message!);
+                          }
                         }
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is ChangeStatusLoadingState) if (state.id ==
-                          coachStudentVm.id)
-                        return Container(
-                          width: 10,
-                          height: 10,
-                          child: MyWaiting(),
-                        );
-                      else
-                        return ItemRejectAnswer(
-                          onTap: () {
-                            BlocProvider.of<ChangeStatusBloc>(context).add(
-                                ChangeStatusLoadingEvent(
-                                    id: coachStudentVm.id,
-                                    coachStudentId: coachStudentVm.id,
-                                    isAccepted: false));
-                          },
-                          sizeScreen: sizeScreen,
-                          isAnswer: false,
-                        );
-                      return ItemRejectAnswer(
+                      },
+                      child: ItemRejectAnswer(
                         onTap: () {
                           BlocProvider.of<ChangeStatusBloc>(context).add(
                               ChangeStatusLoadingEvent(
@@ -169,58 +149,33 @@ class ItemRequest extends StatelessWidget {
                         },
                         sizeScreen: sizeScreen,
                         isAnswer: false,
-                      );
-                    },
-                  ),
+                      )),
                   SizedBox(
                     width: padding,
                   ),
-                  BlocConsumer<ChangeStatusBloc, ChangeStatusState>(
-                    listener: (context, state) {
-                      if (state is ChangeStatusLoadedState) {
-                        if (state.resultObject != null) {
-                          if (state.resultObject!.success!)
-                            BlocProvider.of<GetCoachStudentsBloc>(context)
-                                .add(GetCoachStudentsLoadingEvent());
-                          Fluttertoast.showToast(
-                              msg: state.resultObject!.message!);
+                  BlocListener<ChangeStatusBloc, ChangeStatusState>(
+                      listener: (context, state) {
+                        if (state is ChangeStatusLoadedState) {
+                          if (state.resultObject != null) {
+                            if (state.resultObject!.success!)
+                              BlocProvider.of<GetCoachStudentsBloc>(context)
+                                  .add(GetCoachStudentsLoadingEvent());
+                            Fluttertoast.showToast(
+                                msg: state.resultObject!.message!);
+                          }
                         }
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is ChangeStatusLoadingState) if (state.id ==
-                          coachStudentVm.id)
-                        return Container(
-                          width: 10,
-                          height: 10,
-                          child: MyWaiting(),
-                        );
-                      else
-                        return ItemRejectAnswer(
-                          onTap: () {
-                            BlocProvider.of<ChangeStatusBloc>(context).add(
-                                ChangeStatusLoadingEvent(
-                                    id: coachStudentVm.id,
-                                    coachStudentId: coachStudentVm.id,
-                                    isAccepted: false));
-                          },
-                          sizeScreen: sizeScreen,
-                          isAnswer: false,
-                        );
-                      else
-                        return ItemRejectAnswer(
-                          onTap: () {
-                            BlocProvider.of<ChangeStatusBloc>(context).add(
-                                ChangeStatusLoadingEvent(
-                                    id: coachStudentVm.id,
-                                    coachStudentId: coachStudentVm.id,
-                                    isAccepted: false));
-                          },
-                          sizeScreen: sizeScreen,
-                          isAnswer: true,
-                        );
-                    },
-                  ),
+                      },
+                      child: ItemRejectAnswer(
+                        onTap: () {
+                          BlocProvider.of<ChangeStatusBloc>(context).add(
+                              ChangeStatusLoadingEvent(
+                                  id: coachStudentVm.id,
+                                  coachStudentId: coachStudentVm.id,
+                                  isAccepted: true));
+                        },
+                        sizeScreen: sizeScreen,
+                        isAnswer: true,
+                      )),
                 ],
               ))
             ],

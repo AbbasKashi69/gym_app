@@ -191,6 +191,7 @@ class _ProgramListPageState extends State<ProgramListPage> {
                       )),
                   InkWell(
                     onTap: () => showModalBottomSheet(
+                        isScrollControlled: true,
                         isDismissible: true,
                         elevation: 20,
                         backgroundColor: Colors.transparent,

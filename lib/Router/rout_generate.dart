@@ -3,14 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/BodyBuildingPlanType/BodyBuildingPlanTypeFormVm.dart';
 import 'package:gym_app/ViewModels/CoachStudent/CoachStudentVm.dart';
 import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeFormVm.dart';
+import 'package:gym_app/blocs/Account/bloc/get_current_user_role_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/login_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/register_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/send_code_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/submit_register_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/verify_code_bloc.dart';
 import 'package:gym_app/blocs/AnonymousPlanType/bloc/create_using_form_bloc.dart';
+import 'package:gym_app/blocs/BodyBuildingMovement/bloc/get_user_body_building_movement_list_bloc.dart';
+import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/create_using_form_body_building_bloc.dart';
 import 'package:gym_app/blocs/BottomNav/bloc/bottom_nav_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/change_status_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_coach_students_bloc.dart';
@@ -62,9 +66,16 @@ class MyRouter {
     switch (routeSettings.name) {
       case MyHomePage.routeName:
         return MaterialPageRoute(
-            builder: (context) => BlocProvider(
-                  create: (context) =>
-                      BottomNavBloc()..add(BottomNavLoadingEvent(index: 0)),
+            builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                        create: (context) => GetCurrentUserRoleBloc()
+                          ..add(GetCurrentUserRoleLoadingEvent())),
+                    BlocProvider(
+                      create: (context) =>
+                          BottomNavBloc()..add(BottomNavLoadingEvent(index: 0)),
+                    )
+                  ],
                   child: MyHomePage(),
                 ));
       case ScanPage.routeName:
@@ -114,19 +125,38 @@ class MyRouter {
       case WalletPage.routeName:
         return MaterialPageRoute(builder: (context) => WalletPage());
       case CvPage.routeName:
-        return MaterialPageRoute(
-            builder: (context) => BlocProvider(
-                create: (context) =>
-                    GetResumeBloc()..add(GetResumeLoadingEvent()),
-                child: CvPage()));
+        {
+          var data = routeSettings.arguments;
+          return MaterialPageRoute(
+              builder: (context) => BlocProvider(
+                  create: (context) => GetResumeBloc()
+                    ..add(GetResumeLoadingEvent(coachId: data as int)),
+                  child: CvPage()));
+        }
       case PersonalInfoPage.routeName:
         return MaterialPageRoute(builder: (context) => PersonalInfoPage());
       case SettingPage.routeName:
         return MaterialPageRoute(builder: (context) => SettingPage());
       case CreateProgramBodyPage.routeName:
-        return MaterialPageRoute(builder: (context) => CreateProgramBodyPage());
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                  create: (context) => GetStudentsAsPersonListBloc(),
+                  child: CreateProgramBodyPage(),
+                ));
       case CreateMovementPage.routeName:
-        return MaterialPageRoute(builder: (context) => CreateMovementPage());
+        {
+          var myBodyVm = routeSettings.arguments as MyBodyVm;
+          return MaterialPageRoute(
+              builder: (context) => BlocProvider(
+                    create: (context) => GetUserBodyBuildingMovementListBloc(),
+                    child: CreateMovementPage(
+                      bodyBuildingPlanTypeFormVm:
+                          myBodyVm.bodyBuildingPlanTypeFormVm,
+                      bodyBuildingPlanDayTermVm:
+                          myBodyVm.bodyBuildingPlanDayTermVm,
+                    ),
+                  ));
+        }
       case CreateMovementOtherSportsPage.routeName:
         {
           var myVm = routeSettings.arguments as MyVm;
@@ -153,8 +183,16 @@ class MyRouter {
                   child: ProgramListPage(),
                 ));
       case CreateProgramBodySettingPage.routeName:
-        return MaterialPageRoute(
-            builder: (context) => CreateProgramBodySettingPage());
+        {
+          var bodyBuildingPlanTypeFormVm = routeSettings.arguments;
+          return MaterialPageRoute(
+              builder: (context) => BlocProvider(
+                  create: (context) => CreateUsingFormBodyBuildingBloc(),
+                  child: CreateProgramBodySettingPage(
+                    bodyBuildingPlanTypeFormVm: bodyBuildingPlanTypeFormVm
+                        as BodyBuildingPlanTypeFormVm,
+                  )));
+        }
       case CreateProgramOtherSportsSettingPage.routeName:
         {
           var anonymousPlantypeFormVm = routeSettings.arguments;
@@ -194,7 +232,12 @@ class MyRouter {
                   ),
                 ], child: ListCoachPage()));
       case ProfileCoachPage.routeName:
-        return MaterialPageRoute(builder: (context) => ProfileCoachPage());
+        {
+          var coachStudentVm = routeSettings.arguments;
+          return MaterialPageRoute(
+              builder: (context) => ProfileCoachPage(
+                  coachStudentVm: coachStudentVm as CoachStudentVm));
+        }
       case PersonalInfoCoachPage.routeName:
         return MaterialPageRoute(builder: (context) => PersonalInfoCoachPage());
       case ListBarnamehaPage.routeName:

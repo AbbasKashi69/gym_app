@@ -1,13 +1,28 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
+import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/BodyBuildingPlanType/BodyBuildingPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/BodyBuildingPlanTypeDetail/BodyBuildingPlanDayTermVm.dart';
+import 'package:gym_app/blocs/AnonymousPlanType/bloc/create_using_form_bloc.dart';
+import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/create_using_form_body_building_bloc.dart';
 import 'package:gym_app/components/constant.dart';
+import 'package:gym_app/components/myWaiting.dart';
+import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
-import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
+import 'package:gym_app/screen/CreateMovementOtherSports/create_movement_other_sports_page.dart';
+import 'package:gym_app/screen/CreateProgramOtherSportsSetting/create_program_other_sports_setting_pages.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 class CreateProgramBodySettingPage extends StatelessWidget {
   static const routeName = '/CreateProgramBodySettingPage';
-  CreateProgramBodySettingPage({Key? key}) : super(key: key);
+  CreateProgramBodySettingPage(
+      {Key? key, required this.bodyBuildingPlanTypeFormVm})
+      : super(key: key);
+  final BodyBuildingPlanTypeFormVm? bodyBuildingPlanTypeFormVm;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +44,7 @@ class CreateProgramBodySettingPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'ایجاد برنامه بدنسازی',
+                            'ایجاد برنامه حرکتی',
                             style: textStyle.copyWith(
                                 fontSize: kFontSizeText(
                                     sizeScreen, FontSize.subTitle),
@@ -101,7 +116,10 @@ class CreateProgramBodySettingPage extends StatelessWidget {
                 ],
               ),
             ),
-            DaysTask(sizeScreen: sizeScreen)
+            DaysTask(
+              sizeScreen: sizeScreen,
+              bodyBuildingPlanTypeFormVm: bodyBuildingPlanTypeFormVm!,
+            )
           ],
         ),
       ),
@@ -109,19 +127,15 @@ class CreateProgramBodySettingPage extends StatelessWidget {
   }
 }
 
-var listData = [
-  {'day': 'اول'},
-  {'day': 'دوم'},
-  {'day': 'سوم'},
-];
-
 class DaysTask extends StatefulWidget {
-  const DaysTask({
-    Key? key,
-    required this.sizeScreen,
-  }) : super(key: key);
+  const DaysTask(
+      {Key? key,
+      required this.sizeScreen,
+      required this.bodyBuildingPlanTypeFormVm})
+      : super(key: key);
 
   final Size sizeScreen;
+  final BodyBuildingPlanTypeFormVm bodyBuildingPlanTypeFormVm;
 
   @override
   _DaysTaskState createState() => _DaysTaskState();
@@ -160,24 +174,71 @@ class _DaysTaskState extends State<DaysTask> {
               ),
               Column(
                 children: List.generate(
-                    listData.length,
-                    (index) => ItemDay(
-                          title: listData[index]['day']!,
-                          deleteItem: () {
-                            setState(() {
-                              listData.removeAt(index);
-                            });
-                          },
+                    widget.bodyBuildingPlanTypeFormVm.dayTerms!.length,
+                    (index) => Material(
+                          color: Colors.transparent,
+                          child: Container(
+                            child: InkWell(
+                              onTap: () {
+                                // widget.anonymousPlantypeFormVm
+                                //     .anonymousPlanTypeDetailForms = [];
+                                // MyHomePage.lastDisplayOtherSports = 0;
+                                MyBodyVm myBodyVm = MyBodyVm(
+                                    bodyBuildingPlanDayTermVm: widget
+                                        .bodyBuildingPlanTypeFormVm
+                                        .dayTerms![index],
+                                    bodyBuildingPlanTypeFormVm:
+                                        widget.bodyBuildingPlanTypeFormVm);
+                                Navigator.of(context).pushNamed(
+                                    CreateMovementPage.routeName,
+                                    arguments: myBodyVm);
+                              },
+                              child: ItemDay(
+                                  title: widget.bodyBuildingPlanTypeFormVm
+                                      .dayTerms![index].dayNumber
+                                      .toString()
+                                      .toWord(),
+                                  deleteItem: () {
+                                    widget.bodyBuildingPlanTypeFormVm.dayTerms!
+                                        .removeAt(index);
+                                    if (widget.bodyBuildingPlanTypeFormVm
+                                            .dayTerms!.length >
+                                        index) {
+                                      for (int i = index;
+                                          i <
+                                              widget.bodyBuildingPlanTypeFormVm
+                                                  .dayTerms!.length;
+                                          i += 1) {
+                                        widget.bodyBuildingPlanTypeFormVm
+                                            .dayTerms![i].dayNumber = widget
+                                                .bodyBuildingPlanTypeFormVm
+                                                .dayTerms![i]
+                                                .dayNumber! -
+                                            1;
+                                      }
+                                    }
+                                    setState(() {});
+                                  }),
+                            ),
+                          ),
                         )),
               ),
+              SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    listData.add({'day': intToString(listData.length + 1)});
+                    widget.bodyBuildingPlanTypeFormVm.dayTerms!.add(
+                        BodyBuildingPlanDayTermVm(
+                            currentTerm: 1,
+                            termsCount: 1,
+                            dayNumber: widget.bodyBuildingPlanTypeFormVm
+                                    .dayTerms!.length +
+                                1));
                   });
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(vertical: padding),
+                  margin: EdgeInsets.symmetric(
+                      vertical: padding, horizontal: padding),
                   height: widget.sizeScreen.height * 0.07,
                   child: DottedBorder(
                     borderType: BorderType.RRect,
@@ -203,124 +264,63 @@ class _DaysTaskState extends State<DaysTask> {
               SizedBox(
                 height: 20,
               ),
-              CustomeButton(
-                  sizeScreen: widget.sizeScreen,
-                  title: "ثبت",
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(CreateMovementPage.routeName);
-                  }),
+              BlocConsumer<CreateUsingFormBodyBuildingBloc,
+                  CreateUsingFormBodyBuildingState>(
+                listener: (context, state) async {
+                  if (state is CreateUsingFormBodyBuildingLoadedState) {
+                    if (state.resultObject != null &&
+                        state.resultObject!.success!) {
+                      await Fluttertoast.showToast(
+                          msg: state.resultObject!.message!);
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          MyHomePage.routeName, (route) => false);
+                    } else if (state.resultObject != null)
+                      Fluttertoast.showToast(msg: state.resultObject!.message!);
+                    else
+                      Fluttertoast.showToast(msg: 'دوباره امتحان کنید');
+                  }
+                },
+                builder: (context, state) {
+                  if (state is CreateUsingFormBodyBuildingLoadingState)
+                    return MyWaiting();
+                  else
+                    return CustomeButton(
+                        sizeScreen: widget.sizeScreen,
+                        title: "ثبت",
+                        onTap: () {
+                          if (widget.bodyBuildingPlanTypeFormVm.dayTerms!
+                                  .isNotEmpty &&
+                              widget.bodyBuildingPlanTypeFormVm
+                                  .bodyBuildingPlanTypeDetails!.isNotEmpty &&
+                              widget.bodyBuildingPlanTypeFormVm
+                                  .bodyBuildingPlanTypeDetails!
+                                  .where((element) => element
+                                      .nameMovementController!.text.isNotEmpty)
+                                  .toList()
+                                  .isNotEmpty) {
+                            BlocProvider.of<CreateUsingFormBodyBuildingBloc>(
+                                    context)
+                                .add(CreateUsingFormBodyBuildingLoadingEvent(
+                                    bodyBuildingPlanTypeFormVm:
+                                        widget.bodyBuildingPlanTypeFormVm));
+                          } else
+                            Fluttertoast.showToast(
+                                msg: 'برنامه باید حداقل یک آیتم داشته باشد');
+                        });
+                },
+              )
             ],
           ),
         ),
       ),
     );
   }
-
-  String intToString(int index) {
-    switch (index) {
-      case 1:
-        return 'اول';
-      case 2:
-        return 'دوم';
-      case 3:
-        return 'سوم';
-      case 4:
-        return 'چهارم';
-      case 5:
-        return 'پنجم';
-      case 6:
-        return 'ششم';
-      case 7:
-        return 'هفتم';
-      case 8:
-        return 'هشتم';
-      case 9:
-        return 'نهم';
-      case 10:
-        return 'دهم';
-      case 11:
-        return 'یازدهم';
-      case 12:
-        return 'دوازدهم';
-      case 13:
-        return 'سیزدهم';
-      case 14:
-        return 'چهاردهم';
-      case 15:
-        return 'پانزدهم';
-      case 16:
-        return 'شانزدهم';
-      case 17:
-        return 'هفدهم';
-      case 18:
-        return 'هجدهم';
-      case 19:
-        return 'نوزدهم';
-      case 20:
-        return 'بیستم';
-      case 21:
-        return 'بیست و یکم';
-      case 22:
-        return 'بیست و دوم';
-      case 23:
-        return 'بیست و سوم';
-      case 24:
-        return 'بیست و چهارم';
-      case 25:
-        return 'بیست و پنجم';
-      case 26:
-        return 'بیست و ششم';
-      case 27:
-        return 'بیست و هفتم';
-      case 28:
-        return 'بیست و هشتم';
-      case 29:
-        return 'بیست و نهم';
-      case 30:
-        return 'سی ام';
-      case 31:
-        return 'سی و یکم';
-      default:
-        return 'دهم';
-    }
-  }
 }
 
-class ItemDay extends StatelessWidget {
-  const ItemDay({
-    Key? key,
-    required this.deleteItem,
-    required this.title,
-  }) : super(key: key);
-  final String title;
-  final Function deleteItem;
-  @override
-  Widget build(BuildContext context) {
-    final Size sizeScreen = MediaQuery.of(context).size;
-    return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'روز $title',
-            style: textStyle.copyWith(
-              fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              deleteItem();
-            },
-            child: SvgPicture.asset(
-              'assets/icons/trash.svg',
-              width: kFontSizeText(sizeScreen, FontSize.title) + 8,
-              height: kFontSizeText(sizeScreen, FontSize.title) + 8,
-            ),
-          )
-        ],
-      ),
-    );
-  }
+class MyBodyVm {
+  final BodyBuildingPlanTypeFormVm bodyBuildingPlanTypeFormVm;
+  final BodyBuildingPlanDayTermVm bodyBuildingPlanDayTermVm;
+  MyBodyVm(
+      {required this.bodyBuildingPlanDayTermVm,
+      required this.bodyBuildingPlanTypeFormVm});
 }

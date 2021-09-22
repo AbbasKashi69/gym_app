@@ -1,133 +1,348 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:gym_app/ViewModels/BodyBuildingMovement/BodyBuildingMovementVm.dart';
+import 'package:gym_app/ViewModels/BodyBuildingPlanType/BodyBuildingPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/BodyBuildingPlanTypeDetail/BodyBuildingPlanDayTermVm.dart';
+import 'package:gym_app/ViewModels/BodyBuildingPlanTypeDetail/BodyBuildingPlanTypeDetailsFormVm.dart';
+import 'package:gym_app/blocs/BodyBuildingMovement/bloc/get_user_body_building_movement_list_bloc.dart';
 import 'package:gym_app/components/constant.dart';
+import 'package:gym_app/components/myWaiting.dart';
+import 'package:gym_app/components/no_data.dart';
 import 'package:gym_app/extensions/ext.dart';
-import 'package:gym_app/screen/CreateMovement/components/warning_delete_trun_screen.dart';
-import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
-import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
+import 'package:gym_app/main.dart';
+import 'package:gym_app/screen/CreateMovementOtherSports/create_movement_other_sports_page.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 class CreateMovementPage extends StatefulWidget {
   static const routeName = '/CreateMovementPage';
-  const CreateMovementPage({Key? key}) : super(key: key);
+  const CreateMovementPage(
+      {Key? key,
+      required this.bodyBuildingPlanDayTermVm,
+      required this.bodyBuildingPlanTypeFormVm})
+      : super(key: key);
+  final BodyBuildingPlanDayTermVm bodyBuildingPlanDayTermVm;
+  final BodyBuildingPlanTypeFormVm bodyBuildingPlanTypeFormVm;
 
   @override
   _CreateMovementPageState createState() => _CreateMovementPageState();
 }
 
 class _CreateMovementPageState extends State<CreateMovementPage> {
-  int itemFilterChipSelected = 0;
+  bool isEmptyTextField = true;
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: kColorAppbar,
-      appBar: AppBarWidget(
-        title: 'ایجاد برنامه بدنسازی',
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: kBodyDecoration,
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: padding / 2),
-                margin: EdgeInsets.symmetric(vertical: padding),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(children: [
-                    Row(
-                      children: List.generate(
-                        listItemFilterChip.length,
-                        (index) => ItemFilterChip(
-                            data: listItemFilterChip[index],
-                            index: index,
-                            onChangeValue: () {
-                              setState(() {
-                                itemFilterChipSelected = index;
-                              });
-                            },
-                            deleteItemfunc: (idx) {
-                              if (idx != itemFilterChipSelected)
+    return WillPopScope(
+      onWillPop: () async {
+        List<BodyBuildingPlanTypeDetailsFormVm> x = widget
+            .bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
+            .where((element) =>
+                element.dayNumber == widget.bodyBuildingPlanDayTermVm.dayNumber)
+            .toList();
+        for (int i = 0; i < x.length; i++) {
+          x[i].nameMovementController!.clear();
+          x[i].descriptionController!.clear();
+        }
+        return Future.value(true);
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: kColorAppbar,
+        appBar: AppBarWidget(
+          title: widget.bodyBuildingPlanDayTermVm.dayNumber != 3
+              ? 'روز ${widget.bodyBuildingPlanDayTermVm.dayNumber.toString().toWord()}م'
+              : 'روز سوم',
+          onBack: () async {
+            List<BodyBuildingPlanTypeDetailsFormVm> x = widget
+                .bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
+                .where((element) =>
+                    element.dayNumber ==
+                    widget.bodyBuildingPlanDayTermVm.dayNumber)
+                .toList();
+            for (int i = 0; i < x.length; i++) {
+              x[i].nameMovementController!.clear();
+              x[i].descriptionController!.clear();
+            }
+            Navigator.of(context).pop();
+          },
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            decoration: kBodyDecoration,
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: padding / 2),
+                  margin: EdgeInsets.symmetric(vertical: padding),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(children: [
+                      Row(
+                        children: List.generate(
+                          widget.bodyBuildingPlanDayTermVm.termsCount!,
+                          (index) => ItemFilterChip(
+                              index: index + 1,
+                              onChangeValue: () {
                                 setState(() {
-                                  listItemFilterChip.removeAt(idx);
+                                  widget.bodyBuildingPlanDayTermVm.currentTerm =
+                                      index + 1;
                                 });
-                            },
-                            isSelected: itemFilterChipSelected),
+                              },
+                              deleteItemfunc: (idx) {
+                                if (widget
+                                        .bodyBuildingPlanDayTermVm.termsCount! >
+                                    1) {
+                                  widget.bodyBuildingPlanTypeFormVm
+                                      .bodyBuildingPlanTypeDetails!
+                                      .removeWhere((s) => s.termNumber == idx);
+                                  for (var item in widget
+                                      .bodyBuildingPlanTypeFormVm
+                                      .bodyBuildingPlanTypeDetails!
+                                      .where((element) =>
+                                          element.termNumber! > idx)) {
+                                    item.termNumber = item.termNumber! - 1;
+                                  }
+                                  widget.bodyBuildingPlanDayTermVm.termsCount =
+                                      widget.bodyBuildingPlanDayTermVm
+                                              .termsCount! -
+                                          1;
+                                  widget.bodyBuildingPlanDayTermVm.currentTerm =
+                                      1;
+
+                                  setState(() {});
+                                }
+                              },
+                              isSelected: widget
+                                  .bodyBuildingPlanDayTermVm.currentTerm!),
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        listItemFilterChip.add({
-                          'turn': intToString(listItemFilterChip.length + 1)
-                        });
-                        setState(() {});
-                      },
-                      child: DottedBorder(
-                          borderType: BorderType.Circle,
-                          dashPattern: [5],
-                          color: parseColor('#707070'),
-                          child: Container(
-                            padding: EdgeInsets.all(padding),
-                            decoration: BoxDecoration(shape: BoxShape.circle),
-                            child: Center(
-                              child: Icon(
-                                Icons.add,
-                                color: parseColor('#565656'),
+                      GestureDetector(
+                        onTap: () {
+                          widget.bodyBuildingPlanDayTermVm.termsCount =
+                              widget.bodyBuildingPlanDayTermVm.termsCount! + 1;
+                          setState(() {});
+                        },
+                        child: DottedBorder(
+                            borderType: BorderType.Circle,
+                            dashPattern: [5],
+                            color: parseColor('#707070'),
+                            child: Container(
+                              padding: EdgeInsets.all(padding),
+                              decoration: BoxDecoration(shape: BoxShape.circle),
+                              child: Center(
+                                child: Icon(
+                                  Icons.add,
+                                  color: parseColor('#565656'),
+                                ),
                               ),
-                            ),
-                          )),
-                    )
-                  ]),
+                            )),
+                      )
+                    ]),
+                  ),
                 ),
-              ),
-              Column(
-                children: List.generate(
-                    listItemMovement.length,
-                    (index) => ItemMovement(
-                          data: listItemMovement[index],
-                        )),
-              ),
-              GestureDetector(
-                onTap: () {
-                  listItemMovement.add({
-                    'listItemAddedSuperMovement': [ItemAddedSuperMovement()]
-                  });
-                  setState(() {});
-                },
-                child: Container(
-                  width: gw(0.8),
-                  height: gh(0.07),
-                  child: DottedBorder(
-                    borderType: BorderType.RRect,
-                    color: parseColor('#00B4D8'),
-                    dashPattern: [5],
-                    radius: Radius.elliptical(20, 20),
-                    child: Container(
-                      // width: gw(0.8),
-                      // height: gh(0.03),
-                      child: Center(
-                        child: Text(
-                          'حرکت جدید',
-                          style: textStyle.copyWith(
-                              fontSize:
-                                  kFontSizeText(sizeScreen, FontSize.subTitle),
-                              color: parseColor('#00B4D8')),
+                widget.bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
+                        .where((s) =>
+                            s.dayNumber ==
+                                widget.bodyBuildingPlanDayTermVm.dayNumber &&
+                            s.termNumber ==
+                                widget.bodyBuildingPlanDayTermVm.currentTerm)
+                        .toList()
+                        .isEmpty
+                    ? Center(
+                        child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 50),
+                        child: NoData(),
+                      ))
+                    : Column(
+                        children: List.generate(
+                            widget.bodyBuildingPlanTypeFormVm
+                                .bodyBuildingPlanTypeDetails!
+                                .where((s) =>
+                                    s.dayNumber ==
+                                        widget.bodyBuildingPlanDayTermVm
+                                            .dayNumber &&
+                                    s.termNumber ==
+                                        widget.bodyBuildingPlanDayTermVm
+                                            .currentTerm)
+                                .toList()
+                                .length,
+                            (index) => ItemAddedMovementBodyBuilding(
+                                  bodyBuildingPlanTypeFormVm:
+                                      widget.bodyBuildingPlanTypeFormVm,
+                                  bodyBuildingPlanDayTermVm:
+                                      widget.bodyBuildingPlanDayTermVm,
+                                  deleteMovement: (int displayOrder) {
+                                    FocusScope.of(context).unfocus();
+                                    setState(() {
+                                      widget.bodyBuildingPlanTypeFormVm
+                                          .bodyBuildingPlanTypeDetails!
+                                          .removeWhere((s) =>
+                                              s.displayOrder == displayOrder);
+                                    });
+                                  },
+                                  data: widget.bodyBuildingPlanTypeFormVm
+                                      .bodyBuildingPlanTypeDetails!
+                                      .where((s) =>
+                                          s.dayNumber ==
+                                              widget.bodyBuildingPlanDayTermVm
+                                                  .dayNumber &&
+                                          s.termNumber ==
+                                              widget.bodyBuildingPlanDayTermVm
+                                                  .currentTerm)
+                                      .toList()[index],
+                                )),
+                      ),
+                GestureDetector(
+                  onTap: () {
+                    BodyBuildingPlanTypeDetailsFormVm data =
+                        BodyBuildingPlanTypeDetailsFormVm();
+                    data.descriptionController = TextEditingController();
+                    data.nameMovementController = TextEditingController();
+                    data.setController = TextEditingController();
+                    data.dayNumber = widget.bodyBuildingPlanDayTermVm.dayNumber;
+                    data.termNumber =
+                        widget.bodyBuildingPlanDayTermVm.currentTerm;
+                    data.displayOrder = MyHomePage.lastDisplayOtherSports += 1;
+                    widget
+                        .bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
+                        .removeWhere(
+                            (s) => s.displayOrder == data.displayOrder);
+                    widget
+                        .bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
+                        .add(data);
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: gw(0.8),
+                    height: gh(0.07),
+                    child: DottedBorder(
+                      borderType: BorderType.RRect,
+                      color: parseColor('#00B4D8'),
+                      dashPattern: [5],
+                      radius: Radius.elliptical(20, 20),
+                      child: Container(
+                        // width: gw(0.8),
+                        // height: gh(0.03),
+                        child: Center(
+                          child: Text(
+                            'حرکت جدید',
+                            style: textStyle.copyWith(
+                                fontSize: kFontSizeText(
+                                    sizeScreen, FontSize.subTitle),
+                                color: parseColor('#00B4D8')),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Container(
-                  margin: EdgeInsets.symmetric(vertical: padding * 2),
-                  child: CustomeButton(
-                    sizeScreen: sizeScreen,
-                    title: 'ثبت برنامه',
-                    onTap: () {},
-                  )),
-            ],
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: padding * 2),
+                    child: CustomeButton(
+                      sizeScreen: sizeScreen,
+                      title: 'ثبت برنامه',
+                      onTap: () async {
+                        List<BodyBuildingPlanTypeDetailsFormVm> x = widget
+                            .bodyBuildingPlanTypeFormVm
+                            .bodyBuildingPlanTypeDetails!
+                            .where((element) =>
+                                element.dayNumber ==
+                                widget.bodyBuildingPlanDayTermVm.dayNumber)
+                            .toList();
+                        if (x.isNotEmpty) {
+                          for (int i = 0; i < x.length; i++) {
+                            if (x[i].nameMovementController!.text.isEmpty) {
+                              await Fluttertoast.showToast(
+                                  msg:
+                                      'نام حرکت در روز ${x[i].dayNumber.toString().toWord()}م و نوبت ${x[i].termNumber.toString().toWord()}م خالی است');
+                              isEmptyTextField = true;
+                              break;
+                            } else if (x[i].setController!.text.isEmpty) {
+                              await Fluttertoast.showToast(
+                                  msg:
+                                      'نام ست در روز ${x[i].dayNumber.toString().toWord()}م و نوبت ${x[i].termNumber.toString().toWord()}م خالی است');
+                              isEmptyTextField = true;
+                              break;
+                            } else if (x[i].listSetItemsTextController !=
+                                    null &&
+                                x[i].listSetItemsTextController!.isNotEmpty &&
+                                x[i]
+                                    .listSetItemsTextController![i]
+                                    .text
+                                    .isEmpty) {
+                              await Fluttertoast.showToast(
+                                  msg: 'لطفا ست های ایجاد شده را پر کنید');
+                              isEmptyTextField = true;
+                              break;
+                            }
+                            if (x[i].superMoves != null &&
+                                x[i].superMoves!.isNotEmpty &&
+                                x[i]
+                                    .superMoves![i]
+                                    .nameMovementController!
+                                    .text
+                                    .isEmpty) {
+                              await Fluttertoast.showToast(
+                                  msg:
+                                      'نام حرکت در روز ${x[i].superMoves![i].dayNumber.toString().toWord()}م و نوبت ${x[i].superMoves![i].termNumber.toString().toWord()}م خالی است');
+                              isEmptyTextField = true;
+                              break;
+                            } else if (x[i].superMoves != null &&
+                                x[i].superMoves!.isNotEmpty &&
+                                x[i]
+                                    .superMoves![i]
+                                    .setController!
+                                    .text
+                                    .isEmpty) {
+                              await Fluttertoast.showToast(
+                                  msg:
+                                      'نام ست در روز ${x[i].superMoves![i].dayNumber.toString().toWord()}م و نوبت ${x[i].superMoves![i].termNumber.toString().toWord()}م خالی است');
+                              isEmptyTextField = true;
+                              break;
+                            } else if (x[i].superMoves != null &&
+                                x[i].superMoves!.isNotEmpty &&
+                                x[i]
+                                        .superMoves![i]
+                                        .listSetItemsTextController !=
+                                    null &&
+                                x[i]
+                                    .superMoves![i]
+                                    .listSetItemsTextController!
+                                    .isNotEmpty &&
+                                x[i]
+                                    .superMoves![i]
+                                    .listSetItemsTextController![i]
+                                    .text
+                                    .isEmpty) {
+                              await Fluttertoast.showToast(
+                                  msg: 'لطفا ست های ایجاد شده را پر کنید');
+                              isEmptyTextField = true;
+                              break;
+                            }
+                            isEmptyTextField = false;
+                          }
+                          if (!isEmptyTextField) {
+                            await Get.showSnackbar(GetBar(
+                              duration: Duration(seconds: 2),
+                              backgroundColor: Colors.black,
+                              snackStyle: SnackStyle.FLOATING,
+                              message:
+                                  'برنامه ی روز ${widget.bodyBuildingPlanDayTermVm.dayNumber.toString().toWord()}م ثبت شد',
+                            ));
+                            Future.delayed(Duration(seconds: 1), () {
+                              Navigator.of(context).pop(true);
+                            });
+                          }
+                        }
+                      },
+                    )),
+              ],
+            ),
           ),
         ),
       ),
@@ -135,143 +350,136 @@ class _CreateMovementPageState extends State<CreateMovementPage> {
   }
 }
 
-String intToString(int index) {
-  switch (index) {
-    case 1:
-      return 'اول';
-    case 2:
-      return 'دوم';
-    case 3:
-      return 'سوم';
-    case 4:
-      return 'چهارم';
-    case 5:
-      return 'پنجم';
-    case 6:
-      return 'ششم';
-    case 7:
-      return 'هفتم';
-    case 8:
-      return 'هشتم';
-    case 9:
-      return 'نهم';
-    case 10:
-      return 'دهم';
-    case 11:
-      return 'یازدهم';
-    case 12:
-      return 'دوازدهم';
-    case 13:
-      return 'سیزدهم';
-    case 14:
-      return 'چهاردهم';
-    case 15:
-      return 'پانزدهم';
-    case 16:
-      return 'شانزدهم';
-    case 17:
-      return 'هفدهم';
-    case 18:
-      return 'هجدهم';
-    case 19:
-      return 'نوزدهم';
-    case 20:
-      return 'بیستم';
-    case 21:
-      return 'بیست و یکم';
-    case 22:
-      return 'بیست و دوم';
-    case 23:
-      return 'بیست و سوم';
-    case 24:
-      return 'بیست و چهارم';
-    case 25:
-      return 'بیست و پنجم';
-    case 26:
-      return 'بیست و ششم';
-    case 27:
-      return 'بیست و هفتم';
-    case 28:
-      return 'بیست و هشتم';
-    case 29:
-      return 'بیست و نهم';
-    case 30:
-      return 'سی ام';
-    case 31:
-      return 'سی و یکم';
-    default:
-      return 'دهم';
-  }
-}
-
-class ItemMovement extends StatefulWidget {
-  const ItemMovement({Key? key, required this.data}) : super(key: key);
-  final dynamic data;
+class ItemAddedMovementBodyBuilding extends StatefulWidget {
+  const ItemAddedMovementBodyBuilding(
+      {Key? key,
+      required this.data,
+      required this.deleteMovement,
+      required this.bodyBuildingPlanTypeFormVm,
+      required this.bodyBuildingPlanDayTermVm})
+      : super(key: key);
+  final BodyBuildingPlanTypeDetailsFormVm data;
+  final Function deleteMovement;
+  final BodyBuildingPlanDayTermVm bodyBuildingPlanDayTermVm;
+  final BodyBuildingPlanTypeFormVm bodyBuildingPlanTypeFormVm;
 
   @override
-  _ItemMovementState createState() => _ItemMovementState();
+  _ItemAddedMovementBodyBuildingState createState() =>
+      _ItemAddedMovementBodyBuildingState();
 }
 
-class _ItemMovementState extends State<ItemMovement> {
+class _ItemAddedMovementBodyBuildingState
+    extends State<ItemAddedMovementBodyBuilding> {
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 30, horizontal: padding),
-      child: DottedBorder(
-          borderType: BorderType.RRect,
-          // color: parseColor('#0055CC'),
-          color: parseColor('#CCCCCC'),
-          dashPattern: [5],
-          radius: Radius.circular(12),
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: padding),
-                    child: Column(
-                        children: List.generate(
-                            widget.data['listItemAddedSuperMovement'].length,
-                            (index) => ItemAddedSuperMovement())),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: CustomeButton(
-                      sizeScreen: sizeScreen,
-                      title: 'حرکت سوپری',
-                      onTap: () {
-                        setState(() {
-                          widget.data['listItemAddedSuperMovement']
-                              .add(ItemAddedSuperMovement());
-                        });
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
-          )),
-    );
+        padding: EdgeInsets.symmetric(vertical: 30, horizontal: padding),
+        child: DottedBorder(
+            borderType: BorderType.RRect,
+            // color: parseColor('#0055CC'),
+            color: parseColor('#CCCCCC'),
+            dashPattern: [5],
+            radius: Radius.circular(12),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+              child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  child: Container(
+                      margin: EdgeInsets.only(bottom: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ItemAddedSuperMovement(
+                              deleteMovement: widget.deleteMovement,
+                              data: widget.data),
+                          Padding(
+                            padding: EdgeInsets.only(left: padding),
+                            child: Column(
+                                children: widget.data.superMoves != null &&
+                                        widget.data.superMoves!.isNotEmpty
+                                    ? List.generate(
+                                        widget.data.superMoves!.length,
+                                        (index) => ItemAddedSuperMovement(
+                                              deleteMovement: (int index) {
+                                                FocusScope.of(context)
+                                                    .unfocus();
+                                                setState(() {
+                                                  widget.data.superMoves!
+                                                      .removeWhere((s) =>
+                                                          s.displayOrder ==
+                                                          index);
+                                                });
+                                              },
+                                              data: widget
+                                                  .data.superMoves![index],
+                                            ))
+                                    : [Container()]),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: CustomeButton(
+                              sizeScreen: sizeScreen,
+                              title: 'حرکت سوپری',
+                              onTap: () {
+                                BodyBuildingPlanTypeDetailsFormVm
+                                    bodybuildingNewInstance =
+                                    BodyBuildingPlanTypeDetailsFormVm();
+                                bodybuildingNewInstance.descriptionController =
+                                    TextEditingController();
+                                bodybuildingNewInstance.nameMovementController =
+                                    TextEditingController();
+                                bodybuildingNewInstance.setController =
+                                    TextEditingController();
+                                bodybuildingNewInstance.dayNumber =
+                                    widget.bodyBuildingPlanDayTermVm.dayNumber;
+                                bodybuildingNewInstance.termNumber = widget
+                                    .bodyBuildingPlanDayTermVm.currentTerm;
+                                bodybuildingNewInstance.displayOrder =
+                                    MyHomePage.lastDisplayOtherSports += 1;
+                                widget.bodyBuildingPlanTypeFormVm
+                                    .bodyBuildingPlanTypeDetails!
+                                    .removeWhere((s) =>
+                                        s.displayOrder ==
+                                        bodybuildingNewInstance.displayOrder);
+                                if (widget.data.superMoves != null)
+                                  widget.data.superMoves!
+                                      .add(bodybuildingNewInstance);
+                                else {
+                                  widget.data.superMoves = [];
+                                  widget.data.superMoves!
+                                      .add(bodybuildingNewInstance);
+                                }
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                        ],
+                      ))),
+            )));
   }
 }
 
-class ItemAddedSuperMovement extends StatelessWidget {
-  const ItemAddedSuperMovement({
-    Key? key,
-  }) : super(key: key);
+class ItemAddedSuperMovement extends StatefulWidget {
+  const ItemAddedSuperMovement(
+      {Key? key, required this.deleteMovement, required this.data})
+      : super(key: key);
+  final Function deleteMovement;
+  final BodyBuildingPlanTypeDetailsFormVm data;
 
+  @override
+  _ItemAddedSuperMovementState createState() => _ItemAddedSuperMovementState();
+}
+
+class _ItemAddedSuperMovementState extends State<ItemAddedSuperMovement> {
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.only(bottom: 15),
+      padding: EdgeInsets.symmetric(vertical: padding),
       child: Row(
         children: [
           Container(
@@ -288,16 +496,53 @@ class ItemAddedSuperMovement extends StatelessWidget {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 20),
-                child: TextField(
-                  decoration: InputDecoration(
-                      suffix: Padding(
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 20, right: padding),
+                      child: GestureDetector(
+                        onTap: () async {
+                          FocusScope.of(context).unfocus();
+                          var x = await showModalBottomSheet(
+                              isScrollControlled: true,
+                              isDismissible: true,
+                              elevation: 20,
+                              backgroundColor: Colors.transparent,
+                              context: context,
+                              builder: (ctx) => BlocProvider.value(
+                                  value: BlocProvider.of<
+                                          GetUserBodyBuildingMovementListBloc>(
+                                      context),
+                                  child: SelectMovement()));
+                          if (x != null)
+                            widget.data.nameMovementController!.text = x;
+                        },
+                        child: TextFormField(
+                          readOnly: true,
+                          enabled: false,
+                          keyboardType: TextInputType.text,
+                          style: textStyle.copyWith(
+                              fontSize:
+                                  kFontSizeText(sizeScreen, FontSize.subTitle)),
+                          controller: widget.data.nameMovementController,
+                          decoration: InputDecoration(
+                              hintText: 'نام حرکت',
+                              hintStyle: textStyle.copyWith(
+                                  color: Colors.black45,
+                                  fontSize: kFontSizeText(
+                                      sizeScreen, FontSize.subTitle))),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Padding(
                           padding: const EdgeInsetsDirectional.only(end: 5),
                           child: GestureDetector(
                             onTap: () {
-                              // here we should clear textfield  using textEditing controller
-                              //using this code: textEditingController.clear()
+                              widget.deleteMovement(widget.data.displayOrder);
                             },
                             child: SvgPicture.asset(
                               'assets/icons/deleteIcon.svg',
@@ -305,42 +550,93 @@ class ItemAddedSuperMovement extends StatelessWidget {
                               height: 20,
                             ),
                           )),
-                      hintText: 'نام حرکت',
-                      hintStyle: textStyle.copyWith(
-                          fontSize:
-                              kFontSizeText(sizeScreen, FontSize.subTitle))),
-                ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                        color: Colors.black12,
+                        width: 30,
+                        height: 1,
+                      )
+                    ],
+                  )
+                ],
               ),
               Container(
+                margin:
+                    EdgeInsets.only(bottom: 20, right: padding, left: padding),
                 width: 30,
-                margin: EdgeInsets.only(bottom: 20),
                 child: TextField(
+                  controller: widget.data.setController,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(2),
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  keyboardType: TextInputType.phone,
+                  onChanged: (String value) {
+                    widget.data.setCount = int.tryParse(value) ?? 0;
+                    if (widget.data.setCount! < 10) {
+                      widget.data.listSetItemsTextController = [];
+                      for (int i = 0; i < widget.data.setCount!; i++) {
+                        widget.data.listSetItemsTextController!
+                            .add(TextEditingController());
+                      }
+
+                      setState(() {});
+                    } else {
+                      setState(() {
+                        widget.data.setCount = 0;
+                      });
+                    }
+                  },
+                  style: textStyle.copyWith(
+                      fontSize: kFontSizeText(sizeScreen, FontSize.subTitle)),
+                  textAlign: TextAlign.center,
+                  textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                       hintText: 'ست',
                       hintStyle: textStyle.copyWith(
+                          color: Colors.black45,
                           fontSize:
                               kFontSizeText(sizeScreen, FontSize.subTitle))),
                 ),
               ),
+              Wrap(
+                  children: widget.data.setCount != null
+                      ? List.generate(
+                          widget.data.setCount!,
+                          (index) => Container(
+                                margin:
+                                    EdgeInsets.symmetric(horizontal: padding),
+                                width: 30,
+                                child: TextField(
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.phone,
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(2),
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  controller: widget
+                                      .data.listSetItemsTextController![index],
+                                  textAlign: TextAlign.center,
+                                  decoration: InputDecoration(
+                                      hintStyle: textStyle.copyWith(
+                                          color: Colors.black45),
+                                      hintText: (index + 1).toString()),
+                                ),
+                              ))
+                      : [Container()]),
               Container(
-                margin: EdgeInsets.only(bottom: 20),
+                margin: EdgeInsets.only(
+                    bottom: 20, right: padding, left: padding, top: 30),
                 child: TextField(
+                  style: textStyle.copyWith(
+                      fontSize: kFontSizeText(sizeScreen, FontSize.subTitle)),
+                  controller: widget.data.descriptionController,
                   decoration: InputDecoration(
-                      suffix: Padding(
-                          padding: const EdgeInsetsDirectional.only(end: 5),
-                          child: GestureDetector(
-                            onTap: () {
-                              // here we should clear textfield  using textEditing controller
-                              //using this code: textEditingController.clear()
-                            },
-                            child: SvgPicture.asset(
-                              'assets/icons/deleteIcon.svg',
-                              width: 20,
-                              height: 20,
-                            ),
-                          )),
                       hintText: 'توضیحات حرکت',
                       hintStyle: textStyle.copyWith(
+                          color: Colors.black45,
                           fontSize:
                               kFontSizeText(sizeScreen, FontSize.subTitle))),
                 ),
@@ -353,98 +649,138 @@ class ItemAddedSuperMovement extends StatelessWidget {
   }
 }
 
-class ItemFilterChip extends StatelessWidget {
-  const ItemFilterChip(
-      {Key? key,
-      required this.onChangeValue,
-      required this.data,
-      required this.deleteItemfunc,
-      required this.index,
-      required this.isSelected})
-      : super(key: key);
+class SelectMovement extends StatefulWidget {
+  @override
+  _SelectMovementState createState() => _SelectMovementState();
+}
 
-  final Function onChangeValue;
-  final int isSelected;
-  final int index;
-  final dynamic data;
-  final Function deleteItemfunc;
+class _SelectMovementState extends State<SelectMovement> {
+  @override
+  void initState() {
+    BlocProvider.of<GetUserBodyBuildingMovementListBloc>(context)
+        .add(GetUserBodyBuildingMovementListLoadingEvent());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: padding / 2),
-      padding: EdgeInsets.fromLTRB(5, 5, 30, 5),
-      decoration: BoxDecoration(
-        color: index == isSelected ? Color(0xff00B4D8) : Color(0xffEEEEEE),
-        borderRadius: BorderRadius.horizontal(
-            right: Radius.circular(40), left: Radius.circular(40)),
-      ),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              onChangeValue();
-            },
-            child: Center(
-              child: Text(
-                'نوبت ${data['turn']}',
-                style: textStyle.copyWith(
-                    fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
-                    color: index == isSelected
-                        ? Color(0xffffffff)
-                        : Color(0xff959595)),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: padding,
-          ),
-          GestureDetector(
-            onTap: () async {
-              bool result = await WarningDelteTrunScreen()
-                  .warningDeleteTrun(context, sizeScreen, data);
-              if (result) {
-                deleteItemfunc(index);
-              }
-            },
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Container(
-                child: Center(
-                  child: SvgPicture.asset(
-                    'assets/icons/trash.svg',
-                    width: kFontSizeText(sizeScreen, FontSize.title),
-                    height: kFontSizeText(sizeScreen, FontSize.title),
+      padding: MediaQuery.of(context).viewInsets,
+      child: SingleChildScrollView(
+        reverse: true,
+        child: Container(
+            constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.6),
+            decoration: BoxDecoration(
+                color: kColorBackGround,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10))),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: padding,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Color(0xffE8E8E8),
+                      borderRadius: BorderRadius.circular(10)),
+                  width: sizeScreen.width * 0.1,
+                  height: 5,
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: padding),
+                  child: Center(
+                    child: Text(
+                      'جستجوی حرکت',
+                      style: textStyle.copyWith(
+                          fontSize: kFontSizeText(sizeScreen, FontSize.title),
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          )
-        ],
+                Container(
+                  margin:
+                      EdgeInsets.only(bottom: 20, right: 20, left: 20, top: 20),
+                  child: TextField(
+                      onChanged: (String value) {
+                        BlocProvider.of<GetUserBodyBuildingMovementListBloc>(
+                                context)
+                            .add(GetUserBodyBuildingMovementListLoadingEvent(
+                                searchText: value));
+                      },
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: padding / 2, horizontal: padding),
+                          hintText: 'جستجوی حرکت',
+                          hintStyle: textStyle.copyWith(
+                              color: Color(0xff707070), fontSize: 12),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(14),
+                              borderSide:
+                                  BorderSide(color: Color(0xff707070))))),
+                ),
+                Expanded(child: BlocBuilder<GetUserBodyBuildingMovementListBloc,
+                    GetUserBodyBuildingMovementListState>(
+                  builder: (context, state) {
+                    if (state is GetUserBodyBuildingMovementListLoadingState)
+                      return Center(
+                        child: MyWaiting(),
+                      );
+                    else if (state
+                        is GetUserBodyBuildingMovementListLoadedState) {
+                      if (state.listBodyBuildingMovement != null &&
+                          state.listBodyBuildingMovement!.isNotEmpty)
+                        return ListView.separated(
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) => ItemSelectMovement(
+                                  bodyBuildingMovementVm:
+                                      state.listBodyBuildingMovement![index],
+                                ),
+                            separatorBuilder: (context, index) => Divider(
+                                  color: Colors.black38,
+                                ),
+                            itemCount: state.listBodyBuildingMovement!.length);
+                      else
+                        return NoData();
+                    }
+                    return Container();
+                  },
+                ))
+              ],
+            )),
       ),
     );
   }
 }
 
-List listItemMovement = [
-  {
-    'listItemAddedSuperMovement': [ItemAddedSuperMovement()]
-  },
-  {
-    'listItemAddedSuperMovement': [ItemAddedSuperMovement()]
+class ItemSelectMovement extends StatelessWidget {
+  final BodyBuildingMovementVm bodyBuildingMovementVm;
+  ItemSelectMovement({required this.bodyBuildingMovementVm});
+  @override
+  Widget build(BuildContext context) {
+    final Size sizeScreen = MediaQuery.of(context).size;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).pop(bodyBuildingMovementVm.title);
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: padding),
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+            alignment: Alignment.centerRight,
+            child: Text(
+              bodyBuildingMovementVm.title ?? "",
+              style: textStyle.copyWith(
+                  fontSize: kFontSizeText(sizeScreen, FontSize.title)),
+            ),
+          ),
+        ),
+      ),
+    );
   }
-];
-List listItemFilterChip = [
-  {
-    'turn': 'اول',
-  },
-  {
-    'turn': 'دوم',
-  },
-  {
-    'turn': 'سوم',
-  },
-  {
-    'turn': 'چهارم',
-  },
-];
+}

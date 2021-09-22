@@ -29,7 +29,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   CurrentUserVm.localSavingService = await LocalSavingService.create();
   CurrentUserVm.localSavingService!.getUser();
-  // CurrentUserVm.localSavingService.logOff();
+  // CurrentUserVm.localSavingService!.logOff();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

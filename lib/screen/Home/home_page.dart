@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:gym_app/ViewModels/CurrentUserVm.dart';
+import 'package:gym_app/blocs/Account/bloc/get_current_user_role_bloc.dart';
 import 'package:gym_app/blocs/WalletLog/bloc/get_my_wallet_ballance_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customBottomBar.dart';
@@ -180,99 +182,33 @@ class HomePage extends StatelessWidget {
                     ),
                   ],
                 )),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(ProgramListPage.routeName);
-                  },
-                  child: ItemWidget(
-                    title: "لیست  \n برنامه ها ",
-                    pic: "assets/icons/vuesax-linear-clipboard-tick.svg",
-                  ),
-                ),
-                Material(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(ChatListPage.routeName);
-                    },
-                    child: ItemWidget(
-                      title: "گفنگوها",
-                      pic: "assets/icons/vuesax-linear-message-text.svg",
-                    ),
-                  ),
-                ),
-                ItemWidget(
-                  title: "برنامه های \n فعال ",
-                  pic: "assets/icons/clipboard.svg",
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(CreateProgramDietPage.routeName);
-                  },
-                  child: ItemWidget(
-                    title: "ایجاد برنامه\n غذایی",
-                    pic: "assets/icons/vuesax-linear-reserve.svg",
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(CreateProgramBodyPage.routeName);
-                  },
-                  child: ItemWidget(
-                    title: "ایجاد برنامه\n بدنسازی",
-                    pic: "assets/icons/vuesax-linear-weight.svg",
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(CreateProgramOtherSportsPage.routeName);
-                  },
-                  child: ItemWidget(
-                    title: "ایجاد برنامه\n سایر رشته",
-                    pic: "assets/icons/vuesax-linear-clipboard-text.svg",
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(ListCoachPage.routeName);
-                    // Navigator.of(context)
-                    //     .pushNamed(ListApprenticePage.routeName);
-                  },
-                  child: ItemWidget(
-                    title: "مربیان \n مشاهده",
-                    pic: "assets/icons/user-octagon.svg",
-                  ),
-                ),
-                ItemWidget(
-                  title: "تنظیمات",
-                  pic: "assets/icons/setting-2.svg",
-                ),
-                Container(
-                  height: Get.height * 0.13,
-                  width: Get.width * 0.26,
-                )
-              ],
+            BlocConsumer<GetCurrentUserRoleBloc, GetCurrentUserRoleState>(
+              listener: (context, state) {
+                if (state is GetCurrentUserRoleLoadedState) {
+                  if (state.listRoleVm != null &&
+                      state.listRoleVm!.isNotEmpty) {
+                    // CurrentUserVm.roleType = state.listRoleVm!.first.roleType;
+                    CurrentUserVm.roleType = state.listRoleVm!.first.id;
+                  }
+                }
+              },
+              builder: (context, state) {
+                if (state is GetCurrentUserRoleLoadingState)
+                  return Center(
+                    child: MyWaiting(),
+                  );
+                else if (state is GetCurrentUserRoleLoadedState) {
+                  if (state.listRoleVm != null &&
+                      state.listRoleVm!.isNotEmpty) {
+                    // if (state.listRoleVm!.first.roleType == 3)
+                    if (state.listRoleVm!.first.id == 3)
+                      return ItemsStudents();
+                    else
+                      return ItemsCoach();
+                  }
+                }
+                return Container();
+              },
             ),
             SizedBox(
               height: 25,
@@ -327,6 +263,225 @@ class ItemWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ItemsStudents extends StatelessWidget {
+  const ItemsStudents({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(ProgramListPage.routeName);
+              },
+              child: ItemWidget(
+                title: "لیست  \n برنامه ها ",
+                pic: "assets/icons/vuesax-linear-clipboard-tick.svg",
+              ),
+            ),
+            Material(
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(ChatListPage.routeName);
+                },
+                child: ItemWidget(
+                  title: "گفنگوها",
+                  pic: "assets/icons/vuesax-linear-message-text.svg",
+                ),
+              ),
+            ),
+            ItemWidget(
+              title: "برنامه های \n فعال ",
+              pic: "assets/icons/clipboard.svg",
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 25,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(CreateProgramDietPage.routeName);
+              },
+              child: ItemWidget(
+                title: "ایجاد برنامه\n غذایی",
+                pic: "assets/icons/vuesax-linear-reserve.svg",
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(CreateProgramBodyPage.routeName);
+              },
+              child: ItemWidget(
+                title: "ایجاد برنامه\n بدنسازی",
+                pic: "assets/icons/vuesax-linear-weight.svg",
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(CreateProgramOtherSportsPage.routeName);
+              },
+              child: ItemWidget(
+                title: "ایجاد برنامه\n سایر رشته",
+                pic: "assets/icons/vuesax-linear-clipboard-text.svg",
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 25,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(ListCoachPage.routeName);
+                // Navigator.of(context)
+                //     .pushNamed(ListApprenticePage.routeName);
+              },
+              child: ItemWidget(
+                title: "مربیان \n مشاهده",
+                pic: "assets/icons/user-octagon.svg",
+              ),
+            ),
+            ItemWidget(
+              title: "تنظیمات",
+              pic: "assets/icons/setting-2.svg",
+            ),
+            Container(
+              height: Get.height * 0.13,
+              width: Get.width * 0.26,
+            )
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class ItemsCoach extends StatelessWidget {
+  const ItemsCoach({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(ListApprenticePage.routeName);
+              },
+              child: ItemWidget(
+                title: "لیست  \n شاگردان ",
+                pic: "assets/icons/vuesax-linear-clipboard-tick.svg",
+              ),
+            ),
+            Material(
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(ChatListPage.routeName);
+                },
+                child: ItemWidget(
+                  title: "گفنگوها",
+                  pic: "assets/icons/vuesax-linear-message-text.svg",
+                ),
+              ),
+            ),
+            ItemWidget(
+              title: "لیست برنامه \n خودم ",
+              pic: "assets/icons/setting-2.svg",
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 25,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(CreateProgramDietPage.routeName);
+              },
+              child: ItemWidget(
+                title: "ایجاد برنامه\n غذایی",
+                pic: "assets/icons/vuesax-linear-reserve.svg",
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(CreateProgramBodyPage.routeName);
+              },
+              child: ItemWidget(
+                title: "ایجاد برنامه\n بدنسازی",
+                pic: "assets/icons/vuesax-linear-weight.svg",
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(CreateProgramOtherSportsPage.routeName);
+              },
+              child: ItemWidget(
+                title: "ایجاد برنامه\n سایر رشته",
+                pic: "assets/icons/vuesax-linear-clipboard-text.svg",
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 25,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(ProgramListPage.routeName);
+              },
+              child: ItemWidget(
+                title: "لیست برنامه شاگردان",
+                pic: "assets/icons/vuesax-linear-clipboard-text.svg",
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(ListCoachPage.routeName);
+              },
+              child: ItemWidget(
+                title: "مشاهده \n مربیان",
+                pic: "assets/icons/user-octagon.svg",
+              ),
+            ),
+            ItemWidget(
+              title: "برنامه های \n فعال ",
+              pic: "assets/icons/clipboard.svg",
+            ),
+            // Container(
+            //   height: Get.height * 0.13,
+            //   width: Get.width * 0.26,
+            // )
+          ],
+        ),
+      ],
     );
   }
 }

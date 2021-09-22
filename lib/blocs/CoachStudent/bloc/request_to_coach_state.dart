@@ -5,7 +5,10 @@ abstract class RequestToCoachState {}
 
 class RequestToCoachInitialState extends RequestToCoachState {}
 
-class RequestToCoachLoadingState extends RequestToCoachState {}
+class RequestToCoachLoadingState extends RequestToCoachState {
+  final int? coachId;
+  RequestToCoachLoadingState({this.coachId});
+}
 
 class RequestToCoachErrorSatte extends RequestToCoachState {
   final String message;
@@ -14,5 +17,6 @@ class RequestToCoachErrorSatte extends RequestToCoachState {
 
 class RequestToCoachLoadedState extends RequestToCoachState {
   final ResultObject? resultObject;
-  RequestToCoachLoadedState({this.resultObject});
+  final int? coachId;
+  RequestToCoachLoadedState({this.resultObject, required this.coachId});
 }

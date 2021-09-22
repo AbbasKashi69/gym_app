@@ -22,8 +22,7 @@ class CoachStudentService extends BaseViewModel {
   static const String url_changeStatus = '/api/CoachStudent/ChangeStatus';
   static const String url_getStudentCoaches =
       '/api/CoachStudent/GetStudentCoaches';
-  static const String url_requestTocoach =
-      '/api/CoachStudent/GetStudentCoaches';
+  static const String url_requestTocoach = '/api/CoachStudent/RequestToCoach';
 
   Future<ResultObject?> create(CoachStudentVm coachStudentVm) async {
     var response = await repository!.post(url_create, coachStudentVm.toJson());

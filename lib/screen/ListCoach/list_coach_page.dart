@@ -7,7 +7,7 @@ import 'package:gym_app/components/no_data.dart';
 
 import 'components/item_follow.dart';
 
-List<int>? listItemHelper = [];
+// List<int>? listItemHelper = [];
 
 class ListCoachPage extends StatelessWidget {
   const ListCoachPage({Key? key}) : super(key: key);
@@ -40,17 +40,17 @@ class ListCoachPage extends StatelessWidget {
                         fontWeight: FontWeight.w500),
                   ),
                 ),
-                BlocConsumer<GetStudentCoachesBloc, GetStudentCoachesState>(
-                  listener: (context, state) {
-                    if (state is GetStudentCoachesLoadedState) {
-                      if (state.listCoachStudentVm != null &&
-                          state.listCoachStudentVm!.isNotEmpty) {
-                        state.listCoachStudentVm!.forEach((element) {
-                          listItemHelper!.add(element.status!);
-                        });
-                      }
-                    }
-                  },
+                BlocBuilder<GetStudentCoachesBloc, GetStudentCoachesState>(
+                  // listener: (context, state) {
+                  //   if (state is GetStudentCoachesLoadedState) {
+                  //     if (state.listCoachStudentVm != null &&
+                  //         state.listCoachStudentVm!.isNotEmpty) {
+                  //       state.listCoachStudentVm!.forEach((element) {
+                  //         listItemHelper!.add(element.status!);
+                  //       });
+                  //     }
+                  //   }
+                  // },
                   builder: (context, state) {
                     if (state is GetStudentCoachesLoadingState)
                       return MyWaiting();

@@ -65,8 +65,11 @@ class _ListApprenticePageState extends State<ListApprenticePage> {
                     )),
                 Material(
                   child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(RequestsPage.routeName);
+                    onTap: () async {
+                      await Navigator.of(context)
+                          .pushNamed(RequestsPage.routeName);
+                      BlocProvider.of<GetCoachStudentsBloc>(context)
+                          .add(GetCoachStudentsLoadingEvent());
                     },
                     child: Row(
                       children: [
@@ -111,7 +114,7 @@ class _ListApprenticePageState extends State<ListApprenticePage> {
                                                       .items![index]))),
                                     );
                                   }
-                                  return NoData();
+                                  return Container();
                                 } else
                                   return Container();
                               },
@@ -209,7 +212,7 @@ class ItemRequestInStack extends StatelessWidget {
       decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
       child: CircleAvatar(
         radius: sizeScreen.width > 550 ? 30 : 20,
-        backgroundImage: NetworkImage(coachStudentVm.studentPic!),
+        backgroundImage: NetworkImage(coachStudentVm.studentPic ?? ""),
       ),
     );
   }

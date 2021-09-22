@@ -11,7 +11,6 @@ import 'package:gym_app/components/no_data.dart';
 import 'package:gym_app/extensions/ext.dart';
 import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateMovementOtherSports/create_movement_other_sports_page.dart';
-import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 class CreateMovementDietPage extends StatefulWidget {
@@ -89,15 +88,24 @@ class _CreateMovementDietPageState extends State<CreateMovementDietPage> {
                                 });
                               },
                               deleteItemfunc: (idx) {
-                                widget.dietPlanTypeDayTermVm.mealsCount =
-                                    widget.dietPlanTypeDayTermVm.mealsCount! -
-                                        1;
-                                widget
-                                    .dietPlanTypeFormVm.dietPlanTypeDetailForms!
-                                    .removeWhere((s) => s.mealNumber == idx);
-                                widget.dietPlanTypeDayTermVm.currentTerm = 1;
+                                if (widget.dietPlanTypeDayTermVm.mealsCount! >
+                                    1) {
+                                  widget.dietPlanTypeFormVm
+                                      .dietPlanTypeDetailForms!
+                                      .removeWhere((s) => s.mealNumber == idx);
+                                  for (var item in widget.dietPlanTypeFormVm
+                                      .dietPlanTypeDetailForms!
+                                      .where((element) =>
+                                          element.mealNumber! > idx)) {
+                                    item.mealNumber = item.mealNumber! - 1;
+                                  }
+                                  widget.dietPlanTypeDayTermVm.mealsCount =
+                                      widget.dietPlanTypeDayTermVm.mealsCount! -
+                                          1;
+                                  widget.dietPlanTypeDayTermVm.currentTerm = 1;
 
-                                setState(() {});
+                                  setState(() {});
+                                }
                               },
                               isSelected:
                                   widget.dietPlanTypeDayTermVm.currentTerm!),

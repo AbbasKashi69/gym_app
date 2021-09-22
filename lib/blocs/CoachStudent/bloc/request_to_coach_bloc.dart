@@ -19,9 +19,10 @@ class RequestToCoachBloc
   ) async* {
     if (event is RequestToCoachLoadingEvent)
       try {
-        yield RequestToCoachLoadingState();
+        yield RequestToCoachLoadingState(coachId: event.coachId);
         var data = await _coachStudentService.requestToCoach(event.coachId);
-        yield RequestToCoachLoadedState(resultObject: data);
+        yield RequestToCoachLoadedState(
+            resultObject: data, coachId: event.coachId);
       } catch (e) {
         print('erro in request to coach loaded state ');
         yield RequestToCoachErrorSatte(message: e.toString());

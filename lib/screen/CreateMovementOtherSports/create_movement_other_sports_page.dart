@@ -11,7 +11,6 @@ import 'package:gym_app/components/no_data.dart';
 import 'package:gym_app/extensions/ext.dart';
 import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateMovement/components/warning_delete_trun_screen.dart';
-import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 class CreateMovementOtherSportsPage extends StatefulWidget {
@@ -93,17 +92,28 @@ class _CreateMovementOtherSportsPageState
                                 });
                               },
                               deleteItemfunc: (idx) {
-                                widget.anonymousPlanTypeDayTermVm.termsCount =
-                                    widget.anonymousPlanTypeDayTermVm
-                                            .termsCount! -
-                                        1;
-                                widget.anonymousPlantypeFormVm
-                                    .anonymousPlanTypeDetailForms!
-                                    .removeWhere((s) => s.termNumber == idx);
-                                widget.anonymousPlanTypeDayTermVm.currentTerm =
-                                    1;
+                                if (widget.anonymousPlanTypeDayTermVm
+                                        .termsCount! >
+                                    1) {
+                                  widget.anonymousPlantypeFormVm
+                                      .anonymousPlanTypeDetailForms!
+                                      .removeWhere((s) => s.termNumber == idx);
+                                  for (var item in widget
+                                      .anonymousPlantypeFormVm
+                                      .anonymousPlanTypeDetailForms!
+                                      .where((element) =>
+                                          element.termNumber! > idx)) {
+                                    item.termNumber = item.termNumber! - 1;
+                                  }
+                                  widget.anonymousPlanTypeDayTermVm.termsCount =
+                                      widget.anonymousPlanTypeDayTermVm
+                                              .termsCount! -
+                                          1;
+                                  widget.anonymousPlanTypeDayTermVm
+                                      .currentTerm = 1;
 
-                                setState(() {});
+                                  setState(() {});
+                                }
                               },
                               isSelected: widget
                                   .anonymousPlanTypeDayTermVm.currentTerm!),

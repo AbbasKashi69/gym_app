@@ -1,5 +1,5 @@
-import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
 import 'package:gym_app/ViewModels/BaseViewModel.dart';
+import 'package:gym_app/ViewModels/BodyBuildingPlanTypeDetail/BodyBuildingPlanDayTermVm.dart';
 import 'package:gym_app/ViewModels/BodyBuildingPlanTypeDetail/BodyBuildingPlanTypeDetailsFormVm.dart';
 import 'package:gym_app/ViewModels/Person/PersonListVm.dart';
 
@@ -18,16 +18,16 @@ class BodyBuildingPlanTypeFormVm extends BaseViewModel {
   String? nEndDate;
   List<BodyBuildingPlanTypeDetailsFormVm>? bodyBuildingPlanTypeDetails;
   List<PersonListVm>? students;
-  List<AnonymousPlanTypeDayTermVm>? dayTerms;
+  List<BodyBuildingPlanDayTermVm>? dayTerms;
 
   BodyBuildingPlanTypeFormVm(
-      {this.id,
-      this.coachId,
+      {this.id = 0,
+      this.coachId = 0,
       this.coachFullName,
       this.title,
       this.description,
       this.totalPrice,
-      this.totalTerm,
+      this.totalTerm = 0,
       this.isPrivate,
       this.startDate,
       this.nStartDate,
@@ -66,7 +66,7 @@ class BodyBuildingPlanTypeFormVm extends BaseViewModel {
     if (json['dayTerms'] != null) {
       dayTerms = [];
       json['dayTerms'].forEach((v) {
-        dayTerms!.add(new AnonymousPlanTypeDayTermVm.fromJson(v));
+        dayTerms!.add(new BodyBuildingPlanDayTermVm.fromJson(v));
       });
     }
   }
@@ -81,9 +81,9 @@ class BodyBuildingPlanTypeFormVm extends BaseViewModel {
     data['totalPrice'] = this.totalPrice;
     data['totalTerm'] = this.totalTerm;
     data['isPrivate'] = this.isPrivate;
-    data['startDate'] = this.startDate;
+    // data['startDate'] = this.startDate;
     data['nStartDate'] = this.nStartDate;
-    data['endDate'] = this.endDate;
+    // data['endDate'] = this.endDate;
     data['nEndDate'] = this.nEndDate;
     if (this.bodyBuildingPlanTypeDetails != null) {
       data['bodyBuildingPlanTypeDetails'] =

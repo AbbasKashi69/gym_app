@@ -57,11 +57,11 @@ class AccountService {
     return null;
   }
 
-  Future<List<RoleVm>?> getCurrentUserRole(int userId) async {
+  Future<List<RoleVm>?> getCurrentUserRole(int? userId) async {
     var response =
         await repository!.getAll(url_getCurrentUserRole + '?userId=$userId');
     if (response != null) {
-      var result = response.map((e) => RoleVm(e)).toList();
+      var result = response.map((e) => RoleVm.fromJson(e)).toList();
       return result;
     }
     return null;
