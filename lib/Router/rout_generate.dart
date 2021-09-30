@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
+<<<<<<< HEAD
+import 'package:gym_app/ViewModels/WalletLog/IncreaseCreditVm.dart';
+=======
 import 'package:gym_app/ViewModels/BodyBuildingPlanType/BodyBuildingPlanTypeFormVm.dart';
 import 'package:gym_app/ViewModels/CoachStudent/CoachStudentVm.dart';
 import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeFormVm.dart';
 import 'package:gym_app/blocs/Account/bloc/change_password_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/get_current_user_role_bloc.dart';
+>>>>>>> 3c131c738e42093acbfd14bd403af76d18124e87
 import 'package:gym_app/blocs/Account/bloc/login_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/register_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/send_code_bloc.dart';
@@ -26,6 +30,8 @@ import 'package:gym_app/blocs/CoachStudent/bloc/request_to_coach_bloc.dart';
 import 'package:gym_app/blocs/DietPlanType/bloc/create_using_form_diet_bloc.dart';
 import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/blocs/Resume/bloc/get_resume_bloc.dart';
+import 'package:gym_app/blocs/Subscription/bloc/get_subscription_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/increase_bloc.dart';
 import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateMovementDiet/create_movement_diet_page.dart';
@@ -52,6 +58,7 @@ import 'package:gym_app/screen/ProfileCoach/profile_coach_page.dart';
 import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 import 'package:gym_app/screen/Register/register_page.dart';
 import 'package:gym_app/screen/Scan/scan_page.dart';
+import 'package:gym_app/screen/Wallet/Increase_page.dart';
 import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
 import 'package:gym_app/screen/observeProgramBody/observe_program_body_page.dart';
 import 'package:gym_app/screen/observeProgramOtherSports/observe_other_sports_page.dart';
@@ -117,9 +124,23 @@ class MyRouter {
       case HomePage.routeName:
         return MaterialPageRoute(builder: (context) => HomePage());
       case SubscriptionPage.routeName:
-        return MaterialPageRoute(builder: (context) => SubscriptionPage());
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                create: (context) =>
+                SubscriptionBloc()..add(SubscriptionLoadingEvent()),
+                child: SubscriptionPage())
+        );
       case ProfilePage.routeName:
         return MaterialPageRoute(builder: (context) => ProfilePage());
+      case IncreaseWalletPage.routeName:
+        var increaseCreditVm = routeSettings.arguments;
+
+        return MaterialPageRoute(builder: (context) => BlocProvider(
+            create: (context) =>
+            IncreaseBloc()..add(IncreaseLoadingEvent(increaseCreditVm: increaseCreditVm as IncreaseCreditVm)),
+            child: IncreaseWalletPage())
+
+        );
       case ProfileApprenticePage.routeName:
         {
           var coachStudentVm = routeSettings.arguments;
@@ -130,6 +151,14 @@ class MyRouter {
       case WalletPage.routeName:
         return MaterialPageRoute(builder: (context) => WalletPage());
       case CvPage.routeName:
+<<<<<<< HEAD
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                create: (context) =>
+                    GetResumeBloc()..add(GetResumeLoadingEvent()),
+                child: CvPage())
+        );
+=======
         {
           var data = routeSettings.arguments;
           return MaterialPageRoute(
@@ -138,6 +167,7 @@ class MyRouter {
                     ..add(GetResumeLoadingEvent(coachId: data as int)),
                   child: CvPage()));
         }
+>>>>>>> 3c131c738e42093acbfd14bd403af76d18124e87
       case PersonalInfoPage.routeName:
         return MaterialPageRoute(builder: (context) => PersonalInfoPage());
       case SettingPage.routeName:

@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:gym_app/Router/rout_generate.dart';
 import 'package:gym_app/ViewModels/CurrentUserVm.dart';
 import 'package:gym_app/blocs/Person/bloc/edit_person_bloc.dart';
+import 'package:gym_app/ViewModels/WalletLog/IncreaseCreditVm.dart';
+import 'package:gym_app/blocs/Subscription/bloc/get_subscription_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/get_my_deposit_bloc.dart';
 import 'package:gym_app/components/customBottomBar.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
@@ -24,7 +28,10 @@ import 'package:gym_app/screen/subscription_page/subscription_page.dart';
 import 'Services/LocalSavingService.dart';
 import 'blocs/BottomNav/bloc/bottom_nav_bloc.dart';
 import 'blocs/Person/bloc/find_person_by_id_bloc.dart';
+import 'blocs/Subscription/bloc/get_subscription_invoice_bloc.dart';
+import 'blocs/WalletLog/bloc/get_my_withdrawal_bloc.dart';
 import 'blocs/WalletLog/bloc/get_my_wallet_ballance_bloc.dart';
+import 'blocs/WalletLog/bloc/increase_bloc.dart';
 import ' extensions/ext.dart';
 
 void main() async {
@@ -103,7 +110,19 @@ class _MyHomePageState extends State<MyHomePage> {
           child: HomePage(),
         );
       case 1:
-        return SubscriptionPage();
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => GetSubscriptionInvoiceBloc()
+                ..add(GetSubscriptionInvoiceLoadingEvent()),
+            ),
+            BlocProvider(
+              create: (context) =>
+                  SubscriptionBloc()..add(SubscriptionLoadingEvent()),
+            )
+          ],
+          child: SubscriptionPage(),
+        );
       case 2:
         return ScanPage();
       case 3:
@@ -121,7 +140,23 @@ class _MyHomePageState extends State<MyHomePage> {
         );
 
       case 4:
-        return WalletPage();
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => GetMyWalletBallanceBloc()
+                ..add(GetMyWalletBallanceLoadingEvent()),
+            ),
+            BlocProvider(
+              create: (context) =>
+                  GetWithdrawalBloc()..add(GetMyWithdrawalLoadingEvent()),
+            ),
+            BlocProvider(
+              create: (context) =>
+                  GetMyDepositBloc()..add(GetMyDepositLoadingEvent()),
+            ),
+          ],
+          child: WalletPage(),
+        );
 
       default:
         return Container(child: Center(child: Text('مشکلی وجود دارد')));
@@ -133,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (currentBackPressTime == null ||
         now.difference(currentBackPressTime!) > Duration(seconds: 2)) {
       currentBackPressTime = now;
-      // Fluttertoast.showToast(msg: 'برای خروج بازگشت را دوبار بزنید');
+      Fluttertoast.showToast(msg: 'برای خروج بازگشت را دوبار بزنید');
       return Future.value(false);
     } else
       SystemChannels.platform.invokeMethod('SystemNavigator.pop');

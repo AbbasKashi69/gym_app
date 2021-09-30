@@ -2,11 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:gym_app/ViewModels/WalletLog/IncreaseCreditVm.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/increase_bloc.dart';
+import 'package:gym_app/components/constant.dart';
+import 'package:gym_app/components/myWaiting.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 class IncreaseWalletPage extends StatefulWidget {
+  static const routeName = '/increase';
+
   @override
   _IncreaseWalletPageState createState() => _IncreaseWalletPageState();
 }
@@ -247,35 +255,46 @@ class _IncreaseWalletPageState extends State<IncreaseWalletPage> {
                           ),
                         )
                       )
-                    : Container(
-                        height: Get.height * 0.08,
-                        width: Get.width,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                          _isFill  ? SvgPicture.asset("assets/icons/blue23.svg") :  SvgPicture.asset("assets/icons/Rectangle 695.svg"),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "رفتن به درگاه پرداخت",
-                                  style: TextStyle(
-                                      color: _isFill ? Colors.white : Colors.black,
-                                      fontSize: Get.height * 0.025,
-                                      fontFamily: "IRANSans"),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.arrow_forward,color:  _isFill ? Colors.white : Colors.black,)
-                              ],
-                            ),
-                          ],
-                        )
-                      )
+                    : BlocConsumer<IncreaseBloc, IncreaseState>(
+                  listener: (context, state) {
+                    if (state is IncreaseLoadedState) {
+                      if (state.resultObject != null &&
+                          state.resultObject!.success!) {
+                        CustomeButton(
+                          sizeScreen: MediaQuery.of(context).size,
+                          title: 'دریافت کد',
+                          onTap: () {
+                              BlocProvider.of<IncreaseBloc>(context).add(
+                                  IncreaseLoadingEvent(
+                                      increaseCreditVm: IncreaseCreditVm(
+                                        isOnline: false,
+                                        invoiceTrackingCode: "just for test",
+                                        increaseCreditAmount: 10000,
+                                        id: 1,
+                                      )));
+                          },
+                          isReject: true,
+                        );
+                     } else if (state.resultObject != null) {
+                        Fluttertoast.showToast(
+                            msg: state.resultObject!.message ?? "");
+                      } else
+                        Fluttertoast.showToast(
+                          msg: 'دوباره امتحان کنید',
+                        );
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is IncreaseLoadingState)
+                      return MyWaiting();
+                    else
+                      return Container(
+                        height: 10,
+                        width: 10,
+                        color: Colors.red,
+                      );
+                  },
+                )
               ],
             ),
           ),

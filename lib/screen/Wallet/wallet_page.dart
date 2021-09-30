@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:gym_app/ViewModels/SubscriptionTypeInvoice/SubscriptionTypeInvoiceVm.dart';
+import 'package:gym_app/ViewModels/Transaction/TransactionAmountVm.dart';
+import 'package:gym_app/ViewModels/Transaction/TransactionVm.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/get_my_deposit_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/get_my_withdrawal_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/get_my_wallet_ballance_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customBottomBar.dart';
+import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/screen/Wallet/tansfer_others_wallet.dart';
 import 'package:gym_app/screen/Wallet/transfer_page.dart';
 // import 'package:gym_app/screen/Wallet/turnover_page.dart';
@@ -107,10 +115,26 @@ class WalletPage extends StatelessWidget {
                                 style: textStyleHome.copyWith(
                                     fontSize: Get.height * 0.025),
                               ),
-                              Text(
-                                "${"1300000".toPersianDigit().seRagham()} تومان ",
-                                style: textStyleHome.copyWith(
-                                    fontSize: Get.height * 0.025),
+                              BlocBuilder<GetMyWalletBallanceBloc,
+                                  GetMyWalletBallanceState>(
+                                builder: (context, state) {
+                                  if (state is GetMyWalletBallanceLoadingState)
+                                    return MyWaiting();
+                                  else if (state
+                                  is GetMyWalletBallanceLoadedState) if (state
+                                      .userWalletVm !=
+                                      null)
+                                    return Text(
+                                        '${state.userWalletVm!.nWalletBallance!} تومان',
+                                        style: textStyleHome);
+                                  else
+                                    return Text(
+                                      '0',
+                                      style: textStyleHome,
+                                    );
+                                  else
+                                    return Container();
+                                },
                               ),
                             ],
                           ),
@@ -147,13 +171,36 @@ class WalletPage extends StatelessWidget {
                             fontFamily: 'IRANSans',
                             fontWeight: FontWeight.w400),
                       ),
-                      Text(
-                        "${"1300000".seRagham().toPersianDigit()} تومان ",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
-                            fontFamily: 'IRANSans',
-                            fontWeight: FontWeight.w400),
+                      BlocBuilder<GetMyDepositBloc,
+                          GetMyDepositState>(
+                        builder: (context, state) {
+                          if (state
+                          is GetMyDepositLoadingState) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(child: CircularProgressIndicator()),
+                            );
+                          } else if (state
+                          is GetMyDepositLoadedState) {
+                            if (state.transactionAmountVm != null) {
+
+                              return Text("${state.transactionAmountVm!.nAmount.toString().toPersianDigit()} تومان ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: 'IRANSans',
+                                  fontWeight: FontWeight.w400),);
+                            }else{
+                              return Container(
+                                height: 10,
+                              );
+                            }
+                          }else{
+                            return Container(
+                              height: 10,
+                            );
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -183,24 +230,49 @@ class WalletPage extends StatelessWidget {
                             fontFamily: 'IRANSans',
                             fontWeight: FontWeight.w400),
                       ),
-                      Text(
-                        "${"1300000".seRagham().toPersianDigit()} تومان ",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
-                            fontFamily: 'IRANSans',
-                            fontWeight: FontWeight.w400),
+                      BlocBuilder<GetWithdrawalBloc,
+                          GetMyWithdrawalState>(
+                        builder: (context, state) {
+                          if (state
+                          is GetMyWithdrawalLoadingState) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(child: CircularProgressIndicator()),
+                            );
+                          } else if (state
+                          is GetMyWithdrawalLoadedState) {
+                            if (state.transactionAmountVm != null) {
+
+                              return Text("${state.transactionAmountVm!.nAmount.toString().toPersianDigit()} تومان ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontFamily: 'IRANSans',
+                                  fontWeight: FontWeight.w400),);
+                            }else{
+                              return Container(
+                                height: 10,
+
+                              );
+                            }
+                          }else{
+                            return Container(
+
+                            );
+                          }
+                        },
                       ),
                     ],
                   ),
                 ),
               ),
+
               SizedBox(
                 height: Get.height * 0.015,
               ),
               InkWell(
                 onTap: () {
-                  Get.to(IncreaseWalletPage(), transition: Transition.downToUp);
+                  Get.to(IncreaseWalletPage());
                 },
                 child: Container(
                   height: Get.height * 0.08,
@@ -253,7 +325,7 @@ class WalletPage extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Get.to(TransferToBankPage(), transition: Transition.downToUp);
+                  Get.to(TransferToBankPage());
                 },
                 child: Container(
                   height: Get.height * 0.08,
@@ -307,7 +379,7 @@ class WalletPage extends StatelessWidget {
               InkWell(
                 onTap: () {
                   Get.to(TransferOtherWallet(),
-                      transition: Transition.downToUp);
+                      );
                 },
                 child: Container(
                   height: Get.height * 0.08,
