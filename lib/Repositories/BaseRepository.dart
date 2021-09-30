@@ -157,7 +157,7 @@ class BaseRepository implements IBaseRepository {
         var result = json.decode(response.body);
         return result;
       } else {
-        var result = {'success': true, 'message': ''};
+        var result = {'success': true, 'message': 'دوباره امتحان کنید'};
         return result;
       }
     }

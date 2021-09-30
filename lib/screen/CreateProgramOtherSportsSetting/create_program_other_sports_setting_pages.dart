@@ -198,21 +198,24 @@ class _DaysTaskState extends State<DaysTask> {
                                   deleteItem: () {
                                     widget.anonymousPlantypeFormVm.dayTerms!
                                         .removeAt(index);
-                                    if (widget.anonymousPlantypeFormVm.dayTerms!
-                                            .length >
-                                        index) {
-                                      for (int i = index;
-                                          i <
-                                              widget.anonymousPlantypeFormVm
-                                                  .dayTerms!.length;
-                                          i += 1) {
-                                        widget.anonymousPlantypeFormVm
-                                            .dayTerms![i].dayNumber = widget
-                                                .anonymousPlantypeFormVm
-                                                .dayTerms![i]
-                                                .dayNumber! -
-                                            1;
-                                      }
+                                    widget.anonymousPlantypeFormVm
+                                        .anonymousPlanTypeDetailForms!
+                                        .removeWhere((element) =>
+                                            element.dayNumber == index + 1);
+
+                                    for (var item in widget
+                                        .anonymousPlantypeFormVm
+                                        .anonymousPlanTypeDetailForms!
+                                        .where((element) =>
+                                            element.dayNumber! > index)) {
+                                      item.dayNumber = item.dayNumber! - 1;
+                                    }
+
+                                    for (var item in widget
+                                        .anonymousPlantypeFormVm.dayTerms!
+                                        .where((element) =>
+                                            element.dayNumber! > index)) {
+                                      item.dayNumber = item.dayNumber! - 1;
                                     }
                                     setState(() {});
                                   }),

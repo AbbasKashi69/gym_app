@@ -11,15 +11,15 @@ import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/components/no_data.dart';
 import 'package:gym_app/extensions/ext.dart';
 
-class ListBarnamehaPage extends StatefulWidget {
-  const ListBarnamehaPage({Key? key}) : super(key: key);
-  static const routeName = '/listBarnameha';
+class MyActiveProgramPage extends StatefulWidget {
+  const MyActiveProgramPage({Key? key}) : super(key: key);
+  static const routeName = '/myActiveProgramPage';
 
   @override
-  _ListBarnamehaPageState createState() => _ListBarnamehaPageState();
+  _MyActiveProgramPageState createState() => _MyActiveProgramPageState();
 }
 
-class _ListBarnamehaPageState extends State<ListBarnamehaPage>
+class _MyActiveProgramPageState extends State<MyActiveProgramPage>
     with TickerProviderStateMixin {
   int _selectedTab = 0;
   late ScrollController _exerciseScrollController;
@@ -38,8 +38,7 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
     if (_exerciseScrollController.position.pixels ==
         _exerciseScrollController.position.maxScrollExtent) {
       BlocProvider.of<GetPlansBySortBloc>(context)
-        ..add(GetPlansBySortLoadedEvent(
-            planType: 1, setCoachId: false, setStudentId: true));
+        ..add(GetPlansBySortLoadedEvent(planType: 1, planStatusList: '1'));
     }
   }
 
@@ -47,8 +46,7 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
     if (_dietScrollController.position.pixels ==
         _dietScrollController.position.maxScrollExtent) {
       BlocProvider.of<GetPlansBySortBloc>(context)
-        ..add(GetPlansBySortLoadedEvent(
-            planType: 2, setCoachId: false, setStudentId: true));
+        ..add(GetPlansBySortLoadedEvent(planType: 2, planStatusList: '1'));
     }
   }
 
@@ -64,7 +62,7 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
-        title: 'لیست برنامه های خودم',
+        title: 'لیست برنامه های فعال',
       ),
       body: Container(
         height: gh(1),
@@ -113,9 +111,7 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
                               });
                               BlocProvider.of<GetPlansBySortBloc>(context).add(
                                   GetPlansBySortLoadingEvent(
-                                      planType: 1,
-                                      setCoachId: false,
-                                      setStudentId: true));
+                                      planType: 1, planStatusList: '1'));
                             },
                             child: Container(
                               height: 60,
@@ -137,9 +133,7 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
                               });
                               BlocProvider.of<GetPlansBySortBloc>(context).add(
                                   GetPlansBySortLoadingEvent(
-                                      planType: 2,
-                                      setCoachId: false,
-                                      setStudentId: true));
+                                      planType: 2, planStatusList: '1'));
                             },
                             child: Container(
                               height: 60,
@@ -179,7 +173,7 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
                               itemBuilder: (context, index) {
                                 if (index <
                                     state.page_planTypeLogVm!.items!.length)
-                                  return ItemLoadedFirstProgram(
+                                  return ItemLoadedActiveProgram(
                                       planTypeLogvm: state
                                           .page_planTypeLogVm!.items![index]);
                                 else
@@ -208,8 +202,8 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
   }
 }
 
-class ItemLoadedFirstProgram extends StatelessWidget {
-  const ItemLoadedFirstProgram({Key? key, required this.planTypeLogvm})
+class ItemLoadedActiveProgram extends StatelessWidget {
+  const ItemLoadedActiveProgram({Key? key, required this.planTypeLogvm})
       : super(key: key);
   final PlanTypeLogvm planTypeLogvm;
 

@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dar
 import 'package:gym_app/ViewModels/BodyBuildingPlanType/BodyBuildingPlanTypeFormVm.dart';
 import 'package:gym_app/ViewModels/CoachStudent/CoachStudentVm.dart';
 import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeFormVm.dart';
+import 'package:gym_app/blocs/Account/bloc/change_password_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/get_current_user_role_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/login_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/register_bloc.dart';
@@ -33,6 +35,7 @@ import 'package:gym_app/screen/CreateProgramDiet/create_program_diet_page.dart';
 import 'package:gym_app/screen/CreateProgramDietSetting/create_program_diet_setting_page.dart';
 import 'package:gym_app/screen/CreateProgramOtherSports/create_program_other_sports_page.dart';
 import 'package:gym_app/screen/CreateProgramOtherSportsSetting/create_program_other_sports_setting_pages.dart';
+import 'package:gym_app/screen/CropPage/crop_page.dart';
 import 'package:gym_app/screen/DetailElan/detail_elan_page.dart';
 import 'package:gym_app/screen/Elanha/elan_page.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
@@ -41,6 +44,7 @@ import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:gym_app/screen/ListApprentice/requests_page.dart';
 import 'package:gym_app/screen/ListCoach/list_coach_page.dart';
 import 'package:gym_app/screen/Login/login_page.dart';
+import 'package:gym_app/screen/MyActiveProgram/my_active_program_page.dart';
 import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
 import 'package:gym_app/screen/PersonalInfoCoach/personal_info_coach_page.dart';
 import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';
@@ -53,6 +57,7 @@ import 'package:gym_app/screen/observeProgramBody/observe_program_body_page.dart
 import 'package:gym_app/screen/observeProgramOtherSports/observe_other_sports_page.dart';
 import 'package:gym_app/screen/chat/chat_list_page.dart';
 import 'package:gym_app/screen/list_barnameha/list_barnameha.dart';
+import 'package:gym_app/screen/profile_page/password_settings_page.dart';
 import 'package:gym_app/screen/profile_page/profile_page.dart';
 import 'package:gym_app/screen/settings/setting_page.dart';
 import 'package:gym_app/screen/subscription_page/subscription_page.dart';
@@ -241,7 +246,27 @@ class MyRouter {
       case PersonalInfoCoachPage.routeName:
         return MaterialPageRoute(builder: (context) => PersonalInfoCoachPage());
       case ListBarnamehaPage.routeName:
-        return MaterialPageRoute(builder: (context) => ListBarnamehaPage());
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                  create: (context) => GetPlansBySortBloc()
+                    ..add(GetPlansBySortLoadingEvent(
+                        // planType shoubl be change to 4 but it doesn't ready
+                        setCoachId: false,
+                        setStudentId: true,
+                        planType: 1)),
+                  child: ListBarnamehaPage(),
+                ));
+      case MyActiveProgramPage.routeName:
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                  create: (context) => GetPlansBySortBloc()
+                    ..add(GetPlansBySortLoadingEvent(
+                        // planType shoubl be change to 4 but it doesn't ready
+
+                        planType: 1,
+                        planStatusList: '1')),
+                  child: MyActiveProgramPage(),
+                ));
       //******* new */
       case ElanPage.routeName:
         return MaterialPageRoute(builder: (context) => ElanPage());
@@ -303,6 +328,19 @@ class MyRouter {
                   child: RegisterPage(),
                 ));
 
+      case PasswordSettingsPage.routeName:
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                  create: (context) => ChangePasswordBloc(),
+                  child: PasswordSettingsPage(),
+                ));
+
+      case CropPage.routeName:
+        {
+          var x = routeSettings.arguments;
+          return MaterialPageRoute(
+              builder: (context) => CropPage(x as Uint8List));
+        }
       default:
         return MaterialPageRoute(builder: (context) => ScanPage());
     }

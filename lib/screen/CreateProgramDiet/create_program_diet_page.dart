@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:gym_app/ViewModels/CurrentUserVm.dart';
 import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeDayMealVm.dart';
 import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeFormVm.dart';
 import 'package:gym_app/ViewModels/Person/PersonListVm.dart';
@@ -11,51 +12,31 @@ import 'package:gym_app/components/customeTextField.dart';
 import 'package:gym_app/screen/CreateProgramDietSetting/create_program_diet_setting_page.dart';
 import 'package:gym_app/screen/CreateProgramOtherSports/components/select_student_screen.dart';
 import 'package:gym_app/screen/CreateProgramOtherSports/create_program_other_sports_page.dart';
-import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
-class CreateProgramDietPage extends StatefulWidget {
-  const CreateProgramDietPage({Key? key}) : super(key: key);
+class CreateProgramDietPage extends StatelessWidget {
+  CreateProgramDietPage({Key? key}) : super(key: key);
   static const routeName = '/createProgramDietPage';
+  final TextEditingController _priceTextEditingController =
+      TextEditingController();
+  final TextEditingController _titleTextEditingController =
+      TextEditingController();
+  final TextEditingController _startDateTextEditingController =
+      TextEditingController();
+  final TextEditingController _endDateTextEditingController =
+      TextEditingController();
+  final TextEditingController _descriptionTextEditingController =
+      TextEditingController();
+  final DietPlanTypeFormVm dietPlantypeFormVm = DietPlanTypeFormVm(
+      students: [],
+      dayMeals: [
+        DietPlanTypeDayMealVm(dayNumber: 1, mealsCount: 1, currentTerm: 1)
+      ],
+      dietPlanTypeDetailForms: [],
+      isPrivate: CurrentUserVm.roleType != 3 ? false : true);
+  final GlobalKey<FormState> _dietProgramKey = GlobalKey<FormState>();
 
-  @override
-  _CreateProgramDietPageState createState() => _CreateProgramDietPageState();
-}
-
-class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
-  late TextEditingController _priceTextEditingController;
-  late TextEditingController _titleTextEditingController;
-  late TextEditingController _startDateTextEditingController;
-  late TextEditingController _endDateTextEditingController;
-  late TextEditingController _descriptionTextEditingController;
-  late DietPlanTypeFormVm dietPlantypeFormVm;
-  GlobalKey<FormState> _dietProgramKey = GlobalKey<FormState>();
-  @override
-  void initState() {
-    _priceTextEditingController = TextEditingController();
-    _titleTextEditingController = TextEditingController();
-    _startDateTextEditingController = TextEditingController(
-        text: Jalali.now().toJalaliDateTime().split(' ')[0]);
-    _endDateTextEditingController = TextEditingController(
-        text: Jalali.now().toJalaliDateTime().split(' ')[0]);
-    _descriptionTextEditingController = TextEditingController();
-    dietPlantypeFormVm = DietPlanTypeFormVm(students: [], dayMeals: [
-      DietPlanTypeDayMealVm(dayNumber: 1, mealsCount: 1, currentTerm: 1)
-    ], dietPlanTypeDetailForms: []);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _priceTextEditingController.dispose();
-    _titleTextEditingController.dispose();
-    _startDateTextEditingController.dispose();
-    _endDateTextEditingController.dispose();
-    _descriptionTextEditingController.dispose();
-    super.dispose();
-  }
-
-  Future<void> setStartTimePicker() async {
+  Future<void> setStartTimePicker(BuildContext context) async {
     var x = await showPersianDatePicker(
       context: context,
       initialDate: Jalali.now(),
@@ -67,7 +48,7 @@ class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
     }
   }
 
-  Future<void> setEndTimePicker() async {
+  Future<void> setEndTimePicker(BuildContext context) async {
     var x = await showPersianDatePicker(
       context: context,
       initialDate: Jalali.now(),
@@ -196,6 +177,7 @@ class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
                     ),
                     SizedBox(height: padding * 2),
                     CustomeTextField(
+                      onChange: (String vlue) {},
                       validator: (String value) {
                         if (value.isEmpty)
                           return 'نام برنامه نمیتواند خالی باشد';
@@ -209,9 +191,10 @@ class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
                     GestureDetector(
                       onTap: () async {
                         FocusScope.of(context).unfocus();
-                        await setStartTimePicker();
+                        await setStartTimePicker(context);
                       },
                       child: CustomeTextField(
+                        onChange: (String value) {},
                         validator: (String value) {
                           if (value.isEmpty)
                             return 'تاریخ شروع نمیتواند خالی باشد';
@@ -228,9 +211,10 @@ class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
                     GestureDetector(
                       onTap: () async {
                         FocusScope.of(context).unfocus();
-                        await setEndTimePicker();
+                        await setEndTimePicker(context);
                       },
                       child: CustomeTextField(
+                        onChange: (String value) {},
                         validator: (String value) {
                           if (value.isEmpty)
                             return 'تاریخ پایان نمیتواند خالی باشد';
@@ -244,97 +228,11 @@ class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
                       ),
                     ),
                     SizedBox(height: padding * 2),
-                    InkWell(
-                      onTap: () async {
-                        FocusScope.of(context).unfocus();
-                        var x = await showModalBottomSheet(
-                            isDismissible: true,
-                            elevation: 20,
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (ctx) => BlocProvider.value(
-                                value: BlocProvider.of<
-                                    GetStudentsAsPersonListBloc>(context)
-                                  ..add(GetStudentsAsPersonListLoadingEvent()),
-                                child: SelectStudentScreen()));
-                        if (x != null) {
-                          x = x as PersonListVm;
-                          var isExist = dietPlantypeFormVm.students!
-                              .where((element) =>
-                                  element.userFullName == x.userFullName)
-                              .toList();
-                          if (isExist.isEmpty) {
-                            dietPlantypeFormVm.students!.add(x);
-                            setState(() {});
-                          }
-                        }
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: padding),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: padding, vertical: padding),
-                        decoration: ShapeDecoration(
-                            color: Color(0xfffBfBfB),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                side: BorderSide(color: Color(0xffEBEBEB)))),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.add,
-                                  size:
-                                      kFontSizeText(sizeScreen, FontSize.title),
-                                  color: Color(0xff48CAE4),
-                                ),
-                                SizedBox(
-                                  width: padding / 2,
-                                ),
-                                Text(
-                                  'افزودن شاگرد',
-                                  style: textStyle.copyWith(
-                                    color: Color(0xff48CAE4),
-                                    fontSize: kFontSizeText(
-                                        sizeScreen, FontSize.subTitle),
-                                  ),
-                                )
-                              ],
-                            ),
-                            Icon(
-                              Icons.person_add_alt_rounded,
-                              size: kFontSizeText(sizeScreen, FontSize.title),
-                              color: Color(0xff48CAE4),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Wrap(
-                      direction: Axis.horizontal,
-                      textDirection: TextDirection.rtl,
-                      alignment: WrapAlignment.start,
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      runAlignment: WrapAlignment.start,
-                      spacing: padding,
-                      children: dietPlantypeFormVm.students != null &&
-                              dietPlantypeFormVm.students!.isNotEmpty
-                          ? List.generate(
-                              dietPlantypeFormVm.students!.length,
-                              (index) => AddedStudent(
-                                    personListVm:
-                                        dietPlantypeFormVm.students![index],
-                                    removeItem: (PersonListVm personListVm) {
-                                      dietPlantypeFormVm.students!
-                                          .remove(personListVm);
-                                      setState(() {});
-                                    },
-                                  ))
-                          : [Container()],
-                    ),
+                    CurrentUserVm.roleType != 3
+                        ? ItemAddedStudents(
+                            dietPlantypeFormVm: dietPlantypeFormVm,
+                            sizeScreen: sizeScreen)
+                        : Container(),
                     SizedBox(
                       height: padding,
                     ),
@@ -389,7 +287,6 @@ class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
                               _endDateTextEditingController.text;
                           dietPlantypeFormVm.description =
                               _descriptionTextEditingController.text;
-                          dietPlantypeFormVm.isPrivate = true;
                           FocusScope.of(context).unfocus();
                           Navigator.of(context).pushNamed(
                               CreateProgramDietSettingPage.routeName,
@@ -404,6 +301,143 @@ class _CreateProgramDietPageState extends State<CreateProgramDietPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ItemAddedStudents extends StatefulWidget {
+  const ItemAddedStudents({
+    Key? key,
+    required this.dietPlantypeFormVm,
+    required this.sizeScreen,
+  }) : super(key: key);
+
+  final DietPlanTypeFormVm dietPlantypeFormVm;
+  final Size sizeScreen;
+
+  @override
+  _ItemAddedStudentsState createState() => _ItemAddedStudentsState();
+}
+
+class _ItemAddedStudentsState extends State<ItemAddedStudents> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () async {
+            FocusScope.of(context).unfocus();
+            var x = await showModalBottomSheet(
+                isDismissible: true,
+                elevation: 20,
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (ctx) => BlocProvider.value(
+                    value: BlocProvider.of<GetStudentsAsPersonListBloc>(context)
+                      ..add(GetStudentsAsPersonListLoadingEvent()),
+                    child: SelectStudentScreen()));
+            if (x != null) {
+              x = x as PersonListVm;
+              var isExist = widget.dietPlantypeFormVm.students!
+                  .where((element) => element.userFullName == x.userFullName)
+                  .toList();
+              if (isExist.isEmpty) {
+                widget.dietPlantypeFormVm.students!.add(x);
+                setState(() {});
+              }
+            }
+          },
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: padding),
+            padding: EdgeInsets.symmetric(horizontal: padding),
+            decoration: ShapeDecoration(
+                color: Color(0xfffBfBfB),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(color: Color(0xffEBEBEB)))),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.add,
+                      size: kFontSizeText(widget.sizeScreen, FontSize.title),
+                      color: Color(0xff48CAE4),
+                    ),
+                    SizedBox(
+                      width: padding / 2,
+                    ),
+                    Text(
+                      'افزودن شاگرد',
+                      style: textStyle.copyWith(
+                        color: Color(0xff48CAE4),
+                        fontSize:
+                            kFontSizeText(widget.sizeScreen, FontSize.subTitle),
+                      ),
+                    )
+                  ],
+                ),
+                Material(
+                    child: Tooltip(
+                  message: 'افزدون برنامه برای خودم',
+                  verticalOffset: 20,
+                  textStyle: textStyle.copyWith(
+                      fontSize:
+                          kFontSizeText(widget.sizeScreen, FontSize.subTitle),
+                      color: Colors.white),
+                  child: IconButton(
+                      splashRadius: 20,
+                      onPressed: () {
+                        if (!widget.dietPlantypeFormVm.isPrivate!) {
+                          widget.dietPlantypeFormVm.isPrivate = true;
+                          setState(() {});
+                        }
+                      },
+                      iconSize:
+                          kFontSizeText(widget.sizeScreen, FontSize.title) + 5,
+                      icon: Icon(
+                        Icons.person_add_alt_rounded,
+                        color: Color(0xff48CAE4),
+                      )),
+                ))
+              ],
+            ),
+          ),
+        ),
+        Wrap(
+          direction: Axis.horizontal,
+          textDirection: TextDirection.rtl,
+          alignment: WrapAlignment.start,
+          crossAxisAlignment: WrapCrossAlignment.start,
+          runAlignment: WrapAlignment.start,
+          spacing: padding,
+          children: widget.dietPlantypeFormVm.students != null &&
+                  widget.dietPlantypeFormVm.students!.isNotEmpty
+              ? List.generate(
+                  widget.dietPlantypeFormVm.students!.length,
+                  (index) => AddedStudent(
+                        personListVm:
+                            widget.dietPlantypeFormVm.students![index],
+                        removeItem: (PersonListVm personListVm) {
+                          widget.dietPlantypeFormVm.students!
+                              .remove(personListVm);
+                          setState(() {});
+                        },
+                      ))
+              : [Container()],
+        ),
+        widget.dietPlantypeFormVm.isPrivate!
+            ? AddedStudent(
+                personListVm: PersonListVm(userFullName: 'خودم'),
+                removeItem: (PersonListVm personListVm) {
+                  widget.dietPlantypeFormVm.isPrivate = false;
+                  setState(() {});
+                })
+            : Container()
+      ],
     );
   }
 }

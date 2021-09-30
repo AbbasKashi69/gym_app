@@ -96,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           Expanded(
                               child: CustomeRegisterTextField(
+                                  hintText: 'شماره موبایل',
                                   maxLength: 10,
                                   isHaveIcon: true,
                                   iconPrefix: Icons.call,
@@ -147,6 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             Expanded(
                                 child: CustomeRegisterTextField(
+                                    hintText: 'رمز عبور',
                                     isVisible: isVisiblePass,
                                     changeVisibility: () {
                                       setState(() {

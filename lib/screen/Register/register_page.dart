@@ -214,7 +214,7 @@ class InputPhoneNumberTask extends StatelessWidget {
                         },
                         keyboardType: TextInputType.phone,
                         textInputAction: TextInputAction.send,
-                        lableText: 'شماره موبایل')),
+                        hintText: 'شماره موبایل')),
                 SizedBox(
                   width: 15,
                 ),
@@ -361,7 +361,7 @@ class InputCodeTask extends StatelessWidget {
                         },
                         keyboardType: TextInputType.phone,
                         textInputAction: TextInputAction.send,
-                        lableText: 'کد تایید')),
+                        hintText: 'کد تایید')),
                 SizedBox(
                   width: 15,
                 ),
@@ -499,7 +499,7 @@ class _InputPasswordTaskState extends State<InputPasswordTask> {
                           onSubmitted: (String value) {},
                           keyboardType: TextInputType.name,
                           textInputAction: TextInputAction.next,
-                          lableText: 'رمز عبور')),
+                          hintText: 'رمز عبور')),
                 ],
               )),
           SizedBox(height: 20),
@@ -550,7 +550,7 @@ class _InputPasswordTaskState extends State<InputPasswordTask> {
                           },
                           keyboardType: TextInputType.name,
                           textInputAction: TextInputAction.send,
-                          lableText: 'تایید رمز عبور')),
+                          hintText: 'تایید رمز عبور')),
                 ],
               )),
           SizedBox(
@@ -607,7 +607,7 @@ class CustomeRegisterTextField extends StatelessWidget {
       {Key? key,
       required this.textEditingController,
       required this.onSubmitted,
-      required this.lableText,
+      required this.hintText,
       required this.validator,
       this.changeVisibility,
       this.isObsecure = false,
@@ -616,6 +616,7 @@ class CustomeRegisterTextField extends StatelessWidget {
       this.iconPrefix,
       this.isHaveIcon = false,
       this.textInputAction = TextInputAction.next,
+      this.lableText,
       this.keyboardType = TextInputType.name})
       : super(key: key);
   final TextEditingController textEditingController;
@@ -623,13 +624,14 @@ class CustomeRegisterTextField extends StatelessWidget {
   final Function onSubmitted;
   final TextInputAction textInputAction;
   final Function validator;
-  final String lableText;
+  final String hintText;
   final bool isHaveIcon;
   final IconData? iconPrefix;
   final int? maxLength;
   final bool isObsecure;
   final Function? changeVisibility;
   final bool isVisible;
+  final String? lableText;
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
@@ -641,7 +643,7 @@ class CustomeRegisterTextField extends StatelessWidget {
         },
         textInputAction: textInputAction,
         style: textStyle.copyWith(
-            fontSize: kFontSizeText(sizeScreen, FontSize.subTitle)),
+            fontSize: kFontSizeText(sizeScreen, FontSize.title)),
         validator: (String? value) {
           return validator(value);
         },
@@ -651,9 +653,9 @@ class CustomeRegisterTextField extends StatelessWidget {
         textAlign: TextAlign.right,
         decoration: kInputDecorationRegister.copyWith(
             counterStyle: textStyle.copyWith(
-                fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
+                fontSize: kFontSizeText(sizeScreen, FontSize.title),
                 color: Colors.black54),
-            contentPadding: EdgeInsets.only(top: 5, bottom: 7),
+            contentPadding: EdgeInsets.only(top: 10, bottom: 7),
             suffixIcon: changeVisibility != null
                 ? InkWell(
                     onTap: () {
@@ -681,154 +683,13 @@ class CustomeRegisterTextField extends StatelessWidget {
                     ),
                   )
                 : SizedBox.shrink(),
-            labelText: lableText,
-            hintText: lableText,
+            labelText: lableText ?? hintText,
+            labelStyle: textStyle.copyWith(
+                fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
+                color: Colors.black45),
+            hintText: hintText,
             hintStyle: textStyle.copyWith(
-                fontSize: kFontSizeText(sizeScreen, FontSize.subTitle))));
+                fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
+                color: Colors.black45)));
   }
 }
-
-
-
-
-
-
-/*
-
-Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                          child: _sendCode
-                              ? TextField(
-                                  controller: _editingController,
-                                  keyboardType: TextInputType.phone,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: Get.height * 0.03),
-                                  decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(0),
-                                      labelText: "کد تایید",
-                                      alignLabelWithHint: true,
-                                      labelStyle: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: Get.height * 0.025,
-                                          fontFamily: "IRANSans")),
-                                )
-                              : TextField(
-                                  controller: _textEditingController,
-                                  onEditingComplete: () {
-                                    setState(() {
-                                      _isFill = true;
-                                      if (_editingController
-                                          .value.text.isEmpty) {
-                                        setState(() {
-                                          _isFill = false;
-                                        });
-                                      }
-                                    });
-                                  },
-                                  onSubmitted: (value) {
-                                    setState(() {
-                                      _isFill = true;
-                                      if (value.isEmpty) {
-                                        setState(() {
-                                          _isFill = false;
-                                        });
-                                      }
-                                    });
-                                  },
-                                  keyboardType: TextInputType.phone,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: Get.height * 0.03),
-                                  decoration: InputDecoration(
-                                      prefixIcon: Icon(
-                                        Icons.call,
-                                        color: Colors.grey,
-                                      ),
-                                      contentPadding: EdgeInsets.all(0),
-                                      labelText: "شماره موبایل",
-                                      alignLabelWithHint: true,
-                                      labelStyle: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: Get.height * 0.025,
-                                          fontFamily: "IRANSans")),
-                                )),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: Get.height * 0.1),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            _isFill
-                                ? CustomTimer(
-                                    controller: _controller,
-                                    from: Duration(minutes: 2),
-                                    to: Duration(hours: 0),
-                                    interval: Duration(seconds: 1),
-                                    builder:
-                                        (CustomTimerRemainingTime remaining) {
-                                      return Text(
-                                        "${remaining.minutes}:${remaining.seconds}",
-                                        style: TextStyle(
-                                            fontSize: Get.height * 0.025),
-                                      );
-                                    },
-                                  )
-                                : Text(
-                                    "98+",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: Get.height * 0.025),
-                                  ),
-                            Container(
-                              width: Get.width * 0.15,
-                              color: Colors.grey,
-                              height: 1,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: Get.height * 0.025,
-                ),
-                InkWell(
-                    onTap: () {
-                      _controller.start();
-                      setState(() {
-                        _sendCode = true;
-                      });
-                    },
-                    child: _sendCode
-                        ? InkWell(
-                            onTap: () {
-                              Get.to(CreatePasswordPage());
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(top: padding),
-                              child: CustomeButton(
-                                sizeScreen: sizeScreen,
-                                title: 'ادامه',
-                                onTap: () {},
-                                isReject: true,
-                              ),
-                            ))
-                        : Container(
-                            padding: EdgeInsets.only(top: padding),
-                            child: CustomeButton(
-                              sizeScreen: MediaQuery.of(context).size,
-                              title: 'دریافت کد',
-                              onTap: () {},
-                              isReject: true,
-                            ),
-                          )),
-*/

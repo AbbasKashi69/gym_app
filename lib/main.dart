@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:gym_app/Router/rout_generate.dart';
 import 'package:gym_app/ViewModels/CurrentUserVm.dart';
+import 'package:gym_app/blocs/Person/bloc/edit_person_bloc.dart';
 import 'package:gym_app/components/customBottomBar.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
@@ -22,6 +23,7 @@ import 'package:gym_app/screen/subscription_page/subscription_page.dart';
 
 import 'Services/LocalSavingService.dart';
 import 'blocs/BottomNav/bloc/bottom_nav_bloc.dart';
+import 'blocs/Person/bloc/find_person_by_id_bloc.dart';
 import 'blocs/WalletLog/bloc/get_my_wallet_ballance_bloc.dart';
 import ' extensions/ext.dart';
 
@@ -105,7 +107,19 @@ class _MyHomePageState extends State<MyHomePage> {
       case 2:
         return ScanPage();
       case 3:
-        return ProfilePage();
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) =>
+                  FindPersonByIdBloc()..add(FindPersonByIdLoadingEvent()),
+            ),
+            BlocProvider(
+              create: (context) => EditPersonBloc(),
+            ),
+          ],
+          child: ProfilePage(),
+        );
+
       case 4:
         return WalletPage();
 
