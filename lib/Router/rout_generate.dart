@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/WalletLog/IncreaseCreditVm.dart';
 import 'package:gym_app/blocs/Account/bloc/login_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/register_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/send_code_bloc.dart';
@@ -14,6 +15,7 @@ import 'package:gym_app/blocs/CoachStudent/bloc/get_students_as_person_list_bloc
 import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/blocs/Resume/bloc/get_resume_bloc.dart';
 import 'package:gym_app/blocs/Subscription/bloc/get_subscription_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/increase_bloc.dart';
 import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateMovementOtherSports/create_movement_other_sports_page.dart';
@@ -35,6 +37,7 @@ import 'package:gym_app/screen/ProfileCoach/profile_coach_page.dart';
 import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 import 'package:gym_app/screen/Register/register_page.dart';
 import 'package:gym_app/screen/Scan/scan_page.dart';
+import 'package:gym_app/screen/Wallet/Increase_page.dart';
 import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
 import 'package:gym_app/screen/observeProgramBody/observe_program_body_page.dart';
 import 'package:gym_app/screen/observeProgramOtherSports/observe_other_sports_page.dart';
@@ -80,6 +83,15 @@ class MyRouter {
         );
       case ProfilePage.routeName:
         return MaterialPageRoute(builder: (context) => ProfilePage());
+      case IncreaseWalletPage.routeName:
+        var increaseCreditVm = routeSettings.arguments;
+
+        return MaterialPageRoute(builder: (context) => BlocProvider(
+            create: (context) =>
+            IncreaseBloc()..add(IncreaseLoadingEvent(increaseCreditVm: increaseCreditVm as IncreaseCreditVm)),
+            child: IncreaseWalletPage())
+
+        );
       case ProfileApprenticePage.routeName:
         return MaterialPageRoute(builder: (context) => ProfileApprenticePage());
       case ProfileApprenticePage.routeName:

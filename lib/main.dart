@@ -5,7 +5,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:gym_app/Router/rout_generate.dart';
 import 'package:gym_app/ViewModels/CurrentUserVm.dart';
+import 'package:gym_app/ViewModels/WalletLog/IncreaseCreditVm.dart';
 import 'package:gym_app/blocs/Subscription/bloc/get_subscription_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/get_my_deposit_bloc.dart';
 import 'package:gym_app/components/customBottomBar.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
@@ -24,14 +26,16 @@ import 'package:gym_app/screen/subscription_page/subscription_page.dart';
 import 'Services/LocalSavingService.dart';
 import 'blocs/BottomNav/bloc/bottom_nav_bloc.dart';
 import 'blocs/Subscription/bloc/get_subscription_invoice_bloc.dart';
+import 'blocs/WalletLog/bloc/get_my_withdrawal_bloc.dart';
 import 'blocs/WalletLog/bloc/get_my_wallet_ballance_bloc.dart';
+import 'blocs/WalletLog/bloc/increase_bloc.dart';
 import ' extensions/ext.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   CurrentUserVm.localSavingService = await LocalSavingService.create();
   CurrentUserVm.localSavingService!.getUser();
-  CurrentUserVm.localSavingService!.logOff();
+  // CurrentUserVm.localSavingService!.logOff();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -119,7 +123,20 @@ class _MyHomePageState extends State<MyHomePage> {
       case 3:
         return ProfilePage();
       case 4:
-        return WalletPage();
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => GetMyWalletBallanceBloc()..add(GetMyWalletBallanceLoadingEvent()),
+            ),
+            BlocProvider(
+              create: (context) => GetWithdrawalBloc()..add(GetMyWithdrawalLoadingEvent()),
+            ),
+            BlocProvider(
+              create: (context) => GetMyDepositBloc()..add(GetMyDepositLoadingEvent()),
+            ),
+          ],
+          child: WalletPage(),
+        );
 
       default:
         return Container(child: Center(child: Text('مشکلی وجود دارد')));
