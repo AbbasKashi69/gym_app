@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gym_app/ViewModels/CoachStudent/CoachStudentVm.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/screen/Cv/cv_page.dart';
-import 'package:gym_app/screen/Cv/no_cv_screen.dart';
-import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
 import 'package:gym_app/screen/ProfileApprentice/components/write_program_screen.dart';
 
 class ProfileApprenticePage extends StatelessWidget {
-  const ProfileApprenticePage({Key? key}) : super(key: key);
+  const ProfileApprenticePage({Key? key, required this.coachStudentVm})
+      : super(key: key);
   static const routeName = '/ProfileApprenticePage';
+  final CoachStudentVm coachStudentVm;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,8 @@ class ProfileApprenticePage extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: sizeScreen.width > 550 ? 30 : 20,
-                        backgroundImage: NetworkImage(
+                        backgroundImage: NetworkImage(coachStudentVm
+                                .studentPic ??
                             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU'),
                       ),
                       SizedBox(
@@ -42,7 +44,7 @@ class ProfileApprenticePage extends StatelessWidget {
                       ),
                       RichText(
                           text: TextSpan(
-                              text: 'علی کریمی',
+                              text: coachStudentVm.studentFullName ?? "",
                               style: textStyle,
                               children: [
                             TextSpan(

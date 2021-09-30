@@ -12,6 +12,7 @@ class CustomeTextField extends StatelessWidget {
       this.textInputAction = TextInputAction.next,
       this.keyboardType = TextInputType.name,
       this.isEnable = true,
+      this.onChange,
       this.isHaveIcon = false,
       this.isReadOnly = false})
       : super(key: key);
@@ -24,11 +25,15 @@ class CustomeTextField extends StatelessWidget {
   final Function? onSubmited;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
+  final Function? onChange;
 
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
     return TextFormField(
+      onChanged: (String value) {
+        onChange!(value);
+      },
       validator: (String? value) {
         return validator!(value);
       },

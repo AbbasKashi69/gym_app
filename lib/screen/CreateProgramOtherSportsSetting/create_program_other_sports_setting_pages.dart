@@ -1,10 +1,14 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
+import 'package:gym_app/blocs/AnonymousPlanType/bloc/create_using_form_bloc.dart';
 import 'package:gym_app/components/constant.dart';
+import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateMovementOtherSports/create_movement_other_sports_page.dart';
@@ -257,21 +261,51 @@ class _DaysTaskState extends State<DaysTask> {
               SizedBox(
                 height: 20,
               ),
-              CustomeButton(
-                  sizeScreen: widget.sizeScreen,
-                  title: "ثبت",
-                  onTap: () async {
-                    await Get.showSnackbar(GetBar(
-                      duration: Duration(seconds: 2),
-                      backgroundColor: Colors.black,
-                      snackStyle: SnackStyle.FLOATING,
-                      message: 'برنامه ی شما با موفقیت ثبت شد',
-                    ));
-                    Future.delayed(Duration(seconds: 1), () {
+              BlocConsumer<CreateUsingFormOthersSportsBloc,
+                  CreateUsingFormOthersSportsState>(
+                listener: (context, state) async {
+                  if (state is CreateUsingFormOthersSportsLoadedState) {
+                    if (state.resultObject != null &&
+                        state.resultObject!.success!) {
+                      await Fluttertoast.showToast(
+                          msg: state.resultObject!.message!);
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           MyHomePage.routeName, (route) => false);
-                    });
-                  }),
+                    } else if (state.resultObject != null)
+                      Fluttertoast.showToast(msg: state.resultObject!.message!);
+                    else
+                      Fluttertoast.showToast(msg: 'دوباره امتحان کنید');
+                  }
+                },
+                builder: (context, state) {
+                  if (state is CreateUsingFormOthersSportsLoadingState)
+                    return MyWaiting();
+                  else
+                    return CustomeButton(
+                        sizeScreen: widget.sizeScreen,
+                        title: "ثبت",
+                        onTap: () {
+                          if (widget.anonymousPlantypeFormVm.dayTerms!
+                                  .isNotEmpty &&
+                              widget.anonymousPlantypeFormVm
+                                  .anonymousPlanTypeDetailForms!.isNotEmpty &&
+                              widget.anonymousPlantypeFormVm
+                                  .anonymousPlanTypeDetailForms!
+                                  .where((element) => element
+                                      .nameMovementController!.text.isNotEmpty)
+                                  .toList()
+                                  .isNotEmpty) {
+                            BlocProvider.of<CreateUsingFormOthersSportsBloc>(
+                                    context)
+                                .add(CreateUsingFormOtherSportsLoadingEvent(
+                                    anonymousPlantypeFormVm:
+                                        widget.anonymousPlantypeFormVm));
+                          } else
+                            Fluttertoast.showToast(
+                                msg: 'برنامه باید حداقل یک آیتم داشته باشد');
+                        });
+                },
+              )
             ],
           ),
         ),

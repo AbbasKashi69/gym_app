@@ -83,7 +83,7 @@ class ItemStudent extends StatelessWidget {
         ),
         leading: CircleAvatar(
           backgroundImage: NetworkImage(
-            personListVm.pic!,
+            personListVm.pic ?? "",
           ),
           radius: sizeScreen.width > 550 ? 35 : 23,
         ));

@@ -10,7 +10,7 @@ class RoleVm extends BaseViewModel {
   String? nRoleType;
   int? id;
 
-  RoleVm(e,
+  RoleVm(
       {this.name,
       this.normalizedName,
       this.roleType,
@@ -24,7 +24,7 @@ class RoleVm extends BaseViewModel {
     name = json['name'];
     normalizedName = json['normalizedName'];
     roleType = json['RoleType'];
-    hasAcces = json['hasAcces'].cast<int>();
+    // hasAcces = json['hasAcces'].cast<int>();
     confirmPassword = json['confirmPassword'];
     isSelected = json['isSelected'];
     nRoleType = json['nRoleType'];

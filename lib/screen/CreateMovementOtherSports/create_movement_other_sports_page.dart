@@ -11,7 +11,6 @@ import 'package:gym_app/components/no_data.dart';
 import 'package:gym_app/extensions/ext.dart';
 import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateMovement/components/warning_delete_trun_screen.dart';
-import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 class CreateMovementOtherSportsPage extends StatefulWidget {
@@ -31,185 +30,251 @@ class CreateMovementOtherSportsPage extends StatefulWidget {
 
 class _CreateMovementOtherSportsPageState
     extends State<CreateMovementOtherSportsPage> {
+  bool isEmptyTextField = true;
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: kColorAppbar,
-      appBar: AppBarWidget(
-        title: widget.anonymousPlanTypeDayTermVm.dayNumber != 3
-            ? 'روز ${widget.anonymousPlanTypeDayTermVm.dayNumber.toString().toWord()}م'
-            : 'روز سوم',
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: kBodyDecoration,
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: padding / 2),
-                margin: EdgeInsets.symmetric(vertical: padding),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(children: [
-                    Row(
-                      children: List.generate(
-                        widget.anonymousPlanTypeDayTermVm.termsCount!,
-                        (index) => ItemFilterChip(
-                            index: index + 1,
-                            onChangeValue: () {
-                              setState(() {
-                                widget.anonymousPlanTypeDayTermVm.currentTerm =
-                                    index + 1;
-                              });
-                            },
-                            deleteItemfunc: (idx) {
-                              widget.anonymousPlanTypeDayTermVm.termsCount =
+    return WillPopScope(
+      onWillPop: () async {
+        List<AnonymousPlanTypeDetailFormVm> x = widget
+            .anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+            .where((element) =>
+                element.dayNumber ==
+                widget.anonymousPlanTypeDayTermVm.dayNumber)
+            .toList();
+        for (int i = 0; i < x.length; i++) {
+          x[i].nameMovementController!.clear();
+          x[i].descriptionController!.clear();
+        }
+        return Future.value(true);
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: kColorAppbar,
+        appBar: AppBarWidget(
+          title: widget.anonymousPlanTypeDayTermVm.dayNumber != 3
+              ? 'روز ${widget.anonymousPlanTypeDayTermVm.dayNumber.toString().toWord()}م'
+              : 'روز سوم',
+          onBack: () async {
+            List<AnonymousPlanTypeDetailFormVm> x = widget
+                .anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                .where((element) =>
+                    element.dayNumber ==
+                    widget.anonymousPlanTypeDayTermVm.dayNumber)
+                .toList();
+            for (int i = 0; i < x.length; i++) {
+              x[i].nameMovementController!.clear();
+              x[i].descriptionController!.clear();
+            }
+            Navigator.of(context).pop();
+          },
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            decoration: kBodyDecoration,
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: padding / 2),
+                  margin: EdgeInsets.symmetric(vertical: padding),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(children: [
+                      Row(
+                        children: List.generate(
+                          widget.anonymousPlanTypeDayTermVm.termsCount!,
+                          (index) => ItemFilterChip(
+                              index: index + 1,
+                              onChangeValue: () {
+                                setState(() {
                                   widget.anonymousPlanTypeDayTermVm
-                                          .termsCount! -
-                                      1;
-                              widget.anonymousPlantypeFormVm
-                                  .anonymousPlanTypeDetailForms!
-                                  .removeWhere((s) => s.termNumber == idx);
-                              widget.anonymousPlanTypeDayTermVm.currentTerm = 1;
+                                      .currentTerm = index + 1;
+                                });
+                              },
+                              deleteItemfunc: (idx) {
+                                if (widget.anonymousPlanTypeDayTermVm
+                                        .termsCount! >
+                                    1) {
+                                  widget.anonymousPlantypeFormVm
+                                      .anonymousPlanTypeDetailForms!
+                                      .removeWhere((s) => s.termNumber == idx);
+                                  for (var item in widget
+                                      .anonymousPlantypeFormVm
+                                      .anonymousPlanTypeDetailForms!
+                                      .where((element) =>
+                                          element.termNumber! > idx)) {
+                                    item.termNumber = item.termNumber! - 1;
+                                  }
+                                  widget.anonymousPlanTypeDayTermVm.termsCount =
+                                      widget.anonymousPlanTypeDayTermVm
+                                              .termsCount! -
+                                          1;
+                                  widget.anonymousPlanTypeDayTermVm
+                                      .currentTerm = 1;
 
-                              setState(() {});
-                            },
-                            isSelected:
-                                widget.anonymousPlanTypeDayTermVm.currentTerm!),
+                                  setState(() {});
+                                }
+                              },
+                              isSelected: widget
+                                  .anonymousPlanTypeDayTermVm.currentTerm!),
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        widget.anonymousPlanTypeDayTermVm.termsCount =
-                            widget.anonymousPlanTypeDayTermVm.termsCount! + 1;
-                        setState(() {});
-                      },
-                      child: DottedBorder(
-                          borderType: BorderType.Circle,
-                          dashPattern: [5],
-                          color: parseColor('#707070'),
-                          child: Container(
-                            padding: EdgeInsets.all(padding),
-                            decoration: BoxDecoration(shape: BoxShape.circle),
-                            child: Center(
-                              child: Icon(
-                                Icons.add,
-                                color: parseColor('#565656'),
+                      GestureDetector(
+                        onTap: () {
+                          widget.anonymousPlanTypeDayTermVm.termsCount =
+                              widget.anonymousPlanTypeDayTermVm.termsCount! + 1;
+                          setState(() {});
+                        },
+                        child: DottedBorder(
+                            borderType: BorderType.Circle,
+                            dashPattern: [5],
+                            color: parseColor('#707070'),
+                            child: Container(
+                              padding: EdgeInsets.all(padding),
+                              decoration: BoxDecoration(shape: BoxShape.circle),
+                              child: Center(
+                                child: Icon(
+                                  Icons.add,
+                                  color: parseColor('#565656'),
+                                ),
                               ),
-                            ),
-                          )),
-                    )
-                  ]),
+                            )),
+                      )
+                    ]),
+                  ),
                 ),
-              ),
-              widget.anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
-                      .where((s) =>
-                          s.dayNumber ==
-                              widget.anonymousPlanTypeDayTermVm.dayNumber &&
-                          s.termNumber ==
-                              widget.anonymousPlanTypeDayTermVm.currentTerm)
-                      .toList()
-                      .isEmpty
-                  ? Center(
-                      child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 50),
-                      child: NoData(),
-                    ))
-                  : Column(
-                      children: List.generate(
-                          widget.anonymousPlantypeFormVm
-                              .anonymousPlanTypeDetailForms!
-                              .where((s) =>
-                                  s.dayNumber ==
-                                      widget.anonymousPlanTypeDayTermVm
-                                          .dayNumber &&
-                                  s.termNumber ==
-                                      widget.anonymousPlanTypeDayTermVm
-                                          .currentTerm)
-                              .toList()
-                              .length,
-                          (index) => ItemAddedMovementOtherSports(
-                                deleteMovement: (int displayOrder) {
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
-                                  setState(() {
-                                    widget.anonymousPlantypeFormVm
-                                        .anonymousPlanTypeDetailForms!
-                                        .removeWhere((s) =>
-                                            s.displayOrder == displayOrder);
-                                  });
-                                },
-                                data: widget.anonymousPlantypeFormVm
-                                    .anonymousPlanTypeDetailForms!
-                                    .where((s) =>
-                                        s.dayNumber ==
-                                            widget.anonymousPlanTypeDayTermVm
-                                                .dayNumber &&
-                                        s.termNumber ==
-                                            widget.anonymousPlanTypeDayTermVm
-                                                .currentTerm)
-                                    .toList()[index],
-                              )),
-                    ),
-              GestureDetector(
-                onTap: () {
-                  AnonymousPlanTypeDetailFormVm data =
-                      AnonymousPlanTypeDetailFormVm();
-                  data.descriptionController = TextEditingController();
-                  data.nameMovementController = TextEditingController();
-                  data.dayNumber = widget.anonymousPlanTypeDayTermVm.dayNumber;
-                  data.termNumber =
-                      widget.anonymousPlanTypeDayTermVm.currentTerm;
-                  data.displayOrder = MyHomePage.lastDisplayOtherSports += 1;
-                  widget.anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
-                      .removeWhere((s) => s.displayOrder == data.displayOrder);
-                  widget.anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
-                      .add(data);
-                  setState(() {});
-                },
-                child: Container(
-                  width: gw(0.8),
-                  height: gh(0.07),
-                  child: DottedBorder(
-                    borderType: BorderType.RRect,
-                    color: parseColor('#00B4D8'),
-                    dashPattern: [5],
-                    radius: Radius.elliptical(20, 20),
-                    child: Container(
-                      // width: gw(0.8),
-                      // height: gh(0.03),
-                      child: Center(
-                        child: Text(
-                          'حرکت جدید',
-                          style: textStyle.copyWith(
-                              fontSize:
-                                  kFontSizeText(sizeScreen, FontSize.subTitle),
-                              color: parseColor('#00B4D8')),
+                widget.anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                        .where((s) =>
+                            s.dayNumber ==
+                                widget.anonymousPlanTypeDayTermVm.dayNumber &&
+                            s.termNumber ==
+                                widget.anonymousPlanTypeDayTermVm.currentTerm)
+                        .toList()
+                        .isEmpty
+                    ? Center(
+                        child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 50),
+                        child: NoData(),
+                      ))
+                    : Column(
+                        children: List.generate(
+                            widget.anonymousPlantypeFormVm
+                                .anonymousPlanTypeDetailForms!
+                                .where((s) =>
+                                    s.dayNumber ==
+                                        widget.anonymousPlanTypeDayTermVm
+                                            .dayNumber &&
+                                    s.termNumber ==
+                                        widget.anonymousPlanTypeDayTermVm
+                                            .currentTerm)
+                                .toList()
+                                .length,
+                            (index) => ItemAddedMovementOtherSports(
+                                  deleteMovement: (int displayOrder) {
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+                                    setState(() {
+                                      widget.anonymousPlantypeFormVm
+                                          .anonymousPlanTypeDetailForms!
+                                          .removeWhere((s) =>
+                                              s.displayOrder == displayOrder);
+                                    });
+                                  },
+                                  data: widget.anonymousPlantypeFormVm
+                                      .anonymousPlanTypeDetailForms!
+                                      .where((s) =>
+                                          s.dayNumber ==
+                                              widget.anonymousPlanTypeDayTermVm
+                                                  .dayNumber &&
+                                          s.termNumber ==
+                                              widget.anonymousPlanTypeDayTermVm
+                                                  .currentTerm)
+                                      .toList()[index],
+                                )),
+                      ),
+                GestureDetector(
+                  onTap: () {
+                    AnonymousPlanTypeDetailFormVm data =
+                        AnonymousPlanTypeDetailFormVm();
+                    data.descriptionController = TextEditingController();
+                    data.nameMovementController = TextEditingController();
+                    data.dayNumber =
+                        widget.anonymousPlanTypeDayTermVm.dayNumber;
+                    data.termNumber =
+                        widget.anonymousPlanTypeDayTermVm.currentTerm;
+                    data.displayOrder = MyHomePage.lastDisplayOtherSports += 1;
+                    widget.anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                        .removeWhere(
+                            (s) => s.displayOrder == data.displayOrder);
+                    widget.anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                        .add(data);
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: gw(0.8),
+                    height: gh(0.07),
+                    child: DottedBorder(
+                      borderType: BorderType.RRect,
+                      color: parseColor('#00B4D8'),
+                      dashPattern: [5],
+                      radius: Radius.elliptical(20, 20),
+                      child: Container(
+                        // width: gw(0.8),
+                        // height: gh(0.03),
+                        child: Center(
+                          child: Text(
+                            'حرکت جدید',
+                            style: textStyle.copyWith(
+                                fontSize: kFontSizeText(
+                                    sizeScreen, FontSize.subTitle),
+                                color: parseColor('#00B4D8')),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Container(
-                  margin: EdgeInsets.symmetric(vertical: padding * 2),
-                  child: CustomeButton(
-                    sizeScreen: sizeScreen,
-                    title: 'ثبت برنامه',
-                    onTap: () async {
-                      await Get.showSnackbar(GetBar(
-                        duration: Duration(seconds: 2),
-                        backgroundColor: Colors.black,
-                        snackStyle: SnackStyle.FLOATING,
-                        message:
-                            'برنامه ی روز ${widget.anonymousPlanTypeDayTermVm.dayNumber.toString().toWord()}م ثبت شد',
-                      ));
-                      Navigator.of(context).pop();
-                    },
-                  )),
-            ],
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: padding * 2),
+                    child: CustomeButton(
+                      sizeScreen: sizeScreen,
+                      title: 'ثبت برنامه',
+                      onTap: () async {
+                        List<AnonymousPlanTypeDetailFormVm> x = widget
+                            .anonymousPlantypeFormVm
+                            .anonymousPlanTypeDetailForms!
+                            .where((element) =>
+                                element.dayNumber ==
+                                widget.anonymousPlanTypeDayTermVm.dayNumber)
+                            .toList();
+                        if (x.isNotEmpty) {
+                          for (int i = 0; i < x.length; i++) {
+                            if (x[i].nameMovementController!.text.isEmpty) {
+                              await Fluttertoast.showToast(
+                                  msg:
+                                      'نام حرکت در روز ${x[i].dayNumber.toString().toWord()}م و نوبت ${x[i].termNumber.toString().toWord()}م خالی است');
+                              isEmptyTextField = true;
+                              break;
+                            }
+                            isEmptyTextField = false;
+                          }
+                          if (!isEmptyTextField) {
+                            await Get.showSnackbar(GetBar(
+                              duration: Duration(seconds: 2),
+                              backgroundColor: Colors.black,
+                              snackStyle: SnackStyle.FLOATING,
+                              message:
+                                  'برنامه ی روز ${widget.anonymousPlanTypeDayTermVm.dayNumber.toString().toWord()}م ثبت شد',
+                            ));
+                            Future.delayed(Duration(seconds: 1), () {
+                              Navigator.of(context).pop(true);
+                            });
+                          }
+                        }
+                      },
+                    )),
+              ],
+            ),
           ),
         ),
       ),
@@ -263,7 +328,16 @@ class ItemAddedMovementOtherSports extends StatelessWidget {
                               Container(
                                 margin: EdgeInsets.only(
                                     bottom: 20, right: padding, left: padding),
-                                child: TextField(
+                                child: TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  // validator: (String? value) {
+                                  //   if (value!.isEmpty)
+                                  //     return 'نام حرکت نمیتواند خالی باشد';
+                                  //   return null;
+                                  // },
+                                  style: textStyle.copyWith(
+                                      fontSize: kFontSizeText(
+                                          sizeScreen, FontSize.subTitle)),
                                   controller: data.nameMovementController,
                                   decoration: InputDecoration(
                                       suffix: Padding(
@@ -282,6 +356,7 @@ class ItemAddedMovementOtherSports extends StatelessWidget {
                                           )),
                                       hintText: 'نام حرکت',
                                       hintStyle: textStyle.copyWith(
+                                          color: Colors.black45,
                                           fontSize: kFontSizeText(
                                               sizeScreen, FontSize.subTitle))),
                                 ),
@@ -290,10 +365,14 @@ class ItemAddedMovementOtherSports extends StatelessWidget {
                                 margin: EdgeInsets.only(
                                     bottom: 20, right: padding, left: padding),
                                 child: TextField(
+                                  style: textStyle.copyWith(
+                                      fontSize: kFontSizeText(
+                                          sizeScreen, FontSize.subTitle)),
                                   controller: data.descriptionController,
                                   decoration: InputDecoration(
                                       hintText: 'توضیحات حرکت',
                                       hintStyle: textStyle.copyWith(
+                                          color: Colors.black45,
                                           fontSize: kFontSizeText(
                                               sizeScreen, FontSize.subTitle))),
                                 ),

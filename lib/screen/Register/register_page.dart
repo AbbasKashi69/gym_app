@@ -95,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
         body: SingleChildScrollView(
-          physics: NeverScrollableScrollPhysics(),
+          physics: ScrollPhysics().parent,
           child: Container(
             width: Get.width,
             child: Padding(
@@ -104,7 +104,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: Get.height * 0.15,
+                    height: Get.height * 0.1,
                   ),
                   //**************************** */
                   _setWidgetTask == 1
@@ -146,7 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       Get.offAndToNamed(LoginPage.routeName);
                     },
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: Get.height * 0.2),
+                      padding: EdgeInsets.symmetric(vertical: Get.height * 0.1),
                       child: Text(
                         "ورود",
                         style: TextStyle(
@@ -204,6 +204,7 @@ class InputPhoneNumberTask extends StatelessWidget {
                         },
                         onSubmitted: (String value) {
                           if (inputPhoneKey.currentState!.validate()) {
+                            FocusScope.of(context).requestFocus(FocusNode());
                             BlocProvider.of<RegisterBloc>(context).add(
                                 RegisterLoadingEvent(
                                     registerVm: RegisterVm(
@@ -348,6 +349,7 @@ class InputCodeTask extends StatelessWidget {
                         },
                         onSubmitted: (String value) {
                           if (inputCodeKey.currentState!.validate()) {
+                            FocusScope.of(context).requestFocus(FocusNode());
                             BlocProvider.of<VerifyCodeBloc>(context).add(
                                 VerifyCodeLoadingEvent(
                                     confirmCodeVm: ConfirmCodeVm(
@@ -528,6 +530,7 @@ class _InputPasswordTaskState extends State<InputPasswordTask> {
                           },
                           onSubmitted: (String value) {
                             if (widget.inputPassKey.currentState!.validate()) {
+                              FocusScope.of(context).requestFocus(FocusNode());
                               BlocProvider.of<SubmitRegisterBloc>(context).add(
                                   SubmitRegisterLoadingEvent(
                                       registerVm: RegisterVm(

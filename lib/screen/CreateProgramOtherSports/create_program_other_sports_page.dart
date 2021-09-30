@@ -197,6 +197,7 @@ class _CreateProgramOtherSportsPageState
                     ),
                     SizedBox(height: padding * 2),
                     CustomeTextField(
+                      onChange: (String vlaue) {},
                       validator: (String value) {
                         if (value.isEmpty)
                           return 'نام برنامه نمیتواند خالی باشد';
@@ -209,6 +210,7 @@ class _CreateProgramOtherSportsPageState
                     SizedBox(height: padding * 2),
                     GestureDetector(
                       onTap: () async {
+                        FocusScope.of(context).unfocus();
                         await setStartTimePicker();
                       },
                       child: CustomeTextField(
@@ -227,6 +229,7 @@ class _CreateProgramOtherSportsPageState
                     SizedBox(height: padding * 2),
                     GestureDetector(
                       onTap: () async {
+                        FocusScope.of(context).unfocus();
                         await setEndTimePicker();
                       },
                       child: CustomeTextField(
@@ -245,6 +248,7 @@ class _CreateProgramOtherSportsPageState
                     SizedBox(height: padding * 2),
                     InkWell(
                       onTap: () async {
+                        FocusScope.of(context).unfocus();
                         var x = await showModalBottomSheet(
                             isDismissible: true,
                             elevation: 20,
@@ -257,17 +261,14 @@ class _CreateProgramOtherSportsPageState
                                 child: SelectStudentScreen()));
                         if (x != null) {
                           x = x as PersonListVm;
-                          // if (anonymousPlantypeFormVm.students!.isNotEmpty) {
-                          //   for (PersonListVm item
-                          //       in anonymousPlantypeFormVm.students!) {
-                          //     if (item.userFullName == x.userFullName) break;
-                          anonymousPlantypeFormVm.students!.add(x);
-                          setState(() {});
-                          //   }
-                          // } else {
-                          //   anonymousPlantypeFormVm.students!.add(x);
-                          //   setState(() {});
-                          // }
+                          var isExist = anonymousPlantypeFormVm.students!
+                              .where((element) =>
+                                  element.userFullName == x.userFullName)
+                              .toList();
+                          if (isExist.isEmpty) {
+                            anonymousPlantypeFormVm.students!.add(x);
+                            setState(() {});
+                          }
                         }
                       },
                       child: Container(
@@ -373,15 +374,29 @@ class _CreateProgramOtherSportsPageState
                       sizeScreen: sizeScreen,
                       title: 'ادامه',
                       onTap: () {
-                        // if (_createOtherSportKey.currentState!.validate()) {
-                        anonymousPlantypeFormVm.dayTerms = [
-                          AnonymousPlanTypeDayTermVm(
-                              dayNumber: 1, termsCount: 1, currentTerm: 1)
-                        ];
-                        Navigator.of(context).pushNamed(
-                            CreateProgramOtherSportsSettingPage.routeName,
-                            arguments: anonymousPlantypeFormVm);
-                        // }
+                        if (_createOtherSportKey.currentState!.validate()) {
+                          anonymousPlantypeFormVm.dayTerms = [
+                            AnonymousPlanTypeDayTermVm(
+                                dayNumber: 1, termsCount: 1, currentTerm: 1)
+                          ];
+                          anonymousPlantypeFormVm.title =
+                              _titleTextEditingController.text;
+                          anonymousPlantypeFormVm.totalPrice = int.tryParse(
+                              _priceTextEditingController.text.isEmpty
+                                  ? '0'
+                                  : _priceTextEditingController.text);
+                          anonymousPlantypeFormVm.nStartDate =
+                              _startDateTextEditingController.text;
+                          anonymousPlantypeFormVm.nEndDate =
+                              _endDateTextEditingController.text;
+                          anonymousPlantypeFormVm.description =
+                              _descriptionTextEditingController.text;
+                          anonymousPlantypeFormVm.isPrivate = true;
+                          FocusScope.of(context).unfocus();
+                          Navigator.of(context).pushNamed(
+                              CreateProgramOtherSportsSettingPage.routeName,
+                              arguments: anonymousPlantypeFormVm);
+                        }
                       },
                     )
                   ],
@@ -418,7 +433,7 @@ class AddedStudent extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            personListVm.userFullName!,
+            personListVm.userFullName ?? "",
             style: textStyle.copyWith(
                 fontSize: kFontSizeText(sizeScreen, FontSize.subTitle)),
           ),

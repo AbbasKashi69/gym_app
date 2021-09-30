@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gym_app/ViewModels/CoachStudent/CoachStudentVm.dart';
 import 'package:gym_app/components/constant.dart';
-import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 
 class WarningUnFollowScreen {
-  Future warningUnFollow(
-      BuildContext context, Size sizeScreen, dynamic data) async {
+  Future warningUnFollow(BuildContext context, Size sizeScreen,
+      CoachStudentVm coachStudentVm) async {
     var result = await showModalBottomSheet(
         isDismissible: false,
         elevation: 20,
@@ -46,7 +46,7 @@ class WarningUnFollowScreen {
                         height: 30,
                       ),
                       Text(
-                        'مربی "${data['name']}" از لیست مربیان شما حذف شود ؟',
+                        'مربی "${coachStudentVm.coachFullName}" از لیست مربیان شما حذف شود ؟',
                         style: textStyle.copyWith(
                             fontSize: kFontSizeText(sizeScreen, FontSize.title),
                             fontWeight: FontWeight.w500),

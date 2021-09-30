@@ -24,7 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         yield LoginLoadingState();
         var data = await _accountService.login(event.loginVm);
-        if (data!.success!) {
+        if (data.success!) {
           var token =
               TokenResponseVm.fromJson(data.extra as Map<String, dynamic>);
           CurrentUserVm.from(token);

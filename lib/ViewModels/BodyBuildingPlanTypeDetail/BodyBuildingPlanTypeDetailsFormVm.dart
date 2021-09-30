@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:gym_app/ViewModels/BaseViewModel.dart';
 
 class BodyBuildingPlanTypeDetailsFormVm extends BaseViewModel {
@@ -13,11 +14,15 @@ class BodyBuildingPlanTypeDetailsFormVm extends BaseViewModel {
   String? setDescription;
   List<int>? setItems;
   List<BodyBuildingPlanTypeDetailsFormVm>? superMoves;
+  TextEditingController? nameMovementController;
+  TextEditingController? descriptionController;
+  TextEditingController? setController;
+  List<TextEditingController>? listSetItemsTextController;
 
   BodyBuildingPlanTypeDetailsFormVm(
-      {this.id,
-      this.parentId,
-      this.bodyBuildingPlanTypeId,
+      {this.id = 0,
+      this.parentId = 0,
+      this.bodyBuildingPlanTypeId = 0,
       this.dayNumber,
       this.termNumber,
       this.displayOrder,
@@ -26,7 +31,9 @@ class BodyBuildingPlanTypeDetailsFormVm extends BaseViewModel {
       this.setCount,
       this.setDescription,
       this.setItems,
-      this.superMoves});
+      this.superMoves,
+      this.setController,
+      this.listSetItemsTextController});
 
   BodyBuildingPlanTypeDetailsFormVm.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -55,11 +62,12 @@ class BodyBuildingPlanTypeDetailsFormVm extends BaseViewModel {
     data['dayNumber'] = this.dayNumber;
     data['termNumber'] = this.termNumber;
     data['displayOrder'] = this.displayOrder;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['setCount'] = this.setCount;
+    data['title'] = this.nameMovementController!.text;
+    data['description'] = this.descriptionController!.text;
+    data['setCount'] = this.setController!.text;
     data['setDescription'] = this.setDescription;
-    data['setItems'] = this.setItems;
+    data['setItems'] =
+        this.listSetItemsTextController!.map((e) => e.text).toList();
     if (this.superMoves != null) {
       data['superMoves'] = this.superMoves!.map((e) => e.toJson()).toList();
     }

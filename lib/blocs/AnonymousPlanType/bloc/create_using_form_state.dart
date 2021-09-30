@@ -1,18 +1,22 @@
 part of 'create_using_form_bloc.dart';
 
 @immutable
-abstract class CreateUsingFormState {}
+abstract class CreateUsingFormOthersSportsState {}
 
-class CreateUsingFormInitialState extends CreateUsingFormState {}
+class CreateUsingFormOthersSportsInitialState
+    extends CreateUsingFormOthersSportsState {}
 
-class CreateUsingFormLoadingState extends CreateUsingFormState {}
+class CreateUsingFormOthersSportsLoadingState
+    extends CreateUsingFormOthersSportsState {}
 
-class CreateUsingFormErrorSatte extends CreateUsingFormState {
+class CreateUsingFormOthersSportsErrorSatte
+    extends CreateUsingFormOthersSportsState {
   final String message;
-  CreateUsingFormErrorSatte({required this.message});
+  CreateUsingFormOthersSportsErrorSatte({required this.message});
 }
 
-class CreateUsingFormLoadedState extends CreateUsingFormState {
+class CreateUsingFormOthersSportsLoadedState
+    extends CreateUsingFormOthersSportsState {
   final ResultObject? resultObject;
-  CreateUsingFormLoadedState({required this.resultObject});
+  CreateUsingFormOthersSportsLoadedState({required this.resultObject});
 }

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/extensions/ext.dart';
-import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 
 class ListBarnamehaPage extends StatefulWidget {
   const ListBarnamehaPage({Key? key}) : super(key: key);
@@ -261,7 +261,7 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
                                     Material(
                                       borderRadius: BorderRadius.circular(10),
                                       child: InkWell(
-                                        onTap: (){
+                                        onTap: () {
                                           print('ccc');
                                         },
                                         borderRadius: BorderRadius.circular(10),
@@ -273,7 +273,8 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               border: Border.all(
-                                                  color: parseColor('#707070'))),
+                                                  color:
+                                                      parseColor('#707070'))),
                                           child: Text("مشاهده"),
                                         ),
                                       ),
@@ -285,7 +286,7 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
                                       borderRadius: BorderRadius.circular(10),
                                       child: InkWell(
                                         borderRadius: BorderRadius.circular(10),
-                                        onTap: (){},
+                                        onTap: () {},
                                         child: Container(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 5),
@@ -293,7 +294,8 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               border: Border.all(
-                                                  color: parseColor('#707070'))),
+                                                  color:
+                                                      parseColor('#707070'))),
                                           child: Text("ویرایش"),
                                         ),
                                       ),

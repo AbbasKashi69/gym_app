@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 const textStyle = TextStyle(
@@ -143,4 +144,60 @@ class CustomeButton extends StatelessWidget {
       ),
     );
   }
+}
+
+class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
+  final String? title;
+  final Function? onBack;
+  AppBarWidget({this.title, this.onBack});
+  @override
+  Widget build(BuildContext context) {
+    final Size sizeScreen = MediaQuery.of(context).size;
+    return AppBar(
+      automaticallyImplyLeading: false,
+      brightness: Brightness.light,
+      backgroundColor: Colors.transparent,
+      elevation: 0.0,
+      actions: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: padding * 2),
+          width: sizeScreen.width,
+          color: Color(0xffFBFBFB),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                  child: Container(
+                child: Text(
+                  title!,
+                  style: textStyle.copyWith(fontSize: 14),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              )),
+              SizedBox(
+                width: padding / 2,
+              ),
+              GestureDetector(
+                  onTap: () {
+                    if (onBack == null)
+                      Navigator.of(context).pop();
+                    else
+                      onBack!();
+                  },
+                  child: SvgPicture.asset(
+                    'assets/icons/backIcon.svg',
+                    width: sizeScreen.width > 550 ? 40 : 25,
+                    height: sizeScreen.width > 550 ? 40 : 25,
+                  )
+                  // child: Container(),
+                  )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

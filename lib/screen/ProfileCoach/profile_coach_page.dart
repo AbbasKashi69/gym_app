@@ -1,18 +1,18 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gym_app/ViewModels/CoachStudent/CoachStudentVm.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customeTextField.dart';
-import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 import 'package:gym_app/screen/Cv/cv_page.dart';
-import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
-import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
 import 'package:gym_app/screen/PersonalInfoCoach/personal_info_coach_page.dart';
 import 'package:gym_app/screen/ProfileCoach/components/selector_image_screen.dart';
 
 class ProfileCoachPage extends StatelessWidget {
-  const ProfileCoachPage({Key? key}) : super(key: key);
+  const ProfileCoachPage({Key? key, required this.coachStudentVm})
+      : super(key: key);
   static const routeName = '/ProfileCoachPage';
+  final CoachStudentVm coachStudentVm;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class ProfileCoachPage extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: sizeScreen.width > 550 ? 30 : 20,
-                        backgroundImage: NetworkImage(
+                        backgroundImage: NetworkImage(coachStudentVm.coachPic ??
                             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU'),
                       ),
                       SizedBox(
@@ -45,7 +45,7 @@ class ProfileCoachPage extends StatelessWidget {
                       ),
                       RichText(
                           text: TextSpan(
-                              text: 'علی کریمی',
+                              text: coachStudentVm.coachFullName ?? "",
                               style: textStyle.copyWith(
                                   fontSize: kFontSizeText(
                                       sizeScreen, FontSize.subTitle)),
@@ -137,7 +137,8 @@ class ProfileCoachPage extends StatelessWidget {
                         flex: 2,
                         child: GestureDetector(
                           onTap: () async {
-                            Navigator.of(context).pushNamed(CvPage.routeName);
+                            Navigator.of(context).pushNamed(CvPage.routeName,
+                                arguments: coachStudentVm.coachId);
                             // await NoCvScreen().noCv(context, sizeScreen);
                           },
                           child: ItemConversation(

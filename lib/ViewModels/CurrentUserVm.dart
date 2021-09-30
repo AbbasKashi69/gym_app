@@ -8,6 +8,7 @@ class CurrentUserVm {
   static String? creationDate = '';
   static String? nCreationDate = '';
   static String? currentVersion = "2.0.2";
+  static int? roleType = 0;
 
   static LocalSavingService? localSavingService;
 
