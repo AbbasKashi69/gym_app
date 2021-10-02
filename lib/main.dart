@@ -38,6 +38,7 @@ import ' extensions/ext.dart';
 
 void main() async {
   HttpOverrides.global = new MyHttpOverrides();
+
   WidgetsFlutterBinding.ensureInitialized();
   CurrentUserVm.localSavingService = await LocalSavingService.create();
   CurrentUserVm.localSavingService!.getUser();
@@ -45,7 +46,18 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(MyApp());
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider<IncreaseBloc>(
+        create: (context) => IncreaseBloc(),
+      ),
+      BlocProvider<GetMyWalletBallanceBloc>(
+        create: (context) =>
+            GetMyWalletBallanceBloc()..add(GetMyWalletBallanceLoadingEvent()),
+      ),
+    ],
+    child: MyApp(),
+  ));
   start();
 }
 

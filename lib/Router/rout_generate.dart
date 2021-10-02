@@ -136,13 +136,9 @@ class MyRouter {
       case ProfilePage.routeName:
         return MaterialPageRoute(builder: (context) => ProfilePage());
       case IncreaseWalletPage.routeName:
-        var increaseCreditVm = routeSettings.arguments;
-
         return MaterialPageRoute(
             builder: (context) => BlocProvider(
-                create: (context) => IncreaseBloc()
-                  ..add(IncreaseLoadingEvent(
-                      increaseCreditVm: increaseCreditVm as IncreaseCreditVm)),
+                create: (context) => IncreaseBloc(),
                 child: IncreaseWalletPage()));
       case ProfileApprenticePage.routeName:
         {
