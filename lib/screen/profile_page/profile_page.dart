@@ -21,9 +21,9 @@ import 'package:permission_handler/permission_handler.dart';
 
 enum GenderValues { men, women, free }
 final Map<GenderValues, int> map = {
-  GenderValues.men: 1,
-  GenderValues.women: 2,
-  GenderValues.free: 3
+  GenderValues.men: 0,
+  GenderValues.women: 1,
+  GenderValues.free: 2
 };
 
 class ProfilePage extends StatelessWidget {
@@ -41,15 +41,22 @@ class ProfilePage extends StatelessWidget {
                 child: BlocBuilder<FindPersonByIdBloc, FindPersonByIdState>(
                   builder: (context, state) {
                     return AnimatedSwitcher(
-                      duration: Duration(milliseconds: 1500),
-                      switchInCurve: Curves.easeIn,
+                      duration: Duration(milliseconds: 1000),
+                      switchInCurve: Curves.easeInSine,
                       child: state is FindPersonByIdLoadingState
                           ? Container(
-                              height: sizeScreen.height / 2, child: MyWaiting())
+                              key: ValueKey(1),
+                              height: sizeScreen.height / 2,
+                              child: MyWaiting())
                           : state is FindPersonByIdLoadedState &&
                                   state.personVm != null
-                              ? ItemLoadedProfile(personVm: state.personVm!)
-                              : Container(),
+                              ? ItemLoadedProfile(
+                                  personVm: state.personVm!,
+                                  key: ValueKey(2),
+                                )
+                              : Container(
+                                  key: ValueKey(3),
+                                ),
                     );
                   },
                 ))),

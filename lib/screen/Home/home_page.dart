@@ -281,7 +281,7 @@ class ItemsStudents extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed(ProgramListPage.routeName);
+                Navigator.of(context).pushNamed(ListBarnamehaPage.routeName);
               },
               child: ItemWidget(
                 title: "لیست  \n برنامه ها ",

@@ -4,20 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
-<<<<<<< HEAD
 import 'package:gym_app/ViewModels/WalletLog/IncreaseCreditVm.dart';
-=======
 import 'package:gym_app/ViewModels/BodyBuildingPlanType/BodyBuildingPlanTypeFormVm.dart';
 import 'package:gym_app/ViewModels/CoachStudent/CoachStudentVm.dart';
 import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeFormVm.dart';
 import 'package:gym_app/blocs/Account/bloc/change_password_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/get_current_user_role_bloc.dart';
->>>>>>> 3c131c738e42093acbfd14bd403af76d18124e87
 import 'package:gym_app/blocs/Account/bloc/login_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/register_bloc.dart';
+import 'package:gym_app/blocs/Account/bloc/rest_password_bloc.dart';
+import 'package:gym_app/blocs/Account/bloc/select_provider_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/send_code_bloc.dart';
+import 'package:gym_app/blocs/Account/bloc/send_code_reset_password_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/submit_register_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/verify_code_bloc.dart';
+import 'package:gym_app/blocs/Account/bloc/verify_code_reset_passwrod_bloc.dart';
 import 'package:gym_app/blocs/AnonymousPlanType/bloc/create_using_form_bloc.dart';
 import 'package:gym_app/blocs/BodyBuildingMovement/bloc/get_user_body_building_movement_list_bloc.dart';
 import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/create_using_form_body_building_bloc.dart';
@@ -66,6 +67,9 @@ import 'package:gym_app/screen/chat/chat_list_page.dart';
 import 'package:gym_app/screen/list_barnameha/list_barnameha.dart';
 import 'package:gym_app/screen/profile_page/password_settings_page.dart';
 import 'package:gym_app/screen/profile_page/profile_page.dart';
+import 'package:gym_app/screen/profile_page/reset_password1_page.dart';
+import 'package:gym_app/screen/profile_page/reset_password2_page.dart';
+import 'package:gym_app/screen/profile_page/reset_password3_page.dart';
 import 'package:gym_app/screen/settings/setting_page.dart';
 import 'package:gym_app/screen/subscription_page/subscription_page.dart';
 import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
@@ -127,20 +131,19 @@ class MyRouter {
         return MaterialPageRoute(
             builder: (context) => BlocProvider(
                 create: (context) =>
-                SubscriptionBloc()..add(SubscriptionLoadingEvent()),
-                child: SubscriptionPage())
-        );
+                    SubscriptionBloc()..add(SubscriptionLoadingEvent()),
+                child: SubscriptionPage()));
       case ProfilePage.routeName:
         return MaterialPageRoute(builder: (context) => ProfilePage());
       case IncreaseWalletPage.routeName:
         var increaseCreditVm = routeSettings.arguments;
 
-        return MaterialPageRoute(builder: (context) => BlocProvider(
-            create: (context) =>
-            IncreaseBloc()..add(IncreaseLoadingEvent(increaseCreditVm: increaseCreditVm as IncreaseCreditVm)),
-            child: IncreaseWalletPage())
-
-        );
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                create: (context) => IncreaseBloc()
+                  ..add(IncreaseLoadingEvent(
+                      increaseCreditVm: increaseCreditVm as IncreaseCreditVm)),
+                child: IncreaseWalletPage()));
       case ProfileApprenticePage.routeName:
         {
           var coachStudentVm = routeSettings.arguments;
@@ -151,14 +154,6 @@ class MyRouter {
       case WalletPage.routeName:
         return MaterialPageRoute(builder: (context) => WalletPage());
       case CvPage.routeName:
-<<<<<<< HEAD
-        return MaterialPageRoute(
-            builder: (context) => BlocProvider(
-                create: (context) =>
-                    GetResumeBloc()..add(GetResumeLoadingEvent()),
-                child: CvPage())
-        );
-=======
         {
           var data = routeSettings.arguments;
           return MaterialPageRoute(
@@ -167,7 +162,6 @@ class MyRouter {
                     ..add(GetResumeLoadingEvent(coachId: data as int)),
                   child: CvPage()));
         }
->>>>>>> 3c131c738e42093acbfd14bd403af76d18124e87
       case PersonalInfoPage.routeName:
         return MaterialPageRoute(builder: (context) => PersonalInfoPage());
       case SettingPage.routeName:
@@ -283,7 +277,7 @@ class MyRouter {
                         // planType shoubl be change to 4 but it doesn't ready
                         setCoachId: false,
                         setStudentId: true,
-                        planType: 1)),
+                        planType: 4)),
                   child: ListBarnamehaPage(),
                 ));
       case MyActiveProgramPage.routeName:
@@ -292,8 +286,9 @@ class MyRouter {
                   create: (context) => GetPlansBySortBloc()
                     ..add(GetPlansBySortLoadingEvent(
                         // planType shoubl be change to 4 but it doesn't ready
-
-                        planType: 1,
+                        setStudentId: true,
+                        setCoachId: false,
+                        planType: 4,
                         planStatusList: '1')),
                   child: MyActiveProgramPage(),
                 ));
@@ -365,6 +360,36 @@ class MyRouter {
                   child: PasswordSettingsPage(),
                 ));
 
+      case ResetPassword1Page.routeName:
+        return MaterialPageRoute(
+            builder: (context) => MultiBlocProvider(providers: [
+                  BlocProvider(
+                    create: (context) => SendCodeResetPasswordBloc(),
+                  ),
+                  BlocProvider(
+                    create: (context) => SelectProviderBloc(),
+                  ),
+                ], child: ResetPassword1Page()));
+      case ResetPassword2Page.routeName:
+        {
+          var userName = routeSettings.arguments as String;
+          return MaterialPageRoute(
+              builder: (context) => BlocProvider(
+                    create: (context) => VerifyCodeResetPasswordBloc(),
+                    child: ResetPassword2Page(userName: userName),
+                  ));
+        }
+      case ResetPassword3Page.routeName:
+        {
+          var carryTokenAndMobile =
+              routeSettings.arguments as CarryTokenAndMobile;
+          return MaterialPageRoute(
+              builder: (context) => BlocProvider(
+                    create: (context) => RestPasswordBloc(),
+                    child: ResetPassword3Page(
+                        carryTokenAndMobile: carryTokenAndMobile),
+                  ));
+        }
       case CropPage.routeName:
         {
           var x = routeSettings.arguments;

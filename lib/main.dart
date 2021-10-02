@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,6 +37,7 @@ import 'blocs/WalletLog/bloc/increase_bloc.dart';
 import ' extensions/ext.dart';
 
 void main() async {
+  HttpOverrides.global = new MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   CurrentUserVm.localSavingService = await LocalSavingService.create();
   CurrentUserVm.localSavingService!.getUser();
@@ -174,5 +177,14 @@ class _MyHomePageState extends State<MyHomePage> {
       SystemChannels.platform.invokeMethod('SystemNavigator.pop');
 
     return Future.value(true);
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

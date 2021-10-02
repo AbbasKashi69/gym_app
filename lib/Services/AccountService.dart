@@ -1,5 +1,6 @@
 import 'package:gym_app/Repositories/BaseRepository.dart';
 import 'package:gym_app/ViewModels/Account/ConfirmCodeVm.dart';
+import 'package:gym_app/ViewModels/Account/ForgetPassProviderVm.dart';
 import 'package:gym_app/ViewModels/Account/ForgetPasswordVm.dart';
 import 'package:gym_app/ViewModels/Account/LoginVm.dart';
 import 'package:gym_app/ViewModels/Account/RegisterVm.dart';
@@ -21,11 +22,11 @@ class AccountService {
   static const String url_changePassword = '/api/Account/ChangePassword';
   static const String url_sendCode = '/api/Account/SendCode';
   static const String url_verifyCode = '/api/Account/VerifyCode';
-  static const String url_restPassword = '/api/Account/RestPassword';
+  static const String url_restPassword = '/api/Account/ResetPassword';
   static const String url_verifyCodeRestPassword =
       '/api/Account/VerifyCodeResetPassword';
   static const String url_sendCodeResetPassword =
-      'api/Account/SendCodeResetPassword';
+      '/api/Account/SendCodeResetPassword';
   static const String url_selectProvider = '/api/Account/SelectProvider';
 
   Future<ResultObject> login(LoginVm loginVm) async {
@@ -118,9 +119,9 @@ class AccountService {
   }
 
   Future<ResultObject?> sendCodeResetPassword(
-      ForgetPasswordVm forgetPassowrdVm) async {
+      ForgetPassProviderVm forgetPassProviderVm) async {
     var response = await repository!
-        .post(url_sendCodeResetPassword, forgetPassowrdVm.toJson());
+        .post(url_sendCodeResetPassword, forgetPassProviderVm.toJson());
     if (response != null) {
       ResultObject result = ResultObject.fromJson(response);
       return result;

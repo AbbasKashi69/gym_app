@@ -172,11 +172,7 @@ class _PasswordSettingsPageState extends State<PasswordSettingsPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ResetPassword1Page(),
-                        ));
+                    Navigator.pushNamed(context, ResetPassword1Page.routeName);
                   },
                   child: Align(
                       alignment: Alignment.centerRight,

@@ -65,216 +65,227 @@ class _ProgramListPageState extends State<ProgramListPage> {
         title: 'لیست برنامه ها',
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: padding),
-        decoration: kBodyDecoration,
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(vertical: padding),
-              margin: EdgeInsets.symmetric(vertical: padding),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                      width: gw(0.7),
-                      child: Stack(
-                        children: [
-                          Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: padding, vertical: padding / 2),
-                              // constraints: BoxConstraints(maxWidth: 300),
-                              // height: gh(0.07),
-                              decoration: BoxDecoration(
-                                  color: Color(0xffCAF0F8),
-                                  borderRadius: BorderRadius.horizontal(
-                                    left: Radius.circular(20),
-                                    right: Radius.circular(20),
-                                  )),
-                              child: Container(
+        height: gh(1),
+        width: gw(1),
+        padding: EdgeInsets.symmetric(horizontal: gw(0.05)),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(12), topLeft: Radius.circular(12))),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(vertical: padding),
+                margin: EdgeInsets.symmetric(vertical: padding),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                        width: gw(0.7),
+                        child: Stack(
+                          children: [
+                            Container(
                                 padding: EdgeInsets.symmetric(
-                                    vertical: padding, horizontal: 35),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        planTypeId = 1;
-                                        BlocProvider.of<GetPlansBySortBloc>(
-                                                context)
-                                            .add(GetPlansBySortLoadingEvent(
-                                          planType: planTypeId,
-                                          coachId: coachId,
-                                          studentId: studentId,
-                                          planStatusList: planStatusList,
-                                          searchText: searchText,
-                                          setCoachId: setCoachId,
-                                          setStudentId: setStudentId,
-                                        ));
-                                        setState(() {
-                                          isAlign = true;
-                                        });
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.centerRight,
-                                        child: Text(
-                                          'تمرینی',
-                                          style: textStyle.copyWith(
-                                              color: Color(0xff00B4D8),
-                                              fontSize: kFontSizeText(
-                                                  sizeScreen,
-                                                  FontSize.subTitle)),
+                                    horizontal: padding, vertical: padding / 2),
+                                // constraints: BoxConstraints(maxWidth: 300),
+                                // height: gh(0.07),
+                                decoration: BoxDecoration(
+                                    color: Color(0xffCAF0F8),
+                                    borderRadius: BorderRadius.horizontal(
+                                      left: Radius.circular(20),
+                                      right: Radius.circular(20),
+                                    )),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: padding, horizontal: 35),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          planTypeId = 1;
+                                          BlocProvider.of<GetPlansBySortBloc>(
+                                                  context)
+                                              .add(GetPlansBySortLoadingEvent(
+                                            planType: planTypeId,
+                                            coachId: coachId,
+                                            studentId: studentId,
+                                            planStatusList: planStatusList,
+                                            searchText: searchText,
+                                            setCoachId: setCoachId,
+                                            setStudentId: setStudentId,
+                                          ));
+                                          setState(() {
+                                            isAlign = true;
+                                          });
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.centerRight,
+                                          child: Text(
+                                            'تمرینی',
+                                            style: textStyle.copyWith(
+                                                color: Color(0xff00B4D8),
+                                                fontSize: kFontSizeText(
+                                                    sizeScreen,
+                                                    FontSize.subTitle)),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        planTypeId = 2;
-                                        BlocProvider.of<GetPlansBySortBloc>(
-                                                context)
-                                            .add(GetPlansBySortLoadingEvent(
-                                                planType: planTypeId,
-                                                coachId: coachId,
-                                                studentId: studentId,
-                                                planStatusList: planStatusList,
-                                                searchText: searchText,
-                                                setCoachId: setCoachId,
-                                                setStudentId: setStudentId));
-                                        setState(() {
-                                          isAlign = false;
-                                        });
-                                      },
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          'غذایی',
-                                          style: textStyle.copyWith(
-                                              color: Color(0xff00B4D8),
-                                              fontSize: kFontSizeText(
-                                                  sizeScreen,
-                                                  FontSize.subTitle)),
+                                      GestureDetector(
+                                        onTap: () {
+                                          planTypeId = 2;
+                                          BlocProvider.of<GetPlansBySortBloc>(
+                                                  context)
+                                              .add(GetPlansBySortLoadingEvent(
+                                                  planType: planTypeId,
+                                                  coachId: coachId,
+                                                  studentId: studentId,
+                                                  planStatusList:
+                                                      planStatusList,
+                                                  searchText: searchText,
+                                                  setCoachId: setCoachId,
+                                                  setStudentId: setStudentId));
+                                          setState(() {
+                                            isAlign = false;
+                                          });
+                                        },
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'غذایی',
+                                            style: textStyle.copyWith(
+                                                color: Color(0xff00B4D8),
+                                                fontSize: kFontSizeText(
+                                                    sizeScreen,
+                                                    FontSize.subTitle)),
+                                          ),
                                         ),
                                       ),
+                                    ],
+                                  ),
+                                )),
+                            AnimatedAlign(
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: padding / 2,
+                                      horizontal: padding),
+                                  padding:
+                                      EdgeInsets.symmetric(vertical: padding),
+                                  child: Center(
+                                    child: Text(
+                                      isAlign ? 'تمرینی' : 'غذایی',
+                                      style: textStyle.copyWith(
+                                          fontSize: kFontSizeText(
+                                              sizeScreen, FontSize.subTitle),
+                                          color: Color(0xff00B4D8)),
                                     ),
-                                  ],
+                                  ),
+                                  width: 100,
+                                  // padding: EdgeInsets.all(padding),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.horizontal(
+                                        right: Radius.circular(20),
+                                        left: Radius.circular(20),
+                                      )),
+                                ),
+                                alignment: isAlign
+                                    ? Alignment.centerRight
+                                    : Alignment.centerLeft,
+                                duration: Duration(milliseconds: 300))
+                          ],
+                        )),
+                    InkWell(
+                      onTap: () => showModalBottomSheet(
+                          isScrollControlled: true,
+                          isDismissible: true,
+                          elevation: 20,
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (ctx) => BlocProvider.value(
+                                value: BlocProvider.of<GetPlansBySortBloc>(
+                                    context),
+                                child: FilterScreen(
+                                  sizeScreen: sizeScreen,
+                                  searchTextEditingController:
+                                      searchTextEditingController,
+                                  planTypeId: planTypeId,
+                                  coachId: coachId,
+                                  studentId: studentId,
+                                  planStatusList: planStatusList,
+                                  setCoachId: setCoachId,
+                                  setStudentId: setStudentId,
                                 ),
                               )),
-                          AnimatedAlign(
-                              child: Container(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: padding / 2, horizontal: padding),
-                                padding:
-                                    EdgeInsets.symmetric(vertical: padding),
-                                child: Center(
-                                  child: Text(
-                                    isAlign ? 'تمرینی' : 'غذایی',
-                                    style: textStyle.copyWith(
-                                        fontSize: kFontSizeText(
-                                            sizeScreen, FontSize.subTitle),
-                                        color: Color(0xff00B4D8)),
-                                  ),
-                                ),
-                                width: 100,
-                                // padding: EdgeInsets.all(padding),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.horizontal(
-                                      right: Radius.circular(20),
-                                      left: Radius.circular(20),
-                                    )),
-                              ),
-                              alignment: isAlign
-                                  ? Alignment.centerRight
-                                  : Alignment.centerLeft,
-                              duration: Duration(milliseconds: 300))
-                        ],
-                      )),
-                  InkWell(
-                    onTap: () => showModalBottomSheet(
-                        isScrollControlled: true,
-                        isDismissible: true,
-                        elevation: 20,
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (ctx) => BlocProvider.value(
-                              value:
-                                  BlocProvider.of<GetPlansBySortBloc>(context),
-                              child: FilterScreen(
-                                sizeScreen: sizeScreen,
-                                searchTextEditingController:
-                                    searchTextEditingController,
-                                planTypeId: planTypeId,
-                                coachId: coachId,
-                                studentId: studentId,
-                                planStatusList: planStatusList,
-                                setCoachId: setCoachId,
-                                setStudentId: setStudentId,
-                              ),
-                            )),
-                    radius: 20,
-                    child: Container(
-                      margin: EdgeInsets.only(right: padding),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: parseColor('#48CAE4')),
-                        shape: BoxShape.circle,
-                      ),
-                      padding: EdgeInsets.all(10),
-                      child: Center(
-                        child: SvgPicture.asset(
-                          'assets/icons/filterListProgram.svg',
-                          width: kFontSizeText(sizeScreen, FontSize.title),
-                          height: kFontSizeText(sizeScreen, FontSize.title),
+                      radius: 20,
+                      child: Container(
+                        margin: EdgeInsets.only(right: padding),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: parseColor('#48CAE4')),
+                          shape: BoxShape.circle,
+                        ),
+                        padding: EdgeInsets.all(10),
+                        child: Center(
+                          child: SvgPicture.asset(
+                            'assets/icons/filterListProgram.svg',
+                            width: kFontSizeText(sizeScreen, FontSize.title),
+                            height: kFontSizeText(sizeScreen, FontSize.title),
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
-            ),
-            BlocBuilder<GetPlansBySortBloc, GetPlansBySortState>(
-              builder: (context, state) {
-                if (state is GetPlansBySortLoadingState)
-                  return CircularProgressIndicator();
-                else if (state is GetPlansBySortLoadedState) {
-                  if (state.page_planTypeLogVm != null &&
-                      state.page_planTypeLogVm!.items != null &&
-                      state.page_planTypeLogVm!.items!.isNotEmpty) {
-                    return Expanded(
-                        child: ListView.builder(
-                      controller: isAlign
-                          ? _exerciseScrollController
-                          : _dietScrollController,
-                      padding: EdgeInsets.only(bottom: padding),
-                      itemBuilder: (context, index) {
-                        if (index < state.page_planTypeLogVm!.items!.length)
-                          return ItemDietary(
-                              sizeScreen: sizeScreen,
-                              planTypeLogVm:
-                                  state.page_planTypeLogVm!.items![index]);
-                        else
-                          return MyWaiting();
-                      },
-                      itemCount: state.page_planTypeLogVm!.hasNext!
-                          ? state.page_planTypeLogVm!.items!.length + 1
-                          : state.page_planTypeLogVm!.items!.length,
-                    ));
+              BlocBuilder<GetPlansBySortBloc, GetPlansBySortState>(
+                builder: (context, state) {
+                  if (state is GetPlansBySortLoadingState)
+                    return CircularProgressIndicator();
+                  else if (state is GetPlansBySortLoadedState) {
+                    if (state.page_planTypeLogVm != null &&
+                        state.page_planTypeLogVm!.items != null &&
+                        state.page_planTypeLogVm!.items!.isNotEmpty) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        controller: isAlign
+                            ? _exerciseScrollController
+                            : _dietScrollController,
+                        padding: EdgeInsets.only(bottom: padding),
+                        itemBuilder: (context, index) {
+                          if (index < state.page_planTypeLogVm!.items!.length)
+                            return ItemDietary(
+                                sizeScreen: sizeScreen,
+                                planTypeLogVm:
+                                    state.page_planTypeLogVm!.items![index]);
+                          else
+                            return MyWaiting();
+                        },
+                        itemCount: state.page_planTypeLogVm!.hasNext!
+                            ? state.page_planTypeLogVm!.items!.length + 1
+                            : state.page_planTypeLogVm!.items!.length,
+                      );
+                    } else
+                      return NoData();
                   } else
-                    return NoData();
-                } else
-                  return Container();
-              },
-            ),
-            // Expanded(
-            //     child: ListView.builder(
-            //   padding: EdgeInsets.only(bottom: padding),
-            //   itemBuilder: (context, index) => ItemDietary(
-            //     sizeScreen: sizeScreen,
-            //     data: listItem[index],
-            //   ),
-            //   itemCount: listItem.length,
-            // )),
-            // ItemDietary(sizeScreen: sizeScreen,data: ,)
-          ],
+                    return Container();
+                },
+              ),
+              // Expanded(
+              //     child: ListView.builder(
+              //   padding: EdgeInsets.only(bottom: padding),
+              //   itemBuilder: (context, index) => ItemDietary(
+              //     sizeScreen: sizeScreen,
+              //     data: listItem[index],
+              //   ),
+              //   itemCount: listItem.length,
+              // )),
+              // ItemDietary(sizeScreen: sizeScreen,data: ,)
+            ],
+          ),
         ),
       ),
     );

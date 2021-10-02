@@ -4,6 +4,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gym_app/ViewModels/CurrentUserVm.dart';
 import 'package:gym_app/ViewModels/PlanTypeLog/PlanTypeLogVm.dart';
 import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/components/constant.dart';
@@ -38,7 +39,12 @@ class _MyActiveProgramPageState extends State<MyActiveProgramPage>
     if (_exerciseScrollController.position.pixels ==
         _exerciseScrollController.position.maxScrollExtent) {
       BlocProvider.of<GetPlansBySortBloc>(context)
-        ..add(GetPlansBySortLoadedEvent(planType: 1, planStatusList: '1'));
+        ..add(GetPlansBySortLoadedEvent(
+          planType: 4,
+          planStatusList: '1',
+          setCoachId: false,
+          setStudentId: true,
+        ));
     }
   }
 
@@ -46,7 +52,12 @@ class _MyActiveProgramPageState extends State<MyActiveProgramPage>
     if (_dietScrollController.position.pixels ==
         _dietScrollController.position.maxScrollExtent) {
       BlocProvider.of<GetPlansBySortBloc>(context)
-        ..add(GetPlansBySortLoadedEvent(planType: 2, planStatusList: '1'));
+        ..add(GetPlansBySortLoadedEvent(
+          planType: 2,
+          planStatusList: '1',
+          setCoachId: false,
+          setStudentId: true,
+        ));
     }
   }
 
@@ -111,7 +122,10 @@ class _MyActiveProgramPageState extends State<MyActiveProgramPage>
                               });
                               BlocProvider.of<GetPlansBySortBloc>(context).add(
                                   GetPlansBySortLoadingEvent(
-                                      planType: 1, planStatusList: '1'));
+                                      setCoachId: false,
+                                      setStudentId: true,
+                                      planType: 4,
+                                      planStatusList: '1'));
                             },
                             child: Container(
                               height: 60,
@@ -133,7 +147,10 @@ class _MyActiveProgramPageState extends State<MyActiveProgramPage>
                               });
                               BlocProvider.of<GetPlansBySortBloc>(context).add(
                                   GetPlansBySortLoadingEvent(
-                                      planType: 2, planStatusList: '1'));
+                                      setCoachId: false,
+                                      setStudentId: true,
+                                      planType: 2,
+                                      planStatusList: '1'));
                             },
                             child: Container(
                               height: 60,
@@ -156,7 +173,7 @@ class _MyActiveProgramPageState extends State<MyActiveProgramPage>
               ),
               BlocBuilder<GetPlansBySortBloc, GetPlansBySortState>(
                 builder: (context, state) => AnimatedSwitcher(
-                  duration: Duration(milliseconds: 1500),
+                  duration: Duration(milliseconds: 1000),
                   switchInCurve: Curves.easeIn,
                   child: state is GetPlansBySortLoadingState
                       ? Center(child: MyWaiting())
@@ -264,7 +281,9 @@ class ItemLoadedActiveProgram extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Text("مربی : "),
-                    Text(planTypeLogvm.userFullName ?? ""),
+                    Text(CurrentUserVm.roleType == 3
+                        ? planTypeLogvm.userFullName ?? ""
+                        : planTypeLogvm.planTypeCoachFullName ?? ""),
                   ],
                 ),
                 SizedBox(

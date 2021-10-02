@@ -4,9 +4,10 @@ class ConfirmCodeVm extends BaseViewModel {
   String? code;
   String? userId;
   String? userName;
-  String? typeSelect;
+  String typeSelect = "phone";
 
-  ConfirmCodeVm({this.code, this.userId, this.userName, this.typeSelect});
+  ConfirmCodeVm(
+      {this.code, this.userId, this.userName, this.typeSelect = 'Phone'});
 
   ConfirmCodeVm.fromJson(Map<String, dynamic> json) {
     code = json['code'];

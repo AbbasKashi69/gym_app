@@ -4,6 +4,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gym_app/ViewModels/CurrentUserVm.dart';
 import 'package:gym_app/ViewModels/PlanTypeLog/PlanTypeLogVm.dart';
 import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/components/constant.dart';
@@ -39,7 +40,7 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
         _exerciseScrollController.position.maxScrollExtent) {
       BlocProvider.of<GetPlansBySortBloc>(context)
         ..add(GetPlansBySortLoadedEvent(
-            planType: 1, setCoachId: false, setStudentId: true));
+            planType: 4, setCoachId: false, setStudentId: true));
     }
   }
 
@@ -113,7 +114,7 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
                               });
                               BlocProvider.of<GetPlansBySortBloc>(context).add(
                                   GetPlansBySortLoadingEvent(
-                                      planType: 1,
+                                      planType: 4,
                                       setCoachId: false,
                                       setStudentId: true));
                             },
@@ -162,7 +163,7 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
               ),
               BlocBuilder<GetPlansBySortBloc, GetPlansBySortState>(
                 builder: (context, state) => AnimatedSwitcher(
-                  duration: Duration(milliseconds: 1500),
+                  duration: Duration(milliseconds: 1000),
                   switchInCurve: Curves.easeIn,
                   child: state is GetPlansBySortLoadingState
                       ? Center(child: MyWaiting())
@@ -270,7 +271,9 @@ class ItemLoadedFirstProgram extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Text("مربی : "),
-                    Text(planTypeLogvm.userFullName ?? ""),
+                    Text(CurrentUserVm.roleType == 3
+                        ? planTypeLogvm.userFullName ?? ""
+                        : planTypeLogvm.planTypeCoachFullName ?? ""),
                   ],
                 ),
                 SizedBox(
