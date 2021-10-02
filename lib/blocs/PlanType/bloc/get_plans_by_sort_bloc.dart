@@ -41,8 +41,8 @@ class GetPlansBySortBloc
             event.coachId,
             event.studentId,
             event.planType,
-            event.planStatusList,
-            event.searchText,
+            event.planStatusList ?? "",
+            event.searchText ?? "",
             event.setCoachId,
             event.setStudentId,
             oldState.page_planTypeLogVm!.currentPage! + 1);

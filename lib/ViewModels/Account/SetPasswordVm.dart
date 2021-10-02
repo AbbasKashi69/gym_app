@@ -9,7 +9,7 @@ class SetPasswordVm extends BaseViewModel {
 
   SetPasswordVm(
       {this.userName,
-      this.userId,
+      this.userId = 0,
       this.oldPassword,
       this.newPassword,
       this.confirmPassword});

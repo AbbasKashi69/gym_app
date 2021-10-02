@@ -255,77 +255,7 @@ class _CreateMovementPageState extends State<CreateMovementPage> {
                                 widget.bodyBuildingPlanDayTermVm.dayNumber)
                             .toList();
                         if (x.isNotEmpty) {
-                          for (int i = 0; i < x.length; i++) {
-                            if (x[i].nameMovementController!.text.isEmpty) {
-                              await Fluttertoast.showToast(
-                                  msg:
-                                      'نام حرکت در روز ${x[i].dayNumber.toString().toWord()}م و نوبت ${x[i].termNumber.toString().toWord()}م خالی است');
-                              isEmptyTextField = true;
-                              break;
-                            } else if (x[i].setController!.text.isEmpty) {
-                              await Fluttertoast.showToast(
-                                  msg:
-                                      'نام ست در روز ${x[i].dayNumber.toString().toWord()}م و نوبت ${x[i].termNumber.toString().toWord()}م خالی است');
-                              isEmptyTextField = true;
-                              break;
-                            } else if (x[i].listSetItemsTextController !=
-                                    null &&
-                                x[i].listSetItemsTextController!.isNotEmpty &&
-                                x[i]
-                                    .listSetItemsTextController![i]
-                                    .text
-                                    .isEmpty) {
-                              await Fluttertoast.showToast(
-                                  msg: 'لطفا ست های ایجاد شده را پر کنید');
-                              isEmptyTextField = true;
-                              break;
-                            }
-                            if (x[i].superMoves != null &&
-                                x[i].superMoves!.isNotEmpty &&
-                                x[i]
-                                    .superMoves![i]
-                                    .nameMovementController!
-                                    .text
-                                    .isEmpty) {
-                              await Fluttertoast.showToast(
-                                  msg:
-                                      'نام حرکت در روز ${x[i].superMoves![i].dayNumber.toString().toWord()}م و نوبت ${x[i].superMoves![i].termNumber.toString().toWord()}م خالی است');
-                              isEmptyTextField = true;
-                              break;
-                            } else if (x[i].superMoves != null &&
-                                x[i].superMoves!.isNotEmpty &&
-                                x[i]
-                                    .superMoves![i]
-                                    .setController!
-                                    .text
-                                    .isEmpty) {
-                              await Fluttertoast.showToast(
-                                  msg:
-                                      'نام ست در روز ${x[i].superMoves![i].dayNumber.toString().toWord()}م و نوبت ${x[i].superMoves![i].termNumber.toString().toWord()}م خالی است');
-                              isEmptyTextField = true;
-                              break;
-                            } else if (x[i].superMoves != null &&
-                                x[i].superMoves!.isNotEmpty &&
-                                x[i]
-                                        .superMoves![i]
-                                        .listSetItemsTextController !=
-                                    null &&
-                                x[i]
-                                    .superMoves![i]
-                                    .listSetItemsTextController!
-                                    .isNotEmpty &&
-                                x[i]
-                                    .superMoves![i]
-                                    .listSetItemsTextController![i]
-                                    .text
-                                    .isEmpty) {
-                              await Fluttertoast.showToast(
-                                  msg: 'لطفا ست های ایجاد شده را پر کنید');
-                              isEmptyTextField = true;
-                              break;
-                            }
-                            isEmptyTextField = false;
-                          }
+                          registerProgramDay(x);
                           if (!isEmptyTextField) {
                             await Get.showSnackbar(GetBar(
                               duration: Duration(seconds: 2),
@@ -347,6 +277,77 @@ class _CreateMovementPageState extends State<CreateMovementPage> {
         ),
       ),
     );
+  }
+
+  void registerProgramDay(List<BodyBuildingPlanTypeDetailsFormVm> x) {
+    List<BodyBuildingPlanTypeDetailsFormVm> newSuperMoves = [];
+    List<TextEditingController> newListTextEditing = [];
+    x.forEach((element) {
+      if (element.superMoves != null && element.superMoves!.isNotEmpty)
+        element.superMoves!.forEach((ss) {
+          newSuperMoves.add(ss);
+        });
+    });
+    newSuperMoves.forEach((element) {
+      if (element.listSetItemsTextController != null &&
+          element.listSetItemsTextController!.isNotEmpty)
+        element.listSetItemsTextController!.forEach((ss) {
+          newListTextEditing.add(ss);
+        });
+    });
+
+    for (int i = 0; i < x.length; i++) {
+      if (x[i].nameMovementController!.text.isEmpty) {
+        Fluttertoast.showToast(
+            msg:
+                'نام حرکت در روز ${x[i].dayNumber.toString().toWord()}م و نوبت ${x[i].termNumber.toString().toWord()}م خالی است');
+        isEmptyTextField = true;
+        return;
+      } else if (x[i].setController!.text.isEmpty) {
+        Fluttertoast.showToast(
+            msg:
+                'نام ست در روز ${x[i].dayNumber.toString().toWord()}م و نوبت ${x[i].termNumber.toString().toWord()}م خالی است');
+        isEmptyTextField = true;
+        return;
+      } else if (x[i].listSetItemsTextController != null &&
+          x[i].listSetItemsTextController!.isNotEmpty &&
+          x[i]
+              .listSetItemsTextController!
+              .any((element) => element.text.isEmpty)) {
+        Fluttertoast.showToast(msg: 'لطفا ست های ایجاد شده را پر کنید');
+        isEmptyTextField = true;
+        return;
+      }
+      //********************** check for super */
+
+      isEmptyTextField = false;
+    }
+    for (int i = 0; i < newSuperMoves.length; i++) {
+      if (newSuperMoves[i].nameMovementController!.text.isEmpty) {
+        Fluttertoast.showToast(
+            msg:
+                'نام حرکت در روز ${x[i].superMoves![i].dayNumber.toString().toWord()}م و نوبت ${x[i].superMoves![i].termNumber.toString().toWord()}م خالی است');
+        isEmptyTextField = true;
+        return;
+      } else if (newSuperMoves[i].setController!.text.isEmpty) {
+        Fluttertoast.showToast(
+            msg:
+                'نام ست در روز ${x[i].superMoves![i].dayNumber.toString().toWord()}م و نوبت ${x[i].superMoves![i].termNumber.toString().toWord()}م خالی است');
+        isEmptyTextField = true;
+        return;
+      } else if (newSuperMoves[i].listSetItemsTextController != null &&
+          newSuperMoves[i].listSetItemsTextController!.isNotEmpty &&
+          newSuperMoves[i]
+              .listSetItemsTextController!
+              .any((element) => element.text.isEmpty)) {
+        Fluttertoast.showToast(msg: 'لطفا ست های ایجاد شده را پر کنید');
+        isEmptyTextField = true;
+        return;
+      }
+      //********************** check for super */
+
+      isEmptyTextField = false;
+    }
   }
 }
 

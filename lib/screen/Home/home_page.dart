@@ -15,8 +15,10 @@ import 'package:gym_app/screen/CreateProgramOtherSports/create_program_other_spo
 import 'package:gym_app/screen/Elanha/elan_page.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:gym_app/screen/ListCoach/list_coach_page.dart';
+import 'package:gym_app/screen/MyActiveProgram/my_active_program_page.dart';
 import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 import 'package:gym_app/screen/chat/chat_list_page.dart';
+import 'package:gym_app/screen/list_barnameha/list_barnameha.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -297,9 +299,17 @@ class ItemsStudents extends StatelessWidget {
                 ),
               ),
             ),
-            ItemWidget(
-              title: "برنامه های \n فعال ",
-              pic: "assets/icons/clipboard.svg",
+            Material(
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed(MyActiveProgramPage.routeName);
+                },
+                child: ItemWidget(
+                  title: "برنامه های \n فعال ",
+                  pic: "assets/icons/clipboard.svg",
+                ),
+              ),
             ),
           ],
         ),
@@ -403,9 +413,16 @@ class ItemsCoach extends StatelessWidget {
                 ),
               ),
             ),
-            ItemWidget(
-              title: "لیست برنامه \n خودم ",
-              pic: "assets/icons/setting-2.svg",
+            Material(
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(ListBarnamehaPage.routeName);
+                },
+                child: ItemWidget(
+                  title: "لیست برنامه \n خودم ",
+                  pic: "assets/icons/setting-2.svg",
+                ),
+              ),
             ),
           ],
         ),
@@ -471,9 +488,17 @@ class ItemsCoach extends StatelessWidget {
                 pic: "assets/icons/user-octagon.svg",
               ),
             ),
-            ItemWidget(
-              title: "برنامه های \n فعال ",
-              pic: "assets/icons/clipboard.svg",
+            Material(
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed(MyActiveProgramPage.routeName);
+                },
+                child: ItemWidget(
+                  title: "برنامه های \n فعال ",
+                  pic: "assets/icons/clipboard.svg",
+                ),
+              ),
             ),
             // Container(
             //   height: Get.height * 0.13,

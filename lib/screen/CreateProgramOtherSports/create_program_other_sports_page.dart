@@ -4,59 +4,39 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/CurrentUserVm.dart';
 import 'package:gym_app/ViewModels/Person/PersonListVm.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_students_as_person_list_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customeTextField.dart';
 import 'package:gym_app/screen/CreateProgramOtherSports/components/select_student_screen.dart';
 import 'package:gym_app/screen/CreateProgramOtherSportsSetting/create_program_other_sports_setting_pages.dart';
-import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
-class CreateProgramOtherSportsPage extends StatefulWidget {
-  const CreateProgramOtherSportsPage({Key? key}) : super(key: key);
+class CreateProgramOtherSportsPage extends StatelessWidget {
+  CreateProgramOtherSportsPage({Key? key}) : super(key: key);
   static const routeName = '/createProgramOtherSportsPage';
+  final TextEditingController _priceTextEditingController =
+      TextEditingController();
+  final TextEditingController _titleTextEditingController =
+      TextEditingController();
+  final TextEditingController _startDateTextEditingController =
+      TextEditingController();
+  final TextEditingController _endDateTextEditingController =
+      TextEditingController();
+  final TextEditingController _descriptionTextEditingController =
+      TextEditingController();
+  final AnonymousPlantypeFormVm anonymousPlantypeFormVm =
+      AnonymousPlantypeFormVm(
+          students: [],
+          dayTerms: [
+        AnonymousPlanTypeDayTermVm(dayNumber: 1, termsCount: 1, currentTerm: 1)
+      ],
+          anonymousPlanTypeDetailForms: [],
+          isPrivate: CurrentUserVm.roleType != 3 ? false : true);
+  final GlobalKey<FormState> _createOtherSportKey = GlobalKey<FormState>();
 
-  @override
-  _CreateProgramOtherSportsPageState createState() =>
-      _CreateProgramOtherSportsPageState();
-}
-
-class _CreateProgramOtherSportsPageState
-    extends State<CreateProgramOtherSportsPage> {
-  late TextEditingController _priceTextEditingController;
-  late TextEditingController _titleTextEditingController;
-  late TextEditingController _startDateTextEditingController;
-  late TextEditingController _endDateTextEditingController;
-  late TextEditingController _descriptionTextEditingController;
-  late AnonymousPlantypeFormVm anonymousPlantypeFormVm;
-  GlobalKey<FormState> _createOtherSportKey = GlobalKey<FormState>();
-  @override
-  void initState() {
-    _priceTextEditingController = TextEditingController();
-    _titleTextEditingController = TextEditingController();
-    _startDateTextEditingController = TextEditingController(
-        text: Jalali.now().toJalaliDateTime().split(' ')[0]);
-    _endDateTextEditingController = TextEditingController(
-        text: Jalali.now().toJalaliDateTime().split(' ')[0]);
-    _descriptionTextEditingController = TextEditingController();
-    anonymousPlantypeFormVm = AnonymousPlantypeFormVm(students: [], dayTerms: [
-      AnonymousPlanTypeDayTermVm(dayNumber: 1, termsCount: 1, currentTerm: 1)
-    ], anonymousPlanTypeDetailForms: []);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _priceTextEditingController.dispose();
-    _titleTextEditingController.dispose();
-    _startDateTextEditingController.dispose();
-    _endDateTextEditingController.dispose();
-    _descriptionTextEditingController.dispose();
-    super.dispose();
-  }
-
-  Future<void> setStartTimePicker() async {
+  Future<void> setStartTimePicker(BuildContext context) async {
     var x = await showPersianDatePicker(
       context: context,
       initialDate: Jalali.now(),
@@ -68,7 +48,7 @@ class _CreateProgramOtherSportsPageState
     }
   }
 
-  Future<void> setEndTimePicker() async {
+  Future<void> setEndTimePicker(BuildContext context) async {
     var x = await showPersianDatePicker(
       context: context,
       initialDate: Jalali.now(),
@@ -211,9 +191,10 @@ class _CreateProgramOtherSportsPageState
                     GestureDetector(
                       onTap: () async {
                         FocusScope.of(context).unfocus();
-                        await setStartTimePicker();
+                        await setStartTimePicker(context);
                       },
                       child: CustomeTextField(
+                        onChange: (String value) {},
                         validator: (String value) {
                           if (value.isEmpty)
                             return 'تاریخ شروع نمیتواند خالی باشد';
@@ -230,9 +211,10 @@ class _CreateProgramOtherSportsPageState
                     GestureDetector(
                       onTap: () async {
                         FocusScope.of(context).unfocus();
-                        await setEndTimePicker();
+                        await setEndTimePicker(context);
                       },
                       child: CustomeTextField(
+                        onChange: (String value) {},
                         validator: (String value) {
                           if (value.isEmpty)
                             return 'تاریخ پایان نمیتواند خالی باشد';
@@ -246,97 +228,11 @@ class _CreateProgramOtherSportsPageState
                       ),
                     ),
                     SizedBox(height: padding * 2),
-                    InkWell(
-                      onTap: () async {
-                        FocusScope.of(context).unfocus();
-                        var x = await showModalBottomSheet(
-                            isDismissible: true,
-                            elevation: 20,
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (ctx) => BlocProvider.value(
-                                value: BlocProvider.of<
-                                    GetStudentsAsPersonListBloc>(context)
-                                  ..add(GetStudentsAsPersonListLoadingEvent()),
-                                child: SelectStudentScreen()));
-                        if (x != null) {
-                          x = x as PersonListVm;
-                          var isExist = anonymousPlantypeFormVm.students!
-                              .where((element) =>
-                                  element.userFullName == x.userFullName)
-                              .toList();
-                          if (isExist.isEmpty) {
-                            anonymousPlantypeFormVm.students!.add(x);
-                            setState(() {});
-                          }
-                        }
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: padding),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: padding, vertical: padding),
-                        decoration: ShapeDecoration(
-                            color: Color(0xfffBfBfB),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                side: BorderSide(color: Color(0xffEBEBEB)))),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.add,
-                                  size:
-                                      kFontSizeText(sizeScreen, FontSize.title),
-                                  color: Color(0xff48CAE4),
-                                ),
-                                SizedBox(
-                                  width: padding / 2,
-                                ),
-                                Text(
-                                  'افزودن شاگرد',
-                                  style: textStyle.copyWith(
-                                    color: Color(0xff48CAE4),
-                                    fontSize: kFontSizeText(
-                                        sizeScreen, FontSize.subTitle),
-                                  ),
-                                )
-                              ],
-                            ),
-                            Icon(
-                              Icons.person_add_alt_rounded,
-                              size: kFontSizeText(sizeScreen, FontSize.title),
-                              color: Color(0xff48CAE4),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Wrap(
-                      direction: Axis.horizontal,
-                      textDirection: TextDirection.rtl,
-                      alignment: WrapAlignment.start,
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      runAlignment: WrapAlignment.start,
-                      spacing: padding,
-                      children: anonymousPlantypeFormVm.students != null &&
-                              anonymousPlantypeFormVm.students!.isNotEmpty
-                          ? List.generate(
-                              anonymousPlantypeFormVm.students!.length,
-                              (index) => AddedStudent(
-                                    personListVm: anonymousPlantypeFormVm
-                                        .students![index],
-                                    removeItem: (PersonListVm personListVm) {
-                                      anonymousPlantypeFormVm.students!
-                                          .remove(personListVm);
-                                      setState(() {});
-                                    },
-                                  ))
-                          : [Container()],
-                    ),
+                    CurrentUserVm.roleType != 3
+                        ? ItemAddedStudents(
+                            anonymousPlantypeFormVm: anonymousPlantypeFormVm,
+                            sizeScreen: sizeScreen)
+                        : Container(),
                     SizedBox(
                       height: padding,
                     ),
@@ -391,7 +287,6 @@ class _CreateProgramOtherSportsPageState
                               _endDateTextEditingController.text;
                           anonymousPlantypeFormVm.description =
                               _descriptionTextEditingController.text;
-                          anonymousPlantypeFormVm.isPrivate = true;
                           FocusScope.of(context).unfocus();
                           Navigator.of(context).pushNamed(
                               CreateProgramOtherSportsSettingPage.routeName,
@@ -406,6 +301,143 @@ class _CreateProgramOtherSportsPageState
           ),
         ),
       ),
+    );
+  }
+}
+
+class ItemAddedStudents extends StatefulWidget {
+  const ItemAddedStudents({
+    Key? key,
+    required this.anonymousPlantypeFormVm,
+    required this.sizeScreen,
+  }) : super(key: key);
+
+  final AnonymousPlantypeFormVm anonymousPlantypeFormVm;
+  final Size sizeScreen;
+
+  @override
+  _ItemAddedStudentsState createState() => _ItemAddedStudentsState();
+}
+
+class _ItemAddedStudentsState extends State<ItemAddedStudents> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () async {
+            FocusScope.of(context).unfocus();
+            var x = await showModalBottomSheet(
+                isDismissible: true,
+                elevation: 20,
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (ctx) => BlocProvider.value(
+                    value: BlocProvider.of<GetStudentsAsPersonListBloc>(context)
+                      ..add(GetStudentsAsPersonListLoadingEvent()),
+                    child: SelectStudentScreen()));
+            if (x != null) {
+              x = x as PersonListVm;
+              var isExist = widget.anonymousPlantypeFormVm.students!
+                  .where((element) => element.userFullName == x.userFullName)
+                  .toList();
+              if (isExist.isEmpty) {
+                widget.anonymousPlantypeFormVm.students!.add(x);
+                setState(() {});
+              }
+            }
+          },
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: padding),
+            padding: EdgeInsets.symmetric(horizontal: padding),
+            decoration: ShapeDecoration(
+                color: Color(0xfffBfBfB),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(color: Color(0xffEBEBEB)))),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.add,
+                      size: kFontSizeText(widget.sizeScreen, FontSize.title),
+                      color: Color(0xff48CAE4),
+                    ),
+                    SizedBox(
+                      width: padding / 2,
+                    ),
+                    Text(
+                      'افزودن شاگرد',
+                      style: textStyle.copyWith(
+                        color: Color(0xff48CAE4),
+                        fontSize:
+                            kFontSizeText(widget.sizeScreen, FontSize.subTitle),
+                      ),
+                    )
+                  ],
+                ),
+                Material(
+                    child: Tooltip(
+                  message: 'افزدون برنامه برای خودم',
+                  verticalOffset: 20,
+                  textStyle: textStyle.copyWith(
+                      fontSize:
+                          kFontSizeText(widget.sizeScreen, FontSize.subTitle),
+                      color: Colors.white),
+                  child: IconButton(
+                      splashRadius: 20,
+                      onPressed: () {
+                        if (!widget.anonymousPlantypeFormVm.isPrivate!) {
+                          widget.anonymousPlantypeFormVm.isPrivate = true;
+                          setState(() {});
+                        }
+                      },
+                      iconSize:
+                          kFontSizeText(widget.sizeScreen, FontSize.title) + 5,
+                      icon: Icon(
+                        Icons.person_add_alt_rounded,
+                        color: Color(0xff48CAE4),
+                      )),
+                ))
+              ],
+            ),
+          ),
+        ),
+        Wrap(
+          direction: Axis.horizontal,
+          textDirection: TextDirection.rtl,
+          alignment: WrapAlignment.start,
+          crossAxisAlignment: WrapCrossAlignment.start,
+          runAlignment: WrapAlignment.start,
+          spacing: padding,
+          children: widget.anonymousPlantypeFormVm.students != null &&
+                  widget.anonymousPlantypeFormVm.students!.isNotEmpty
+              ? List.generate(
+                  widget.anonymousPlantypeFormVm.students!.length,
+                  (index) => AddedStudent(
+                        personListVm:
+                            widget.anonymousPlantypeFormVm.students![index],
+                        removeItem: (PersonListVm personListVm) {
+                          widget.anonymousPlantypeFormVm.students!
+                              .remove(personListVm);
+                          setState(() {});
+                        },
+                      ))
+              : [Container()],
+        ),
+        widget.anonymousPlantypeFormVm.isPrivate!
+            ? AddedStudent(
+                personListVm: PersonListVm(userFullName: 'خودم'),
+                removeItem: (PersonListVm personListVm) {
+                  widget.anonymousPlantypeFormVm.isPrivate = false;
+                  setState(() {});
+                })
+            : Container()
+      ],
     );
   }
 }
@@ -440,15 +472,13 @@ class AddedStudent extends StatelessWidget {
           SizedBox(
             width: padding,
           ),
-          InkWell(
-            onTap: () {
-              removeItem(personListVm);
-            },
-            child: Container(
-              width: 10,
-              height: 2,
-              color: Colors.black,
-            ),
+          Material(
+            child: InkWell(
+                radius: 50,
+                onTap: () {
+                  removeItem(personListVm);
+                },
+                child: Icon(Icons.remove)),
           )
         ],
       ),

@@ -201,22 +201,24 @@ class _DaysTaskState extends State<DaysTask> {
                                   deleteItem: () {
                                     widget.bodyBuildingPlanTypeFormVm.dayTerms!
                                         .removeAt(index);
-                                    if (widget.bodyBuildingPlanTypeFormVm
-                                            .dayTerms!.length >
-                                        index) {
-                                      for (int i = index;
-                                          i <
-                                              widget.bodyBuildingPlanTypeFormVm
-                                                  .dayTerms!.length;
-                                          i += 1) {
-                                        widget.bodyBuildingPlanTypeFormVm
-                                            .dayTerms![i].dayNumber = widget
-                                                .bodyBuildingPlanTypeFormVm
-                                                .dayTerms![i]
-                                                .dayNumber! -
-                                            1;
-                                      }
+                                    widget.bodyBuildingPlanTypeFormVm
+                                        .bodyBuildingPlanTypeDetails!
+                                        .removeWhere((element) =>
+                                            element.dayNumber == index + 1);
+                                    for (var item in widget
+                                        .bodyBuildingPlanTypeFormVm
+                                        .bodyBuildingPlanTypeDetails!
+                                        .where((element) =>
+                                            element.dayNumber! > index)) {
+                                      item.dayNumber = item.dayNumber! - 1;
                                     }
+                                    for (var item in widget
+                                        .bodyBuildingPlanTypeFormVm.dayTerms!
+                                        .where((element) =>
+                                            element.dayNumber! > index)) {
+                                      item.dayNumber = item.dayNumber! - 1;
+                                    }
+
                                     setState(() {});
                                   }),
                             ),

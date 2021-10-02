@@ -194,22 +194,23 @@ class _DaysTaskState extends State<DaysTask> {
                                   deleteItem: () {
                                     widget.dietPlanTypeFormVm.dayMeals!
                                         .removeAt(index);
-                                    if (widget.dietPlanTypeFormVm.dayMeals!
-                                            .length >
-                                        index) {
-                                      for (int i = index;
-                                          i <
-                                              widget.dietPlanTypeFormVm
-                                                  .dayMeals!.length;
-                                          i += 1) {
-                                        widget.dietPlanTypeFormVm.dayMeals![i]
-                                            .dayNumber = widget
-                                                .dietPlanTypeFormVm
-                                                .dayMeals![i]
-                                                .dayNumber! -
-                                            1;
-                                      }
+                                    widget.dietPlanTypeFormVm
+                                        .dietPlanTypeDetailForms!
+                                        .removeWhere((element) =>
+                                            element.dayNumber == index + 1);
+                                    for (var item in widget.dietPlanTypeFormVm
+                                        .dietPlanTypeDetailForms!
+                                        .where((element) =>
+                                            element.dayNumber! > index)) {
+                                      item.dayNumber = item.dayNumber! - 1;
                                     }
+                                    for (var item in widget
+                                        .dietPlanTypeFormVm.dayMeals!
+                                        .where((element) =>
+                                            element.dayNumber! > index)) {
+                                      item.dayNumber = item.dayNumber! - 1;
+                                    }
+
                                     setState(() {});
                                   }),
                             ),
