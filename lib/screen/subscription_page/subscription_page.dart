@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gym_app/ViewModels/PlanTypeLog/PlanTypeLogVm.dart';
 import 'package:gym_app/ViewModels/SubscriptionTypeInvoice/SubscriptionTypeInvoiceListVm.dart';
@@ -207,8 +208,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                           if (state
                                               is SubscriptionLoadingState) {
                                             return Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Center(child: CircularProgressIndicator()),
+                                              padding: const EdgeInsets.all(10),
+                                              child: SpinKitThreeBounce(color: Color.fromRGBO(60, 198, 226, 1),size: Get.height * 0.0285,),
                                             );
                                           } else if (state
                                               is SubscriptionLoadedState) {
@@ -253,7 +254,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                     if (state is GetSubscriptionInvoiceLoadingState)
                                       return  Padding(
                                         padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.18),
-                                        child: CircularProgressIndicator(),
+                                        child: SpinKitThreeBounce(color: Color.fromRGBO(60, 198, 226, 1),size: Get.height * 0.0285,),
                                       );
                                     else if (state is GetSubscriptionInvoiceLoadedState) {
                                       if (state.page_subscriptionTypeInvoiceListVm != null &&
@@ -367,7 +368,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                     if (state is GetSubscriptionInvoiceLoadingState)
                                       return Padding(
                                         padding:  EdgeInsets.symmetric (horizontal: Get.width * 0.1),
-                                        child: CircularProgressIndicator(),
+                                        child: SpinKitThreeBounce(color: Color.fromRGBO(60, 198, 226, 1),size: Get.height * 0.0285,),
                                       );
                                     else if (state is GetSubscriptionInvoiceLoadedState) {
                                       if (state.page_subscriptionTypeInvoiceListVm != null &&
@@ -420,7 +421,10 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
             BlocBuilder<GetSubscriptionInvoiceBloc, GetSubscriptionInvoiceState>(
               builder: (context, state) {
                 if (state is GetSubscriptionInvoiceLoadingState)
-                  return CircularProgressIndicator();
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: SpinKitThreeBounce(color: Color.fromRGBO(60, 198, 226, 1),size: Get.height * 0.0285,),
+                  );
                 else if (state is GetSubscriptionInvoiceLoadedState) {
                   if (state.page_subscriptionTypeInvoiceListVm != null &&
                       state.page_subscriptionTypeInvoiceListVm!.items != null &&

@@ -32,6 +32,7 @@ import 'blocs/WalletLog/bloc/increase_bloc.dart';
 import ' extensions/ext.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   CurrentUserVm.localSavingService = await LocalSavingService.create();
   CurrentUserVm.localSavingService!.getUser();
@@ -39,7 +40,21 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(MyApp());
+  runApp(
+      MultiBlocProvider(
+          providers: [
+            BlocProvider<IncreaseBloc>(
+              create: (context) =>
+                  IncreaseBloc(),
+            ),
+            BlocProvider<GetMyWalletBallanceBloc>(
+              create: (context) =>
+                  GetMyWalletBallanceBloc()..add(GetMyWalletBallanceLoadingEvent()),
+            ),
+          ],
+          child:MyApp(),
+      )
+     );
   start();
 }
 
@@ -123,6 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 3:
         return ProfilePage();
       case 4:
+
         return MultiBlocProvider(
           providers: [
             BlocProvider(

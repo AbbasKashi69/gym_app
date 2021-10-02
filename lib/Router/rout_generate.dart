@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
-<<<<<<< HEAD
 import 'package:gym_app/ViewModels/WalletLog/IncreaseCreditVm.dart';
-=======
 import 'package:gym_app/ViewModels/BodyBuildingPlanType/BodyBuildingPlanTypeFormVm.dart';
 import 'package:gym_app/ViewModels/CoachStudent/CoachStudentVm.dart';
 import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeFormVm.dart';
 import 'package:gym_app/blocs/Account/bloc/get_current_user_role_bloc.dart';
->>>>>>> 3c131c738e42093acbfd14bd403af76d18124e87
 import 'package:gym_app/blocs/Account/bloc/login_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/register_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/send_code_bloc.dart';
@@ -128,13 +125,9 @@ class MyRouter {
       case ProfilePage.routeName:
         return MaterialPageRoute(builder: (context) => ProfilePage());
       case IncreaseWalletPage.routeName:
-        var increaseCreditVm = routeSettings.arguments;
-
         return MaterialPageRoute(builder: (context) => BlocProvider(
-            create: (context) =>
-            IncreaseBloc()..add(IncreaseLoadingEvent(increaseCreditVm: increaseCreditVm as IncreaseCreditVm)),
+            create: (context) => IncreaseBloc(),
             child: IncreaseWalletPage())
-
         );
       case ProfileApprenticePage.routeName:
         {
@@ -146,14 +139,12 @@ class MyRouter {
       case WalletPage.routeName:
         return MaterialPageRoute(builder: (context) => WalletPage());
       case CvPage.routeName:
-<<<<<<< HEAD
         return MaterialPageRoute(
             builder: (context) => BlocProvider(
                 create: (context) =>
                     GetResumeBloc()..add(GetResumeLoadingEvent()),
                 child: CvPage())
         );
-=======
         {
           var data = routeSettings.arguments;
           return MaterialPageRoute(
@@ -162,7 +153,6 @@ class MyRouter {
                     ..add(GetResumeLoadingEvent(coachId: data as int)),
                   child: CvPage()));
         }
->>>>>>> 3c131c738e42093acbfd14bd403af76d18124e87
       case PersonalInfoPage.routeName:
         return MaterialPageRoute(builder: (context) => PersonalInfoPage());
       case SettingPage.routeName:

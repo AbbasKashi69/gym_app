@@ -296,7 +296,8 @@ class InputPhoneNumberTask extends StatelessWidget {
                                   registerVm: RegisterVm(
                                       mobile: '0' +
                                           phoneTextInputEditingController
-                                              .text)));
+                                              .text)
+                              ));
                         }
                       },
                       isReject: true,

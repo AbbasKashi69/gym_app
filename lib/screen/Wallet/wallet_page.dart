@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/ViewModels/SubscriptionTypeInvoice/SubscriptionTypeInvoiceVm.dart';
@@ -119,7 +120,10 @@ class WalletPage extends StatelessWidget {
                                   GetMyWalletBallanceState>(
                                 builder: (context, state) {
                                   if (state is GetMyWalletBallanceLoadingState)
-                                    return MyWaiting();
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      child: SpinKitThreeBounce(color: Colors.white,size: Get.height * 0.0285,),
+                                    );
                                   else if (state
                                   is GetMyWalletBallanceLoadedState) if (state
                                       .userWalletVm !=
@@ -177,8 +181,8 @@ class WalletPage extends StatelessWidget {
                           if (state
                           is GetMyDepositLoadingState) {
                             return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Center(child: CircularProgressIndicator()),
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: SpinKitThreeBounce(color: Color.fromRGBO(60, 198, 226, 1),size: Get.height * 0.0285,),
                             );
                           } else if (state
                           is GetMyDepositLoadedState) {
@@ -236,8 +240,8 @@ class WalletPage extends StatelessWidget {
                           if (state
                           is GetMyWithdrawalLoadingState) {
                             return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Center(child: CircularProgressIndicator()),
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: SpinKitThreeBounce(color: Color.fromRGBO(60, 198, 226, 1),size: Get.height * 0.0285,),
                             );
                           } else if (state
                           is GetMyWithdrawalLoadedState) {

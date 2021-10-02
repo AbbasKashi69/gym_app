@@ -3,10 +3,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:gym_app/ViewModels/Account/RegisterVm.dart';
 import 'package:gym_app/ViewModels/WalletLog/IncreaseCreditVm.dart';
+import 'package:gym_app/blocs/Account/bloc/register_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/get_my_wallet_ballance_bloc.dart';
 import 'package:gym_app/blocs/WalletLog/bloc/increase_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/myWaiting.dart';
@@ -22,8 +26,11 @@ class IncreaseWalletPage extends StatefulWidget {
 class _IncreaseWalletPageState extends State<IncreaseWalletPage> {
   bool _isSwitched = false;
   bool _isFill = false;
-  TextEditingController _controller = TextEditingController();
+  bool _error = false;
+  TextEditingController _controllerAmount = TextEditingController();
+  TextEditingController _controllerTrackNumber = TextEditingController();
   late String label = "";
+  final _formKey = GlobalKey<FormState>();
   bool subPrice = false;
   @override
   Widget build(BuildContext context) {
@@ -99,13 +106,30 @@ class _IncreaseWalletPageState extends State<IncreaseWalletPage> {
                           fontFamily: "IRANSans",
                           fontWeight: FontWeight.w400),
                     ),
-                    Text(
-                      "${"1300000".toPersianDigit().seRagham()} تومان",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: "IRANSans",
-                          fontSize: Get.height * 0.023),
-                    )
+                    BlocBuilder<GetMyWalletBallanceBloc,
+                        GetMyWalletBallanceState>(
+                      builder: (context, state) {
+                        if (state is GetMyWalletBallanceLoadingState)
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: SpinKitThreeBounce(color: Color.fromRGBO(60, 198, 226, 1),size: Get.height * 0.0285,),
+                          );
+                        else if (state
+                        is GetMyWalletBallanceLoadedState) if (state
+                            .userWalletVm !=
+                            null)
+                          return Text(
+                              '${state.userWalletVm!.nWalletBallance!.toPersianDigit()} تومان',
+                              style: textStyleHome.copyWith(color: Colors.black,fontSize: Get.height * 0.022));
+                        else
+                          return Text(
+                            '0',
+                            style: textStyleHome,
+                          );
+                        else
+                          return Container();
+                      },
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -162,53 +186,58 @@ class _IncreaseWalletPageState extends State<IncreaseWalletPage> {
                 SizedBox(
                   height: Get.height * 0.025,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: TextField(
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    controller: _controller,
-                    onChanged: (value) {
-                      setState(() {
-                        _isFill = true;
-                        label = value;
-                        subPrice = true;
-                        if(value.isEmpty){
-                          setState(() {
-                            _isFill = false;
-                          });
+                Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      controller: _controllerAmount,
+                      onChanged: (value) {
+                        setState(() {
+                          _isFill = true;
+                          label = value;
+                          subPrice = true;
+                          if(value.isEmpty){
+                            setState(() {
+                              _isFill = false;
+                            });
+                          }
+                        });
+                      },
+                      validator: (text) {
+                        if (text == null || text.isEmpty) {
+                          return 'مقدار مورد نظر را وراد کنید';
                         }
-                      });
-                    },
-
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(0),
-                        helperText:
-                            "${label.toWord()} ${subPrice ? "تومان" : ""}",
-                        helperStyle: TextStyle(
-                            color: Colors.black,
-                            fontFamily: "IRANSans",
-                            fontSize: Get.height * 0.02),
-                        labelText: "مقدار",
-                        labelStyle: TextStyle(
-                            color: Colors.black54,
-                            fontSize: Get.height * 0.025,
-                            fontFamily: "IRANSans"),
-                        suffix: Text(
-                          "تومان",
-                          style: TextStyle(
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(0),
+                          helperText:
+                              "${label.toWord()} ${subPrice ? "تومان" : ""}",
+                          helperStyle: TextStyle(
                               color: Colors.black,
                               fontFamily: "IRANSans",
-                              fontSize: Get.height * 0.024),
-                        )),
+                              fontSize: Get.height * 0.02),
+                          labelText: "مقدار",
+                          labelStyle: TextStyle(
+                              color: Colors.black54,
+                              fontSize: Get.height * 0.025,
+                              fontFamily: "IRANSans"),
+                          suffix: Text(
+                            "تومان",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: "IRANSans",
+                                fontSize: Get.height * 0.024),
+                          )),
+                    ),
                   ),
                 ),
                 _isSwitched
                     ? TextField(
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
+                  controller: _controllerTrackNumber,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(0),
                           helperStyle: TextStyle(
@@ -227,74 +256,102 @@ class _IncreaseWalletPageState extends State<IncreaseWalletPage> {
                   height: Get.height * 0.025,
                 ),
                 _isSwitched
-                    ? Container(
-                  margin: EdgeInsets.only(top: 10),
-                        height: Get.height * 0.08,
-                        width: Get.width,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                            end: Alignment.topCenter,
-                            begin: Alignment.topCenter,
-                            colors: [
-                              _isFill
-                                  ? Color.fromRGBO(20, 186, 219, 1)
-                                  : Colors.grey.withOpacity(0.3),
-                              _isFill
-                                  ? Color.fromRGBO(60, 198, 226, 1)
-                                  : Colors.grey.withOpacity(0.2)
-                            ]),
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.grey.withOpacity(0.2)),
-                        child: Center(
-                          child: Text(
-                            "ارسال درخواست",
-                            style: TextStyle(
-                                color:  _isFill ? Colors.white : Colors.black,
-                                fontSize: Get.height * 0.025,
-                                fontFamily: "IRANSans"),
-                          ),
-                        )
+                    ? InkWell(
+                  child: Container(
+                      margin: EdgeInsets.only(top: 10),
+                      height: Get.height * 0.08,
+                      width: Get.width,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              end: Alignment.topCenter,
+                              begin: Alignment.topCenter,
+                              colors: [
+                                _isFill
+                                    ? Color.fromRGBO(20, 186, 219, 1)
+                                    : Colors.grey.withOpacity(0.3),
+                                _isFill
+                                    ? Color.fromRGBO(60, 198, 226, 1)
+                                    : Colors.grey.withOpacity(0.2)
+                              ]),
+                          borderRadius: BorderRadius.circular(30),
+                         ),
+                      child: Center(
+                        child: Text(
+                          "ارسال درخواست",
+                          style: TextStyle(
+                              color:  _isFill ? Colors.white : Colors.black,
+                              fontSize: Get.height * 0.025,
+                              fontFamily: "IRANSans"),
+                        ),
                       )
-                    : BlocConsumer<IncreaseBloc, IncreaseState>(
-                  listener: (context, state) {
-                    if (state is IncreaseLoadedState) {
-                      if (state.resultObject != null &&
-                          state.resultObject!.success!) {
-                        CustomeButton(
-                          sizeScreen: MediaQuery.of(context).size,
-                          title: 'دریافت کد',
-                          onTap: () {
-                              BlocProvider.of<IncreaseBloc>(context).add(
-                                  IncreaseLoadingEvent(
-                                      increaseCreditVm: IncreaseCreditVm(
-                                        isOnline: false,
-                                        invoiceTrackingCode: "just for test",
-                                        increaseCreditAmount: 10000,
-                                        id: 1,
-                                      )));
-                          },
-                          isReject: true,
-                        );
-                     } else if (state.resultObject != null) {
-                        Fluttertoast.showToast(
-                            msg: state.resultObject!.message ?? "");
-                      } else
-                        Fluttertoast.showToast(
-                          msg: 'دوباره امتحان کنید',
-                        );
+                  ),
+                  onTap: () {
+                    if (_formKey.currentState!.validate()) {
+                      BlocProvider.of<IncreaseBloc>(context).add(
+                          IncreaseLoadingEvent(
+                              increaseCreditVm: IncreaseCreditVm(
+                                id: 1,
+                                increaseCreditAmount: int.parse(_controllerAmount.text),
+                                invoiceTrackingCode: _controllerTrackNumber.text,
+                                isOnline: false,
+
+                              )
+                          ),
+
+                      );
+                      Fluttertoast.showToast(msg: 'با موفقیت ثبت شد',backgroundColor: Colors.green);
                     }
                   },
-                  builder: (context, state) {
-                    if (state is IncreaseLoadingState)
-                      return MyWaiting();
-                    else
-                      return Container(
-                        height: 10,
-                        width: 10,
-                        color: Colors.red,
-                      );
-                  },
                 )
+                    : InkWell(
+                  onTap: () {
+                     if (_formKey.currentState!.validate()) {
+                       BlocProvider.of<IncreaseBloc>(context).add(
+                           IncreaseLoadingEvent(
+                               increaseCreditVm: IncreaseCreditVm(
+                                 id: 1,
+                                 increaseCreditAmount: int.parse(_controllerAmount.text),
+                                 invoiceTrackingCode: "Null",
+                                 isOnline: true,
+
+                               )
+                           ),
+
+                       );
+                       Fluttertoast.showToast(msg: 'با موفقیت ثبت شد',backgroundColor: Colors.green);
+
+                     }
+                  },
+                      child: Container(
+                      margin: EdgeInsets.only(top: 10),
+                      height: Get.height * 0.08,
+                      width: Get.width,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              end: Alignment.topCenter,
+                              begin: Alignment.topCenter,
+                              colors: [
+                                _isFill
+                                    ? Color.fromRGBO(20, 186, 219, 1)
+                                    : Colors.grey.withOpacity(0.3),
+                                _isFill
+                                    ? Color.fromRGBO(60, 198, 226, 1)
+                                    : Colors.grey.withOpacity(0.2)
+                              ]),
+                          borderRadius: BorderRadius.circular(30),
+
+                      ),
+                      child: Center(
+                        child: Text(
+                          "ارسال درخواست",
+                          style: TextStyle(
+                              color:  _isFill ? Colors.white : Colors.black,
+                              fontSize: Get.height * 0.025,
+                              fontFamily: "IRANSans"),
+                        ),
+                      )
+                ),
+                    )
               ],
             ),
           ),
