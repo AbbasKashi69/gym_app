@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gym_app/ViewModels/CoachStudent/CoachStudentVm.dart';
 import 'package:gym_app/ViewModels/Person/PersonListVm.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_coach_students_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:gym_app/components/customeTextField.dart';
 import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/components/no_data.dart';
 import 'package:gym_app/screen/ListApprentice/requests_page.dart';
+import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';
 
 class ListApprenticePage extends StatefulWidget {
   const ListApprenticePage({Key? key}) : super(key: key);
@@ -20,9 +22,11 @@ class ListApprenticePage extends StatefulWidget {
 
 class _ListApprenticePageState extends State<ListApprenticePage> {
   late TextEditingController _searchTextEditingController;
+  late bool isPermissionGoToNewPage;
   @override
   void initState() {
     super.initState();
+    isPermissionGoToNewPage = false;
     _searchTextEditingController = TextEditingController();
   }
 
@@ -66,10 +70,22 @@ class _ListApprenticePageState extends State<ListApprenticePage> {
                 Material(
                   child: InkWell(
                     onTap: () async {
-                      await Navigator.of(context)
-                          .pushNamed(RequestsPage.routeName);
-                      BlocProvider.of<GetCoachStudentsBloc>(context)
-                          .add(GetCoachStudentsLoadingEvent());
+                      if (isPermissionGoToNewPage) {
+                        dynamic check = await Navigator.of(context)
+                            .pushNamed(RequestsPage.routeName);
+                        if (check == 0)
+                          // check == 0 it means user rejected request then update list student
+                          BlocProvider.of<GetCoachStudentsBloc>(context)
+                              .add(GetCoachStudentsLoadingEvent());
+                        else if (check == 1) {
+                          // check == 1 it means user rejected request then update list student
+                          BlocProvider.of<GetCoachStudentsBloc>(context)
+                              .add(GetCoachStudentsLoadingEvent());
+                          BlocProvider.of<GetStudentsAsPersonListBloc>(context)
+                              .add(GetStudentsAsPersonListLoadingEvent());
+                        }
+                      } else
+                        Fluttertoast.showToast(msg: 'درخواستی وجود ندارد');
                     },
                     child: Row(
                       children: [
@@ -84,13 +100,20 @@ class _ListApprenticePageState extends State<ListApprenticePage> {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            BlocBuilder<GetCoachStudentsBloc,
+                            BlocConsumer<GetCoachStudentsBloc,
                                 GetCoachStudentsState>(
+                              listener: (context, state) {
+                                if (state is GetCoachStudentsLoadedState) {
+                                  if (state.page_coachStudentVm != null &&
+                                      state.page_coachStudentVm!.items!
+                                          .isNotEmpty)
+                                    isPermissionGoToNewPage = true;
+                                }
+                              },
                               builder: (context, state) {
                                 if (state is GetCoachStudentsLoadingState)
                                   return Container(
-                                    width: 10,
-                                    height: 10,
+                                    // width: 10,
                                     child: MyWaiting(),
                                   );
                                 else if (state is GetCoachStudentsLoadedState) {
@@ -226,24 +249,37 @@ class ItemApprenticeList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: padding),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(personListVm.pic ??
-                'https://i.pinimg.com/564x/5b/40/87/5b4087d0fc8d9d372c00a32bc08f818c.jpg'),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () async {
+          dynamic check = await Navigator.of(context).pushNamed(
+              ProfileApprenticePage.routeName,
+              arguments: personListVm.id);
+          if (check != null && check)
+            BlocProvider.of<GetStudentsAsPersonListBloc>(context)
+                .add(GetStudentsAsPersonListLoadingEvent());
+        },
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: padding),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(personListVm.pic ??
+                    'https://i.pinimg.com/564x/5b/40/87/5b4087d0fc8d9d372c00a32bc08f818c.jpg'),
+              ),
+              SizedBox(
+                width: padding,
+              ),
+              Text(
+                personListVm.userFullName ?? "",
+                style: textStyle.copyWith(
+                    fontSize: kFontSizeText(sizeScreen, FontSize.subTitle)),
+              )
+            ],
           ),
-          SizedBox(
-            width: padding,
-          ),
-          Text(
-            personListVm.userFullName ?? "",
-            style: textStyle.copyWith(
-                fontSize: kFontSizeText(sizeScreen, FontSize.subTitle)),
-          )
-        ],
+        ),
       ),
     );
   }

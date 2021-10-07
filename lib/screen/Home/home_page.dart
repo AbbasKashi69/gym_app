@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/ViewModels/CurrentUserVm.dart';
+import 'package:gym_app/ViewModels/SubscriptionTypeInvoice/SubscriptionTypeInvoiceVm.dart';
 import 'package:gym_app/blocs/Account/bloc/get_current_user_role_bloc.dart';
+import 'package:gym_app/blocs/Subscription/bloc/get_subscription_bloc.dart';
 import 'package:gym_app/blocs/WalletLog/bloc/get_my_wallet_ballance_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customBottomBar.dart';
@@ -19,6 +21,7 @@ import 'package:gym_app/screen/MyActiveProgram/my_active_program_page.dart';
 import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 import 'package:gym_app/screen/chat/chat_list_page.dart';
 import 'package:gym_app/screen/list_barnameha/list_barnameha.dart';
+import 'package:gym_app/screen/settings/setting_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -148,27 +151,43 @@ class HomePage extends StatelessWidget {
                           Spacer(),
                           Text("اشتراک کنونی :", style: textStyleHome),
                           Spacer(),
-                          BlocBuilder<GetMyWalletBallanceBloc,
-                              GetMyWalletBallanceState>(
+                          //****** */
+                          BlocBuilder<SubscriptionBloc, SubscriptionState>(
                             builder: (context, state) {
-                              if (state is GetMyWalletBallanceLoadingState)
+                              if (state is SubscriptionLoadingState) {
                                 return MyWaiting();
-                              else if (state
-                                  is GetMyWalletBallanceLoadedState) if (state
-                                      .userWalletVm !=
-                                  null)
-                                return Text(
-                                    '${state.userWalletVm!.nWalletBallance!} تومان',
-                                    style: textStyleHome);
-                              else
-                                return Text(
-                                  '0',
-                                  style: textStyleHome,
-                                );
-                              else
+                              } else if (state is SubscriptionLoadedState) {
+                                if (state.resultObject != null &&
+                                    state.resultObject!.success!) {
+                                  SubscriptionTypeInvoiceVm
+                                      subscriptionTypeInvoiceVm =
+                                      SubscriptionTypeInvoiceVm.fromJson(state
+                                          .resultObject!
+                                          .extra as Map<String, dynamic>);
+                                  return Text(
+                                    "${subscriptionTypeInvoiceVm.subscriptionTypeTitle}",
+                                    style: textStyle.copyWith(
+                                        fontSize: kFontSizeText(
+                                            MediaQuery.of(context).size,
+                                            FontSize.title),
+                                        color: Colors.white),
+                                  );
+                                } else {
+                                  return Text(
+                                    "اشراکی ندارید",
+                                    style: textStyle.copyWith(
+                                        fontSize: kFontSizeText(
+                                            MediaQuery.of(context).size,
+                                            FontSize.title),
+                                        color: Colors.white),
+                                  );
+                                }
+                              } else {
                                 return Container();
+                              }
                             },
                           ),
+                          //***** */
                           Spacer(),
                           IconButton(
                             onPressed: () {},
@@ -368,9 +387,16 @@ class ItemsStudents extends StatelessWidget {
                 pic: "assets/icons/user-octagon.svg",
               ),
             ),
-            ItemWidget(
-              title: "تنظیمات",
-              pic: "assets/icons/setting-2.svg",
+            Material(
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(SettingPage.routeName);
+                },
+                child: ItemWidget(
+                  title: "تنظیمات",
+                  pic: "assets/icons/setting-2.svg",
+                ),
+              ),
             ),
             Container(
               height: Get.height * 0.13,

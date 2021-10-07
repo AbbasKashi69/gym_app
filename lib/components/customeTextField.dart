@@ -31,6 +31,8 @@ class CustomeTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
     return TextFormField(
+      textInputAction: textInputAction,
+      keyboardType: keyboardType,
       onChanged: (String value) {
         onChange!(value);
       },

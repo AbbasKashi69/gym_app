@@ -22,6 +22,7 @@ import 'package:gym_app/extensions/ext.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'buy_subscription.dart';
 import 'package:get/get.dart';
+
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({Key? key}) : super(key: key);
   static const routeName = '/subscription';
@@ -173,7 +174,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                         ),
                         Center(
                           child: Container(
-                            height: gh(0.25),
+                            height: gh(0.26),
                             margin: EdgeInsets.only(top: gh(0.1)),
                             width: gw(0.9),
                             decoration: BoxDecoration(
@@ -208,12 +209,13 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                           if (state
                                               is SubscriptionLoadingState) {
                                             return Padding(
-                                              padding: const EdgeInsets.all(10),
-                                              child: SpinKitThreeBounce(color: Color.fromRGBO(60, 198, 226, 1),size: Get.height * 0.0285,),
-                                            );
+                                                padding:
+                                                    const EdgeInsets.all(10),
+                                                child: MyWaiting(
+                                                  size: 10,
+                                                ));
                                           } else if (state
                                               is SubscriptionLoadedState) {
-
                                             if (state.resultObject != null) {
                                               if (state.resultObject!.success ==
                                                   true) {
@@ -226,76 +228,111 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                                             as Map<String,
                                                                 dynamic>);
                                                 return Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: Text("${subscriptionTypeInvoiceVm.subscriptionTypeTitle}",style: TextStyle(color: Colors.black,fontSize: 15),),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 5),
+                                                  child: Text(
+                                                    "${subscriptionTypeInvoiceVm.subscriptionTypeTitle}",
+                                                    style: textStyle.copyWith(
+                                                        fontSize: kFontSizeText(
+                                                            sizeScreen,
+                                                            FontSize.title)),
+                                                  ),
                                                 );
-                                              }else{
-                                                return Container(
-
-                                                );
+                                              } else {
+                                                return Container();
                                               }
-                                            }else{
-                                              return Container(
-
-                                              );
+                                            } else {
+                                              return Container();
                                             }
                                           } else {
-                                            return Container(
-
-                                            );
+                                            return Container();
                                           }
                                         },
                                       )
                                     ],
                                   ),
                                 )),
-                                BlocBuilder<GetSubscriptionInvoiceBloc, GetSubscriptionInvoiceState>(
+                                BlocBuilder<GetSubscriptionInvoiceBloc,
+                                    GetSubscriptionInvoiceState>(
                                   builder: (context, state) {
-                                    if (state is GetSubscriptionInvoiceLoadingState)
-                                      return  Padding(
-                                        padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.18),
-                                        child: SpinKitThreeBounce(color: Color.fromRGBO(60, 198, 226, 1),size: Get.height * 0.0285,),
+                                    if (state
+                                        is GetSubscriptionInvoiceLoadingState)
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: Get.width * 0.18),
+                                        child: SpinKitThreeBounce(
+                                          color:
+                                              Color.fromRGBO(60, 198, 226, 1),
+                                          size: Get.height * 0.0285,
+                                        ),
                                       );
-                                    else if (state is GetSubscriptionInvoiceLoadedState) {
+                                    else if (state
+                                        is GetSubscriptionInvoiceLoadedState) {
                                       if (state.page_subscriptionTypeInvoiceListVm != null &&
-                                          state.page_subscriptionTypeInvoiceListVm!.items != null &&
-                                          state.page_subscriptionTypeInvoiceListVm!.items!.isNotEmpty) {
-                                        return  Expanded(
+                                          state.page_subscriptionTypeInvoiceListVm!
+                                                  .items !=
+                                              null &&
+                                          state
+                                              .page_subscriptionTypeInvoiceListVm!
+                                              .items!
+                                              .isNotEmpty) {
+                                        return Expanded(
                                             child: GestureDetector(
-                                              child: CircularPercentIndicator(
-                                                startAngle: 0,
-                                                backgroundWidth: 12.0,
-                                                backgroundColor: Colors.white,
-                                                radius: 95.0,
-                                                animateFromLastPercent: true,
-                                                lineWidth: 12.0,
-                                                animation: true,
-                                                percent: (state.page_subscriptionTypeInvoiceListVm!.items![0].dayCount! / 100),
-                                                center: Column(
-                                                  mainAxisAlignment:
+                                          child: CircularPercentIndicator(
+                                            startAngle: 0,
+                                            backgroundWidth: 12.0,
+                                            backgroundColor: Colors.white,
+                                            radius: 95.0,
+                                            animateFromLastPercent: true,
+                                            lineWidth: 12.0,
+                                            animation: true,
+                                            percent: (state
+                                                    .page_subscriptionTypeInvoiceListVm!
+                                                    .items![0]
+                                                    .dayCount! /
+                                                100),
+                                            center: Column(
+                                              mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(state.page_subscriptionTypeInvoiceListVm!.items![0].dayCount.toString(),style: textStyleSubscription,),
-                                                    Text(
-                                                      "روز",
-                                                      style: textStyleSubscription,
-                                                    ),
-                                                  ],
+                                              children: [
+                                                Text(
+                                                  state
+                                                      .page_subscriptionTypeInvoiceListVm!
+                                                      .items![0]
+                                                      .dayCount
+                                                      .toString(),
+                                                  style: textStyleSubscription,
                                                 ),
-                                                circularStrokeCap: CircularStrokeCap.round,
-                                                progressColor: parseColor("#48CAE4"),
-                                              ),
-                                            ));
+                                                Text(
+                                                  "روز",
+                                                  style: textStyleSubscription,
+                                                ),
+                                              ],
+                                            ),
+                                            circularStrokeCap:
+                                                CircularStrokeCap.round,
+                                            progressColor:
+                                                parseColor("#48CAE4"),
+                                          ),
+                                        ));
                                       } else
-                                        return Container(
-                                        );
+                                        // return Expanded(
+                                        //   child: Center(
+                                        //     child: Text(
+                                        //       'اشتراکی ندارید',
+                                        //       style: textStyle.copyWith(
+                                        //           fontSize: kFontSizeText(
+                                        //               sizeScreen,
+                                        //               FontSize.title)),
+                                        //     ),
+                                        //   ),
+                                        // );
+                                        return Container();
                                     } else
-                                      return Container(
-
-                                      );
+                                      return Container();
                                   },
                                 ),
-
                               ],
                             ),
                           ),
@@ -346,7 +383,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                   topLeft: Radius.circular(20))),
                           child: Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
+                                horizontal: 10, vertical: 10),
                             child: Row(
                               textDirection: TextDirection.rtl,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -363,32 +400,55 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                     )
                                   ],
                                 ),
-                                BlocBuilder<GetSubscriptionInvoiceBloc, GetSubscriptionInvoiceState>(
+                                BlocBuilder<GetSubscriptionInvoiceBloc,
+                                    GetSubscriptionInvoiceState>(
                                   builder: (context, state) {
-                                    if (state is GetSubscriptionInvoiceLoadingState)
+                                    if (state
+                                        is GetSubscriptionInvoiceLoadingState)
                                       return Padding(
-                                        padding:  EdgeInsets.symmetric (horizontal: Get.width * 0.1),
-                                        child: SpinKitThreeBounce(color: Color.fromRGBO(60, 198, 226, 1),size: Get.height * 0.0285,),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: Get.width * 0.1),
+                                        child: SpinKitThreeBounce(
+                                          color:
+                                              Color.fromRGBO(60, 198, 226, 1),
+                                          size: Get.height * 0.0285,
+                                        ),
                                       );
-                                    else if (state is GetSubscriptionInvoiceLoadedState) {
+                                    else if (state
+                                        is GetSubscriptionInvoiceLoadedState) {
                                       if (state.page_subscriptionTypeInvoiceListVm != null &&
-                                          state.page_subscriptionTypeInvoiceListVm!.items != null &&
-                                          state.page_subscriptionTypeInvoiceListVm!.items!.isNotEmpty) {
+                                          state.page_subscriptionTypeInvoiceListVm!
+                                                  .items !=
+                                              null &&
+                                          state
+                                              .page_subscriptionTypeInvoiceListVm!
+                                              .items!
+                                              .isNotEmpty) {
                                         return Padding(
-                                          padding:  EdgeInsets.symmetric(horizontal: Get.width * 0.05),
-                                          child: Text("${state.page_subscriptionTypeInvoiceListVm!.items![0].nTotalPrice} تومان ",style: textStyleSubscription.copyWith(color: Colors.white),textAlign: TextAlign.left),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: Get.width * 0.05),
+                                          child: Text(
+                                              "${state.page_subscriptionTypeInvoiceListVm!.items![0].nTotalPrice} تومان ",
+                                              style: textStyleSubscription
+                                                  .copyWith(
+                                                      color: Colors.white),
+                                              textAlign: TextAlign.left),
                                         );
                                       } else
-                                        return Container(
-
+                                        return Padding(
+                                          padding: EdgeInsets.only(left: 5),
+                                          child: Text(
+                                            'اعتباری ندارید',
+                                            style: textStyle.copyWith(
+                                                fontSize: kFontSizeText(
+                                                    sizeScreen, FontSize.title),
+                                                color: Colors.white),
+                                          ),
                                         );
                                     } else
-                                      return Container(
-
-                                      );
+                                      return Container();
                                   },
                                 ),
-
                               ],
                             ),
                           ),
@@ -418,36 +478,47 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   )),
             ),
-            BlocBuilder<GetSubscriptionInvoiceBloc, GetSubscriptionInvoiceState>(
+            BlocBuilder<GetSubscriptionInvoiceBloc,
+                GetSubscriptionInvoiceState>(
               builder: (context, state) {
                 if (state is GetSubscriptionInvoiceLoadingState)
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: SpinKitThreeBounce(color: Color.fromRGBO(60, 198, 226, 1),size: Get.height * 0.0285,),
+                    child: SpinKitThreeBounce(
+                      color: Color.fromRGBO(60, 198, 226, 1),
+                      size: Get.height * 0.0285,
+                    ),
                   );
                 else if (state is GetSubscriptionInvoiceLoadedState) {
                   if (state.page_subscriptionTypeInvoiceListVm != null &&
                       state.page_subscriptionTypeInvoiceListVm!.items != null &&
-                      state.page_subscriptionTypeInvoiceListVm!.items!.isNotEmpty) {
+                      state.page_subscriptionTypeInvoiceListVm!.items!
+                          .isNotEmpty) {
                     return ListView.builder(
                       controller: isAlign
                           ? _exerciseScrollController
                           : _dietScrollController,
-                   shrinkWrap: true,
+                      shrinkWrap: true,
                       padding: EdgeInsets.only(bottom: padding),
                       itemBuilder: (context, index) {
-                        if (index < state.page_subscriptionTypeInvoiceListVm!.items!.length)
+                        if (index <
+                            state.page_subscriptionTypeInvoiceListVm!.items!
+                                .length)
                           return ItemDietary(
                               sizeScreen: sizeScreen,
-                              subscriptionTypeInvoiceListVm:
-                              state.page_subscriptionTypeInvoiceListVm!.items![index]
-                          );
+                              subscriptionTypeInvoiceListVm: state
+                                  .page_subscriptionTypeInvoiceListVm!
+                                  .items![index]);
                         else
                           return Container();
                       },
-                      itemCount: state.page_subscriptionTypeInvoiceListVm!.hasNext!
-                          ? state.page_subscriptionTypeInvoiceListVm!.items!.length + 1
-                          : state.page_subscriptionTypeInvoiceListVm!.items!.length,
+                      itemCount:
+                          state.page_subscriptionTypeInvoiceListVm!.hasNext!
+                              ? state.page_subscriptionTypeInvoiceListVm!.items!
+                                      .length +
+                                  1
+                              : state.page_subscriptionTypeInvoiceListVm!.items!
+                                  .length,
                     );
                   } else
                     return NoData();
@@ -563,9 +634,12 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   // }
 
 }
+
 class ItemDietary extends StatelessWidget {
   const ItemDietary(
-      {Key? key, required this.sizeScreen, required this.subscriptionTypeInvoiceListVm})
+      {Key? key,
+      required this.sizeScreen,
+      required this.subscriptionTypeInvoiceListVm})
       : super(key: key);
 
   final Size sizeScreen;
@@ -586,7 +660,7 @@ class ItemDietary extends StatelessWidget {
               decoration: BoxDecoration(
                   border: Border(
                       right:
-                      BorderSide(color: parseColor('#00B4D8'), width: 3))),
+                          BorderSide(color: parseColor('#00B4D8'), width: 3))),
               child: Padding(
                 padding: EdgeInsets.all(15),
                 child: Row(
@@ -597,26 +671,30 @@ class ItemDietary extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            subscriptionTypeInvoiceListVm.subscriptionTypeTitle.toString(),
+                            subscriptionTypeInvoiceListVm.subscriptionTypeTitle
+                                .toString(),
                             style: TextStyle(color: parseColor('#0077B6')),
                           ),
                           SizedBox(
                             height: 10,
                           ),
                           Text(
-                            subscriptionTypeInvoiceListVm.subscriptionTypeDescription.toString(),
+                            subscriptionTypeInvoiceListVm
+                                .subscriptionTypeDescription
+                                .toString(),
                           ),
-                          subscriptionTypeInvoiceListVm.subscriptionTypeTitle!.isNotEmpty
+                          subscriptionTypeInvoiceListVm
+                                  .subscriptionTypeTitle!.isNotEmpty
                               ? Column(
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                subscriptionTypeInvoiceListVm.subscriptionTypeTitle.toString()
-                              ),
-                            ],
-                          )
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(subscriptionTypeInvoiceListVm
+                                        .subscriptionTypeTitle
+                                        .toString()),
+                                  ],
+                                )
                               : SizedBox()
                         ],
                       ),
@@ -626,18 +704,18 @@ class ItemDietary extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(subscriptionTypeInvoiceListVm.nCreationDate.toString()),
+                          Text(subscriptionTypeInvoiceListVm.nCreationDate
+                              .toString()),
                           subscriptionTypeInvoiceListVm.nTotalPrice!.isNotEmpty
                               ? Column(
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "${subscriptionTypeInvoiceListVm.nTotalPrice.toString()} تومان "
-                              ),
-                            ],
-                          )
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                        "${subscriptionTypeInvoiceListVm.nTotalPrice.toString()} تومان "),
+                                  ],
+                                )
                               : SizedBox()
                         ],
                       ),

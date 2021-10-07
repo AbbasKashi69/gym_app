@@ -57,7 +57,7 @@ class _IncreaseWalletPageState extends State<IncreaseWalletPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: InkWell(
-              onTap:(){
+              onTap: () {
                 Navigator.pop(context);
               },
               child: SvgPicture.asset(
@@ -112,15 +112,20 @@ class _IncreaseWalletPageState extends State<IncreaseWalletPage> {
                         if (state is GetMyWalletBallanceLoadingState)
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: SpinKitThreeBounce(color: Color.fromRGBO(60, 198, 226, 1),size: Get.height * 0.0285,),
+                            child: SpinKitThreeBounce(
+                              color: Color.fromRGBO(60, 198, 226, 1),
+                              size: Get.height * 0.0285,
+                            ),
                           );
                         else if (state
-                        is GetMyWalletBallanceLoadedState) if (state
-                            .userWalletVm !=
+                            is GetMyWalletBallanceLoadedState) if (state
+                                .userWalletVm !=
                             null)
                           return Text(
                               '${state.userWalletVm!.nWalletBallance!.toPersianDigit()} تومان',
-                              style: textStyleHome.copyWith(color: Colors.black,fontSize: Get.height * 0.022));
+                              style: textStyleHome.copyWith(
+                                  color: Colors.black,
+                                  fontSize: Get.height * 0.022));
                         else
                           return Text(
                             '0',
@@ -199,7 +204,7 @@ class _IncreaseWalletPageState extends State<IncreaseWalletPage> {
                           _isFill = true;
                           label = value;
                           subPrice = true;
-                          if(value.isEmpty){
+                          if (value.isEmpty) {
                             setState(() {
                               _isFill = false;
                             });
@@ -237,7 +242,7 @@ class _IncreaseWalletPageState extends State<IncreaseWalletPage> {
                 ),
                 _isSwitched
                     ? TextField(
-                  controller: _controllerTrackNumber,
+                        controller: _controllerTrackNumber,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(0),
                           helperStyle: TextStyle(
@@ -257,101 +262,100 @@ class _IncreaseWalletPageState extends State<IncreaseWalletPage> {
                 ),
                 _isSwitched
                     ? InkWell(
-                  child: Container(
-                      margin: EdgeInsets.only(top: 10),
-                      height: Get.height * 0.08,
-                      width: Get.width,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              end: Alignment.topCenter,
-                              begin: Alignment.topCenter,
-                              colors: [
-                                _isFill
-                                    ? Color.fromRGBO(20, 186, 219, 1)
-                                    : Colors.grey.withOpacity(0.3),
-                                _isFill
-                                    ? Color.fromRGBO(60, 198, 226, 1)
-                                    : Colors.grey.withOpacity(0.2)
-                              ]),
-                          borderRadius: BorderRadius.circular(30),
-                         ),
-                      child: Center(
-                        child: Text(
-                          "ارسال درخواست",
-                          style: TextStyle(
-                              color:  _isFill ? Colors.white : Colors.black,
-                              fontSize: Get.height * 0.025,
-                              fontFamily: "IRANSans"),
-                        ),
-                      )
-                  ),
-                  onTap: () {
-                    if (_formKey.currentState!.validate()) {
-                      BlocProvider.of<IncreaseBloc>(context).add(
-                          IncreaseLoadingEvent(
-                              increaseCreditVm: IncreaseCreditVm(
+                        child: Container(
+                            margin: EdgeInsets.only(top: 10),
+                            height: Get.height * 0.08,
+                            width: Get.width,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  end: Alignment.topCenter,
+                                  begin: Alignment.topCenter,
+                                  colors: [
+                                    _isFill
+                                        ? Color.fromRGBO(20, 186, 219, 1)
+                                        : Colors.grey.withOpacity(0.3),
+                                    _isFill
+                                        ? Color.fromRGBO(60, 198, 226, 1)
+                                        : Colors.grey.withOpacity(0.2)
+                                  ]),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "ارسال درخواست",
+                                style: TextStyle(
+                                    color:
+                                        _isFill ? Colors.white : Colors.black,
+                                    fontSize: Get.height * 0.025,
+                                    fontFamily: "IRANSans"),
+                              ),
+                            )),
+                        onTap: () {
+                          if (_formKey.currentState!.validate()) {
+                            BlocProvider.of<IncreaseBloc>(context).add(
+                              IncreaseLoadingEvent(
+                                  increaseCreditVm: IncreaseCreditVm(
                                 id: 1,
-                                increaseCreditAmount: int.parse(_controllerAmount.text),
-                                invoiceTrackingCode: _controllerTrackNumber.text,
+                                increaseCreditAmount:
+                                    int.parse(_controllerAmount.text),
+                                invoiceTrackingCode:
+                                    _controllerTrackNumber.text,
                                 isOnline: false,
-
-                              )
-                          ),
-
-                      );
-                      Fluttertoast.showToast(msg: 'با موفقیت ثبت شد',backgroundColor: Colors.green);
-                    }
-                  },
-                )
-                    : InkWell(
-                  onTap: () {
-                     if (_formKey.currentState!.validate()) {
-                       BlocProvider.of<IncreaseBloc>(context).add(
-                           IncreaseLoadingEvent(
-                               increaseCreditVm: IncreaseCreditVm(
-                                 id: 1,
-                                 increaseCreditAmount: int.parse(_controllerAmount.text),
-                                 invoiceTrackingCode: "Null",
-                                 isOnline: true,
-
-                               )
-                           ),
-
-                       );
-                       Fluttertoast.showToast(msg: 'با موفقیت ثبت شد',backgroundColor: Colors.green);
-
-                     }
-                  },
-                      child: Container(
-                      margin: EdgeInsets.only(top: 10),
-                      height: Get.height * 0.08,
-                      width: Get.width,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              end: Alignment.topCenter,
-                              begin: Alignment.topCenter,
-                              colors: [
-                                _isFill
-                                    ? Color.fromRGBO(20, 186, 219, 1)
-                                    : Colors.grey.withOpacity(0.3),
-                                _isFill
-                                    ? Color.fromRGBO(60, 198, 226, 1)
-                                    : Colors.grey.withOpacity(0.2)
-                              ]),
-                          borderRadius: BorderRadius.circular(30),
-
-                      ),
-                      child: Center(
-                        child: Text(
-                          "ارسال درخواست",
-                          style: TextStyle(
-                              color:  _isFill ? Colors.white : Colors.black,
-                              fontSize: Get.height * 0.025,
-                              fontFamily: "IRANSans"),
-                        ),
+                              )),
+                            );
+                            Fluttertoast.showToast(
+                                msg: 'با موفقیت ثبت شد',
+                                backgroundColor: Colors.green);
+                          }
+                        },
                       )
-                ),
-                    )
+                    : InkWell(
+                        onTap: () {
+                          if (_formKey.currentState!.validate()) {
+                            BlocProvider.of<IncreaseBloc>(context).add(
+                              IncreaseLoadingEvent(
+                                  increaseCreditVm: IncreaseCreditVm(
+                                id: 1,
+                                increaseCreditAmount:
+                                    int.parse(_controllerAmount.text),
+                                invoiceTrackingCode: "Null",
+                                isOnline: true,
+                              )),
+                            );
+                            Fluttertoast.showToast(
+                                msg: 'با موفقیت ثبت شد',
+                                backgroundColor: Colors.green);
+                          }
+                        },
+                        child: Container(
+                            margin: EdgeInsets.only(top: 10),
+                            height: Get.height * 0.08,
+                            width: Get.width,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  end: Alignment.topCenter,
+                                  begin: Alignment.topCenter,
+                                  colors: [
+                                    _isFill
+                                        ? Color.fromRGBO(20, 186, 219, 1)
+                                        : Colors.grey.withOpacity(0.3),
+                                    _isFill
+                                        ? Color.fromRGBO(60, 198, 226, 1)
+                                        : Colors.grey.withOpacity(0.2)
+                                  ]),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "ارسال درخواست",
+                                style: TextStyle(
+                                    color:
+                                        _isFill ? Colors.white : Colors.black,
+                                    fontSize: Get.height * 0.025,
+                                    fontFamily: "IRANSans"),
+                              ),
+                            )),
+                      )
               ],
             ),
           ),

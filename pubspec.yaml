@@ -33,6 +33,7 @@ dependencies:
   emoji_picker_flutter: ^1.0.7
   animated_size_and_fade: ^2.1.0
   fluttertoast: any
+  file_picker: ^4.1.3
 
 
   flutter:

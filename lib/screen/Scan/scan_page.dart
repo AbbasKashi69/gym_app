@@ -15,6 +15,7 @@ class ScanPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBarWidget(
         title: 'اسکن کد',
+        onBack: () {},
       ),
       backgroundColor: kColorBackGroundQrCode,
       body: Container(

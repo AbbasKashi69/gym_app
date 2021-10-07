@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gym_app/ViewModels/CoachStudent/CoachStudentVm.dart';
+import 'package:gym_app/blocs/CoachStudent/bloc/get_student_coaches_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/request_to_coach_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/myWaiting.dart';
@@ -29,9 +30,13 @@ class _ItemFollowState extends State<ItemFollow> {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {
-          Navigator.of(context).pushNamed(ProfileCoachPage.routeName,
+        onTap: () async {
+          dynamic check = await Navigator.of(context).pushNamed(
+              ProfileCoachPage.routeName,
               arguments: widget.coachStudentVm);
+          if (check != null && check)
+            BlocProvider.of<GetStudentCoachesBloc>(context)
+                .add(GetStudentCoachesLoadingEvent());
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: padding),
@@ -93,8 +98,11 @@ class _ItemFollowState extends State<ItemFollow> {
                             onTap: () async {
                               if (widget.coachStudentVm.status == 2) {
                                 var result = await WarningUnFollowScreen()
-                                    .warningUnFollow(context, widget.sizeScreen,
-                                        widget.coachStudentVm);
+                                    .warningUnFollow(
+                                        context,
+                                        widget.sizeScreen,
+                                        widget.coachStudentVm.coachFullName ??
+                                            "");
                                 if (result) {
                                   BlocProvider.of<RequestToCoachBloc>(context)
                                       .add(RequestToCoachLoadingEvent(
@@ -151,8 +159,11 @@ class _ItemFollowState extends State<ItemFollow> {
                           onTap: () async {
                             if (widget.coachStudentVm.status == 2) {
                               var result = await WarningUnFollowScreen()
-                                  .warningUnFollow(context, widget.sizeScreen,
-                                      widget.coachStudentVm);
+                                  .warningUnFollow(
+                                      context,
+                                      widget.sizeScreen,
+                                      widget.coachStudentVm.coachFullName ??
+                                          "");
                               if (result) {
                                 BlocProvider.of<RequestToCoachBloc>(context)
                                     .add(RequestToCoachLoadingEvent(

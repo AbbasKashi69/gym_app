@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gym_app/ViewModels/CoachStudent/CoachStudentProfileVm.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 
 class PersonalInfoPage extends StatelessWidget {
-  const PersonalInfoPage({Key? key}) : super(key: key);
+  const PersonalInfoPage({Key? key, required this.coachStudentProfileVm})
+      : super(key: key);
   static const routeName = '/personalInfoPage';
+  final CoachStudentProfileVm coachStudentProfileVm;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +33,9 @@ class PersonalInfoPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CircleAvatar(
-                    radius: sizeScreen.width > 550 ? 30 : 20,
-                    backgroundImage: NetworkImage(
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU'),
+                    radius: sizeScreen.width > 550 ? 35 : 25,
+                    backgroundImage:
+                        NetworkImage(coachStudentProfileVm.userPic ?? ""),
                   ),
                   SizedBox(
                     width: padding,
@@ -40,11 +43,16 @@ class PersonalInfoPage extends StatelessWidget {
                   RichText(
                       text: TextSpan(
                           text: 'علی کریمی',
-                          style: textStyle,
+                          style: textStyle.copyWith(
+                              fontSize:
+                                  kFontSizeText(sizeScreen, FontSize.title)),
                           children: [
                         TextSpan(
                             text: ' (شاگرد)',
-                            style: textStyle.copyWith(color: Color(0xff5e5e5e)))
+                            style: textStyle.copyWith(
+                                color: Color(0xff5e5e5e),
+                                fontSize: kFontSizeText(
+                                    sizeScreen, FontSize.subTitle)))
                       ])),
                 ],
               ),
@@ -54,22 +62,22 @@ class PersonalInfoPage extends StatelessWidget {
               PersonalInfoItem(
                 sizeScreen: sizeScreen,
                 image: 'assets/icons/email.svg',
-                title: 'alikarimi@gmail.com',
+                title: coachStudentProfileVm.userEmail ?? "",
               ),
               PersonalInfoItem(
                 sizeScreen: sizeScreen,
                 image: 'assets/icons/mobileNumber.svg',
-                title: '09123456758',
+                title: coachStudentProfileVm.userPhoneNumber ?? "",
               ),
               PersonalInfoItem(
                 sizeScreen: sizeScreen,
                 image: 'assets/icons/height.svg',
-                title: 'قد 182 cm',
+                title: coachStudentProfileVm.nHeight ?? "",
               ),
               PersonalInfoItem(
                 sizeScreen: sizeScreen,
                 image: 'assets/icons/weight-scale.svg',
-                title: 'وزن 180 kg',
+                title: coachStudentProfileVm.nWeight ?? "",
               ),
             ],
           ),
@@ -105,8 +113,8 @@ class PersonalInfoItem extends StatelessWidget {
         children: [
           SvgPicture.asset(
             image,
-            width: kFontSizeText(sizeScreen, FontSize.normal),
-            height: kFontSizeText(sizeScreen, FontSize.normal),
+            width: kFontSizeText(sizeScreen, FontSize.title) + 5,
+            height: kFontSizeText(sizeScreen, FontSize.title) + 5,
           ),
           Spacer(),
           Text(

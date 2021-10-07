@@ -20,9 +20,13 @@ class CoachStudentService extends BaseViewModel {
   static const String url_getStudentsAsPersonList =
       '/api/CoachStudent/GetStudentsAsPersonList';
   static const String url_changeStatus = '/api/CoachStudent/ChangeStatus';
+  static const String url_changeStatusById =
+      '/api/CoachStudent/ChangeStatusById';
   static const String url_getStudentCoaches =
       '/api/CoachStudent/GetStudentCoaches';
   static const String url_requestTocoach = '/api/CoachStudent/RequestToCoach';
+  static const String url_getCoachStudentProfile =
+      '/api/CoachStudent/GetCoachStudentProfile';
 
   Future<ResultObject?> create(CoachStudentVm coachStudentVm) async {
     var response = await repository!.post(url_create, coachStudentVm.toJson());
@@ -38,6 +42,19 @@ class CoachStudentService extends BaseViewModel {
     var response = await repository!.post(
         url_changeStatus +
             '?coachStudentId=$coachStudentId&isAccepted=$isAccepted',
+        {});
+    if (response != null) {
+      ResultObject result = ResultObject.fromJson(response);
+      return result;
+    }
+    return null;
+  }
+
+  Future<ResultObject?> changeStatusById(
+      int? coachId, int? studentId, bool? isAccepted) async {
+    var response = await repository!.post(
+        url_changeStatusById +
+            '?coachId=$coachId&studentId=$studentId&isAccepted=$isAccepted',
         {});
     if (response != null) {
       ResultObject result = ResultObject.fromJson(response);
@@ -105,6 +122,17 @@ class CoachStudentService extends BaseViewModel {
     if (response != null) {
       List<PersonListVm> result =
           response.map((e) => PersonListVm.fromJson(e)).toList();
+      return result;
+    }
+    return null;
+  }
+
+  Future<ResultObject?> getCoachStudentProfile(
+      int? coachId, int? studentId) async {
+    var response = await repository!.get(
+        url_getCoachStudentProfile + '?coachId=$coachId&studentId=$studentId');
+    if (response != null) {
+      ResultObject result = ResultObject.fromJson(response);
       return result;
     }
     return null;

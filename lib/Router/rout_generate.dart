@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/CoachStudent/CoachStudentProfileVm.dart';
 import 'package:gym_app/ViewModels/WalletLog/IncreaseCreditVm.dart';
 import 'package:gym_app/ViewModels/BodyBuildingPlanType/BodyBuildingPlanTypeFormVm.dart';
 import 'package:gym_app/ViewModels/CoachStudent/CoachStudentVm.dart';
@@ -23,7 +24,9 @@ import 'package:gym_app/blocs/AnonymousPlanType/bloc/create_using_form_bloc.dart
 import 'package:gym_app/blocs/BodyBuildingMovement/bloc/get_user_body_building_movement_list_bloc.dart';
 import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/create_using_form_body_building_bloc.dart';
 import 'package:gym_app/blocs/BottomNav/bloc/bottom_nav_bloc.dart';
+import 'package:gym_app/blocs/CoachStudent/bloc/chage_status_by_id_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/change_status_bloc.dart';
+import 'package:gym_app/blocs/CoachStudent/bloc/get_coach_student_profile_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_coach_students_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_student_coaches_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_students_as_person_list_bloc.dart';
@@ -32,6 +35,9 @@ import 'package:gym_app/blocs/DietPlanType/bloc/create_using_form_diet_bloc.dart
 import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/blocs/Resume/bloc/get_resume_bloc.dart';
 import 'package:gym_app/blocs/Subscription/bloc/get_subscription_bloc.dart';
+import 'package:gym_app/blocs/UserFlow/bloc/create_user_flow_bloc.dart';
+import 'package:gym_app/blocs/UserFlow/bloc/get_user_flow_by_date_bloc.dart';
+import 'package:gym_app/blocs/UserFlow/bloc/get_user_flow_chart_information_bloc.dart';
 import 'package:gym_app/blocs/WalletLog/bloc/increase_bloc.dart';
 import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
@@ -142,10 +148,24 @@ class MyRouter {
                 child: IncreaseWalletPage()));
       case ProfileApprenticePage.routeName:
         {
-          var coachStudentVm = routeSettings.arguments;
+          int id = routeSettings.arguments as int;
           return MaterialPageRoute(
-              builder: (context) => ProfileApprenticePage(
-                  coachStudentVm: coachStudentVm as CoachStudentVm));
+              builder: (context) => MultiBlocProvider(providers: [
+                    BlocProvider(
+                      create: (context) => GetCoachStudentProfileBloc()
+                        ..add(GetCoachStudentProfileLoadingEvent(
+                            coachId: null, studentId: id)),
+                    ),
+                    BlocProvider(
+                      create: (context) => GetUserFlowByDateBloc(),
+                    ),
+                    BlocProvider(
+                      create: (context) => GetUserFlowChartInformationBloc(),
+                    ),
+                    BlocProvider(
+                      create: (context) => ChangeStatusByIdBloc(),
+                    ),
+                  ], child: ProfileApprenticePage(studentId: id)));
         }
       case WalletPage.routeName:
         return MaterialPageRoute(builder: (context) => WalletPage());
@@ -159,7 +179,13 @@ class MyRouter {
                   child: CvPage()));
         }
       case PersonalInfoPage.routeName:
-        return MaterialPageRoute(builder: (context) => PersonalInfoPage());
+        {
+          var coachStudentProfileVm =
+              routeSettings.arguments as CoachStudentProfileVm;
+          return MaterialPageRoute(
+              builder: (context) => PersonalInfoPage(
+                  coachStudentProfileVm: coachStudentProfileVm));
+        }
       case SettingPage.routeName:
         return MaterialPageRoute(builder: (context) => SettingPage());
       case CreateProgramBodyPage.routeName:
@@ -258,13 +284,35 @@ class MyRouter {
                 ], child: ListCoachPage()));
       case ProfileCoachPage.routeName:
         {
-          var coachStudentVm = routeSettings.arguments;
+          var coachStudentVm = routeSettings.arguments as CoachStudentVm;
           return MaterialPageRoute(
-              builder: (context) => ProfileCoachPage(
-                  coachStudentVm: coachStudentVm as CoachStudentVm));
+              builder: (context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) => GetCoachStudentProfileBloc()
+                          ..add(GetCoachStudentProfileLoadingEvent(
+                              coachId: coachStudentVm.coachId,
+                              studentId: null)),
+                      ),
+                      BlocProvider(
+                        create: (context) => CreateUserFlowBloc(),
+                      ),
+                      BlocProvider(
+                        create: (context) => RequestToCoachBloc(),
+                      ),
+                    ],
+                    child: ProfileCoachPage(coachStudentVm: coachStudentVm),
+                  ));
         }
       case PersonalInfoCoachPage.routeName:
-        return MaterialPageRoute(builder: (context) => PersonalInfoCoachPage());
+        {
+          CoachStudentProfileVm coachStudentProfileVm =
+              routeSettings.arguments as CoachStudentProfileVm;
+          return MaterialPageRoute(
+              builder: (context) => PersonalInfoCoachPage(
+                    coachStudentProfileVm: coachStudentProfileVm,
+                  ));
+        }
       case ListBarnamehaPage.routeName:
         return MaterialPageRoute(
             builder: (context) => BlocProvider(
@@ -390,7 +438,10 @@ class MyRouter {
         {
           var x = routeSettings.arguments;
           return MaterialPageRoute(
-              builder: (context) => CropPage(x as Uint8List));
+              builder: (context) => CropPage(
+                    x as Uint8List,
+                    isSquare: true,
+                  ));
         }
       default:
         return MaterialPageRoute(builder: (context) => ScanPage());

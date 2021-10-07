@@ -4,8 +4,8 @@ import 'package:gym_app/ViewModels/CoachStudent/CoachStudentVm.dart';
 import 'package:gym_app/components/constant.dart';
 
 class WarningUnFollowScreen {
-  Future warningUnFollow(BuildContext context, Size sizeScreen,
-      CoachStudentVm coachStudentVm) async {
+  Future warningUnFollow(BuildContext context, Size sizeScreen, String name,
+      [bool isCoach = true]) async {
     var result = await showModalBottomSheet(
         isDismissible: false,
         elevation: 20,
@@ -46,7 +46,9 @@ class WarningUnFollowScreen {
                         height: 30,
                       ),
                       Text(
-                        'مربی "${coachStudentVm.coachFullName}" از لیست مربیان شما حذف شود ؟',
+                        isCoach
+                            ? 'مربی "$name" از لیست مربیان شما حذف شود ؟'
+                            : 'شاگرد "$name" از لیست شاگردان شما حذف شود ؟',
                         style: textStyle.copyWith(
                             fontSize: kFontSizeText(sizeScreen, FontSize.title),
                             fontWeight: FontWeight.w500),

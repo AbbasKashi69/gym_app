@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -14,6 +15,9 @@ import 'package:gym_app/components/dynamic_appbar.dart';
 import 'package:gym_app/extensions/ext.dart';
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:file_picker/file_picker.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -60,328 +64,334 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: DynamicAppBar(
-        height: gh(0.10),
-        child: Container(
-          width: gw(1),
+    return GestureDetector(
+      onTap: () {
+        // FocusScope.of(context).requestFocus(FocusNode());
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: DynamicAppBar(
           height: gh(0.10),
-          padding: EdgeInsets.symmetric(horizontal: gw(0.03), vertical: 5),
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    showMenu = !showMenu;
-                  });
-                },
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/list-icon.svg',
-                      width: 5,
-                      height: gh(0.03),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Stack(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius:
-                              MediaQuery.of(context).size.width > 550 ? 30 : 20,
-                          backgroundImage: NetworkImage(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU'),
-                        ),
-                        Positioned(
-                            bottom: 0,
-                            left: 0,
-                            child: Container(
-                              width: 10,
-                              height: 10,
-                              decoration: BoxDecoration(
-                                  color: parseColor('#48CAE4'),
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      color: Colors.white, width: 2)),
-                            ))
-                      ],
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Flexible(child: Text("علی کریمی")),
-                        Flexible(
-                            child: Text(
-                          "آنلاین",
-                          style: TextStyle(
-                              color: parseColor('#00B4D8'), fontSize: 13),
-                        ))
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: SvgPicture.asset(
-                    'assets/icons/backIcon.svg',
-                    width: MediaQuery.of(context).size.width > 550 ? 40 : 25,
-                    height: MediaQuery.of(context).size.width > 550 ? 40 : 25,
-                  )
-                  // child: Container(),
-                  ),
-            ],
-          ),
-        ),
-      ),
-      body: SafeArea(
-        bottom: false,
-        child: Stack(
-          children: [
-            GestureDetector(
-              onTap: () {
-                if (showMenu) {
-                  setState(() {
-                    showMenu = false;
-                  });
-                }
-              },
-              child: Chat(
-                messages: _messages,
-                onSendPressed: (p0) {},
-                user: _user,
-                showUserAvatars: true,
-                showUserNames: true,
-                theme: DefaultChatTheme(
-                  backgroundColor: parseColor('#FBFBFB'),
-                  primaryColor: Colors.transparent,
-                  messageBorderRadius: 0,
-                ),
-                customBottomWidget: Column(
-                  children: [
-                    Container(
-                      width: gw(1),
-                      height: gh(0.07),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 13, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                              top: BorderSide(color: parseColor('#707070')))),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset('assets/icons/microphone-icon.svg'),
-                          Expanded(
-                            child: TextField(
-                              controller: _textController,
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
-                                  hintText: 'پیام خود را بنویسید ...',
-                                  hintStyle: TextStyle(
-                                    color: parseColor('#707070'),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'IRANSans',
-                                  ).copyWith(
-                                      fontSize: kFontSizeText(
-                                          MediaQuery.of(context).size,
-                                          FontSize.subTitle))),
-                              onSubmitted: (value) {
-                                _handleSendPressed({"text": value});
-                                _textController.text = '';
-                              },
-                            ),
-                          ),
-                          InkWell(
-                              onTap: showAttachMenu,
-                              child: SvgPicture.asset(
-                                  'assets/icons/attach-icon.svg')),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          InkWell(
-                              onTap: () {
-                                setState(() {
-                                  showEmoji = !showEmoji;
-                                });
-                              },
-                              child: SvgPicture.asset(
-                                showEmoji
-                                    ? 'assets/icons/sticker-black-icon.svg'
-                                    : 'assets/icons/sticker-icon.svg',
-                                width: 28,
-                                height: 28,
-                              )),
-                        ],
-                      ),
-                    ),
-                    AnimatedSizeAndFade(
-                        child: showEmoji
-                            ? SizedBox(
-                                height: gh(0.35),
-                                width: gw(1),
-                                child: EmojiPicker(
-                                  onEmojiSelected: (category, emoji) {
-                                    _textController.text += emoji.emoji;
-                                  },
-                                  onBackspacePressed: () {
-                                    if (_textController.text.length > 0) {
-                                      _textController.text =
-                                          _textController.text.substring(0,
-                                              _textController.text.length - 1);
-                                    }
-                                  },
-                                  config: Config(
-                                      columns: 7,
-                                      emojiSizeMax:
-                                          32 * (Platform.isIOS ? 1.30 : 1.0),
-                                      // Issue: https://github.com/flutter/flutter/issues/28894
-                                      verticalSpacing: 0,
-                                      horizontalSpacing: 0,
-                                      initCategory: Category.RECENT,
-                                      bgColor: Color(0xFFF2F2F2),
-                                      indicatorColor: Colors.blue,
-                                      iconColor: Colors.grey,
-                                      progressIndicatorColor: Colors.blue,
-                                      showRecentsTab: true,
-                                      backspaceColor: Colors.black,
-                                      recentsLimit: 28,
-                                      noRecentsText: "No",
-                                      noRecentsStyle: const TextStyle(
-                                          fontSize: 20, color: Colors.black26),
-                                      tabIndicatorAnimDuration:
-                                          kTabScrollDuration,
-                                      categoryIcons: const CategoryIcons(),
-                                      buttonMode: ButtonMode.MATERIAL),
-                                ),
-                              )
-                            : SizedBox())
-                  ],
-                ),
-                customMessageBuilder: (p0) {
-                  return Row(
+          child: Container(
+            width: gw(1),
+            height: gh(0.10),
+            padding: EdgeInsets.symmetric(horizontal: gw(0.03), vertical: 5),
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      showMenu = !showMenu;
+                    });
+                  },
+                  child: Row(
                     children: [
+                      SvgPicture.asset(
+                        'assets/icons/list-icon.svg',
+                        width: 5,
+                        height: gh(0.03),
+                      ),
                       SizedBox(
                         width: 10,
                       ),
-                      SizedBox(
-                        width: 40,
-                        height: gh(0.05),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          backgroundImage: NetworkImage(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU'),
-                        ),
+                      Stack(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: MediaQuery.of(context).size.width > 550
+                                ? 30
+                                : 20,
+                            backgroundImage: NetworkImage(
+                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU'),
+                          ),
+                          Positioned(
+                              bottom: 0,
+                              left: 0,
+                              child: Container(
+                                width: 10,
+                                height: 10,
+                                decoration: BoxDecoration(
+                                    color: parseColor('#48CAE4'),
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: Colors.white, width: 2)),
+                              ))
+                        ],
                       ),
                       SizedBox(
                         width: 10,
                       ),
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                color: parseColor('#48CAE4'),
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(30),
-                                    topLeft: Radius.circular(30),
-                                    bottomLeft: Radius.circular(30))),
-                            child: Text(
-                              p0.metadata!['text'],
-                              style: TextStyle(
-                                  color: Colors.white, fontFamily: 'IRANSans'),
-                            ),
-                          ),
-                          Text(
-                            "18:44",
+                          Flexible(child: Text("علی کریمی")),
+                          Flexible(
+                              child: Text(
+                            "آنلاین",
                             style: TextStyle(
-                                fontSize: 12, color: parseColor('#8F8F8F')),
-                          ),
+                                color: parseColor('#00B4D8'), fontSize: 13),
+                          ))
                         ],
-                      ),
+                      )
                     ],
-                  );
-                },
-                emptyState: Center(
-                    child: Text(
-                  "هنوز پیامی ثبت نشده است ...",
-                  style: TextStyle(color: parseColor('#707070')),
-                )),
-              ),
+                  ),
+                ),
+                GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: SvgPicture.asset(
+                      'assets/icons/backIcon.svg',
+                      width: MediaQuery.of(context).size.width > 550 ? 40 : 25,
+                      height: MediaQuery.of(context).size.width > 550 ? 40 : 25,
+                    )
+                    // child: Container(),
+                    ),
+              ],
             ),
-            AnimatedSizeAndFade(
-              sizeDuration: const Duration(milliseconds: 500),
-              fadeDuration: const Duration(milliseconds: 500),
-              child: showMenu
-                  ? SizedBox(
-                      width: gw(0.4),
-                      height: 150,
-                      child: Material(
-                        color: Colors.white,
-                        elevation: 10,
-                        borderRadius: BorderRadius.circular(10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
+          ),
+        ),
+        body: SafeArea(
+          bottom: false,
+          child: Stack(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  if (showMenu) {
+                    setState(() {
+                      showMenu = false;
+                    });
+                  }
+                },
+                child: Chat(
+                  messages: _messages,
+                  onSendPressed: (p0) {},
+                  user: _user,
+                  showUserAvatars: false,
+                  showUserNames: true,
+                  theme: DefaultChatTheme(
+                    backgroundColor: parseColor('#FBFBFB'),
+                    primaryColor: Colors.transparent,
+                    messageBorderRadius: 0,
+                  ),
+                  customBottomWidget: Column(
+                    children: [
+                      Container(
+                        width: gw(1),
+                        // height: gh(0.07),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 13, vertical: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border(
+                                top: BorderSide(color: parseColor('#707070')))),
+                        child: Row(
                           children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  showMenu = false;
-                                });
-                                showDeleteDialog();
-                              },
-                              borderRadius: BorderRadius.circular(10),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("حذف گفتگو"),
-                                    SvgPicture.asset(
-                                        'assets/icons/trash2-icon.svg')
-                                  ],
-                                ),
+                            SvgPicture.asset(
+                                'assets/icons/microphone-icon.svg'),
+                            Expanded(
+                              child: TextField(
+                                maxLines: null,
+                                controller: _textController,
+                                keyboardType: TextInputType.multiline,
+                                textInputAction: TextInputAction.send,
+                                decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 5),
+                                    border: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    hintText: 'پیام خود را بنویسید ...',
+                                    hintStyle: TextStyle(
+                                      color: parseColor('#707070'),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: 'IRANSans',
+                                    ).copyWith(
+                                        fontSize: kFontSizeText(
+                                            MediaQuery.of(context).size,
+                                            FontSize.subTitle))),
+                                onSubmitted: (value) {
+                                  _handleSendPressed({"text": value});
+                                  _textController.clear();
+                                },
                               ),
                             ),
                             InkWell(
-                              onTap: () {},
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("پروفایل کاربر"),
-                                    SvgPicture.asset(
-                                        'assets/icons/profile-user-icon.svg')
-                                  ],
-                                ),
-                              ),
+                                onTap: () async {
+                                  FocusScope.of(context).unfocus();
+                                  int? number = await showAttachMenu();
+                                  if (number != null) {
+                                    bool allow;
+                                    // number=1 it means we select pick file
+                                    if (number == 1) {
+                                      allow = await _requestPermission(
+                                          Permission.storage);
+                                      if (allow) await getFile();
+                                    }
+                                    // number=2 get image from camera
+                                    else if (number == 2) {
+                                      allow = await _requestPermission(
+                                          Permission.camera);
+                                      if (allow)
+                                        await getImage(ImageSource.camera);
+                                    }
+
+                                    // number=3 get image from gallery
+                                    else if (number == 3) {
+                                      allow = await _requestPermission(
+                                          Permission.storage);
+                                      if (allow)
+                                        await getImage(ImageSource.gallery);
+                                    }
+                                  }
+                                },
+                                child: SvgPicture.asset(
+                                    'assets/icons/attach-icon.svg')),
+                            SizedBox(
+                              width: 10,
                             ),
                             InkWell(
                                 onTap: () {
                                   setState(() {
+                                    showEmoji = !showEmoji;
+                                  });
+                                },
+                                child: SvgPicture.asset(
+                                  showEmoji
+                                      ? 'assets/icons/sticker-black-icon.svg'
+                                      : 'assets/icons/sticker-icon.svg',
+                                  width: 28,
+                                  height: 28,
+                                )),
+                          ],
+                        ),
+                      ),
+                      AnimatedSizeAndFade(
+                          child: showEmoji
+                              ? SizedBox(
+                                  height: gh(0.35),
+                                  width: gw(1),
+                                  child: EmojiPicker(
+                                    onEmojiSelected: (category, emoji) {
+                                      _textController.text += emoji.emoji;
+                                    },
+                                    onBackspacePressed: () {
+                                      if (_textController.text.length > 0) {
+                                        _textController.text =
+                                            _textController.text.substring(
+                                                0,
+                                                _textController.text.length -
+                                                    1);
+                                      }
+                                    },
+                                    config: Config(
+                                        columns: 7,
+                                        emojiSizeMax:
+                                            32 * (Platform.isIOS ? 1.30 : 1.0),
+                                        // Issue: https://github.com/flutter/flutter/issues/28894
+                                        verticalSpacing: 0,
+                                        horizontalSpacing: 0,
+                                        initCategory: Category.RECENT,
+                                        bgColor: Color(0xFFF2F2F2),
+                                        indicatorColor: Colors.blue,
+                                        iconColor: Colors.grey,
+                                        progressIndicatorColor: Colors.blue,
+                                        showRecentsTab: true,
+                                        backspaceColor: Colors.black,
+                                        recentsLimit: 28,
+                                        noRecentsText: "No",
+                                        noRecentsStyle: const TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.black26),
+                                        tabIndicatorAnimDuration:
+                                            kTabScrollDuration,
+                                        categoryIcons: const CategoryIcons(),
+                                        buttonMode: ButtonMode.MATERIAL),
+                                  ),
+                                )
+                              : SizedBox())
+                    ],
+                  ),
+                  customMessageBuilder: (p0) {
+                    return Row(
+                      children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        SizedBox(
+                          width: 40,
+                          height: gh(0.05),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            backgroundImage: NetworkImage(
+                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU'),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  color: parseColor('#48CAE4'),
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(30),
+                                      topLeft: Radius.circular(30),
+                                      bottomLeft: Radius.circular(30))),
+                              child: Text(
+                                p0.metadata!['text'],
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'IRANSans'),
+                              ),
+                            ),
+                            Text(
+                              "18:44",
+                              style: TextStyle(
+                                  fontSize: 12, color: parseColor('#8F8F8F')),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                  emptyState: Center(
+                      child: Text(
+                    "هنوز پیامی ثبت نشده است ...",
+                    style: TextStyle(color: parseColor('#707070')),
+                  )),
+                ),
+              ),
+              AnimatedSizeAndFade(
+                sizeDuration: const Duration(milliseconds: 500),
+                fadeDuration: const Duration(milliseconds: 500),
+                child: showMenu
+                    ? SizedBox(
+                        width: gw(0.5),
+                        height: 150,
+                        child: Material(
+                          color: Colors.white,
+                          elevation: 10,
+                          borderRadius: BorderRadius.circular(10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
                                     showMenu = false;
                                   });
-                                  showAlarmDialog();
+                                  showDeleteDialog();
                                 },
+                                borderRadius: BorderRadius.circular(10),
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 15, vertical: 10),
@@ -389,26 +399,64 @@ class _ChatPageState extends State<ChatPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("روشن کردن اعلان"),
+                                      Text("حذف گفتگو"),
                                       SvgPicture.asset(
-                                          'assets/icons/linear-notification.svg')
+                                          'assets/icons/trash2-icon.svg')
                                     ],
                                   ),
-                                ))
-                          ],
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {},
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("پروفایل کاربر"),
+                                      SvgPicture.asset(
+                                          'assets/icons/profile-user-icon.svg')
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      showMenu = false;
+                                    });
+                                    showAlarmDialog();
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("روشن کردن اعلان"),
+                                        SvgPicture.asset(
+                                            'assets/icons/linear-notification.svg')
+                                      ],
+                                    ),
+                                  ))
+                            ],
+                          ),
                         ),
-                      ),
-                    )
-                  : SizedBox(),
-            )
-          ],
+                      )
+                    : SizedBox(),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
-  void showAttachMenu() {
-    showModalBottomSheet(
+  Future showAttachMenu() async {
+    return await showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -437,10 +485,12 @@ class _ChatPageState extends State<ChatPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: gw(0.15),
+                        width: gw(0.1),
                       ),
-                      InkWell(
-                        onTap: () {},
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop(1);
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -453,10 +503,12 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                       ),
                       SizedBox(
-                        width: gw(0.15),
+                        width: gw(0.1),
                       ),
-                      InkWell(
-                        onTap: () {},
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop(2);
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -469,10 +521,12 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                       ),
                       SizedBox(
-                        width: gw(0.15),
+                        width: gw(0.1),
                       ),
-                      InkWell(
-                        onTap: () {},
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop(3);
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -487,7 +541,7 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                       ),
                       SizedBox(
-                        width: gw(0.15),
+                        width: gw(0.1),
                       ),
                     ],
                   ),
@@ -665,5 +719,94 @@ class _ChatPageState extends State<ChatPage> {
                 CustomSwitch()
               ],
             )));
+  }
+
+  Future<bool> _requestPermission(Permission permission) async {
+    if (await permission.isGranted) {
+      return true;
+    } else {
+      var result = await permission.request();
+      if (result == PermissionStatus.granted) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<void> getImage(ImageSource imageSource) async {
+    ImagePicker picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: imageSource);
+    if (pickedImage != null) {
+      var x = await pickedImage.readAsBytes();
+      var result = await Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => ShowSelectedImage(uintImage: x)));
+      if (result != null) {
+        // widget.personVm.fileVm =
+        //     FileVm(fileName: pickedImage.path, pickFiles: result as Uint8List);
+        // setState(() {
+        //   _isFromNet = false;
+        //   widget.personVm.uint8list = result;
+        // });
+      }
+    }
+  }
+
+  Future<void> getFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    print('result is $result');
+
+    if (result != null) {
+      File file = File(result.files.single.path ?? "");
+    } else {
+      // User canceled the picker
+    }
+  }
+}
+
+class ShowSelectedImage extends StatelessWidget {
+  const ShowSelectedImage({Key? key, required this.uintImage})
+      : super(key: key);
+  final Uint8List uintImage;
+
+  @override
+  Widget build(BuildContext context) {
+    final Size sizeScreen = MediaQuery.of(context).size;
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
+        actions: [
+          Row(
+            children: [
+              IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: Icon(Icons.arrow_forward_ios))
+            ],
+          )
+        ],
+      ),
+      body: Container(
+        height: sizeScreen.height,
+        width: sizeScreen.width,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: MemoryImage(uintImage), fit: BoxFit.contain)),
+      ),
+      floatingActionButton: Directionality(
+        textDirection: TextDirection.ltr,
+        child: Container(
+          padding: EdgeInsets.only(bottom: 10, right: 40),
+          alignment: Alignment.bottomRight,
+          child: FloatingActionButton(
+            // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
+            onPressed: () {
+              Navigator.of(context).pop(uintImage);
+            },
+            child: Icon(Icons.send),
+          ),
+        ),
+      ),
+    );
   }
 }

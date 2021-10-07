@@ -243,7 +243,7 @@ class _ProgramListPageState extends State<ProgramListPage> {
               BlocBuilder<GetPlansBySortBloc, GetPlansBySortState>(
                 builder: (context, state) {
                   if (state is GetPlansBySortLoadingState)
-                    return CircularProgressIndicator();
+                    return MyWaiting();
                   else if (state is GetPlansBySortLoadedState) {
                     if (state.page_planTypeLogVm != null &&
                         state.page_planTypeLogVm!.items != null &&

@@ -23,7 +23,7 @@ enum GenderValues { men, women, free }
 final Map<GenderValues, int> map = {
   GenderValues.men: 0,
   GenderValues.women: 1,
-  GenderValues.free: 2
+  GenderValues.free: 3
 };
 
 class ProfilePage extends StatelessWidget {
@@ -34,7 +34,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
+        // physics: const BouncingScrollPhysics(),
         child: SafeArea(
             child: SizedBox(
                 width: sizeScreen.width,

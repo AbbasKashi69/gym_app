@@ -5,87 +5,81 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/components/constant.dart';
 
-// this class is modal bottom sheet  for when tap on 'افزون عکس جدید' in coach list page
-class SelectorImageScreen {
-  Future<void> selectorImage(BuildContext context, Size sizeScreen) async {
-    showModalBottomSheet(
-        isDismissible: true,
-        elevation: 20,
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (context) => Container(
-              decoration: BoxDecoration(
-                  color: kColorBackGround,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10))),
-              constraints: BoxConstraints(maxHeight: sizeScreen.height * 0.4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: padding,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Color(0xffE8E8E8),
-                        borderRadius: BorderRadius.circular(10)),
-                    width: sizeScreen.width * 0.1,
-                    height: 5,
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      child: Center(
-                        child: Text(
-                          'انتخاب تصویر:',
-                          style: textStyle.copyWith(
-                              fontSize:
-                                  kFontSizeText(sizeScreen, FontSize.title),
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Center(
-                      child: Container(
-                        width: sizeScreen.width * 0.8,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            GestureDetector(
-                              onTap: () {},
-                              child: ItemWriteProgram(
-                                listColor: [
-                                  Color(0xffFF003D),
-                                  Color(0xffFF3061)
-                                ],
-                                image: 'assets/icons/camera.svg',
-                                title: 'دوربین',
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: ItemWriteProgram(
-                                listColor: [
-                                  Color(0xffFFCC00),
-                                  Color(0xffFFD630)
-                                ],
-                                image: 'assets/icons/gallery.svg',
-                                title: 'گالری',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
+class SelectorImageScreen extends StatelessWidget {
+  const SelectorImageScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final Size sizeScreen = MediaQuery.of(context).size;
+    return Container(
+      decoration: BoxDecoration(
+          color: kColorBackGround,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+      constraints: BoxConstraints(maxHeight: sizeScreen.height * 0.4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: padding,
+          ),
+          Container(
+            decoration: BoxDecoration(
+                color: Color(0xffE8E8E8),
+                borderRadius: BorderRadius.circular(10)),
+            width: sizeScreen.width * 0.1,
+            height: 5,
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              child: Center(
+                child: Text(
+                  'انتخاب تصویر:',
+                  style: textStyle.copyWith(
+                      fontSize: kFontSizeText(sizeScreen, FontSize.title),
+                      fontWeight: FontWeight.w500),
+                ),
               ),
-            ));
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Center(
+              child: Container(
+                width: sizeScreen.width * 0.8,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop(true);
+                      },
+                      child: ItemWriteProgram(
+                        listColor: [Color(0xffFF003D), Color(0xffFF3061)],
+                        image: 'assets/icons/camera.svg',
+                        title: 'دوربین',
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop(false);
+                      },
+                      child: ItemWriteProgram(
+                        listColor: [Color(0xffFFCC00), Color(0xffFFD630)],
+                        image: 'assets/icons/gallery.svg',
+                        title: 'گالری',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 

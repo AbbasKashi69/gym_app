@@ -7,8 +7,9 @@ import 'package:gym_app/components/constant.dart';
 class CropPage extends StatefulWidget {
   static const routeName = '/cropPage';
   final Uint8List imageMemory;
+  final bool isSquare;
 
-  CropPage(this.imageMemory);
+  CropPage(this.imageMemory, {this.isSquare = false});
 
   @override
   _CropPageState createState() => _CropPageState();
@@ -18,12 +19,22 @@ class _CropPageState extends State<CropPage> {
   final _controller = CropController();
   Uint8List? croppedFinalImage;
 
-  var _loadingImage = false;
-  var _currentImage = 0;
-  var _isCircleUi = true;
-  var _isSumbnail = false;
-  var _statusText = '';
-  var _isCropping = false;
+  late bool _loadingImage;
+  late int _currentImage;
+  late bool _isCircleUi;
+  late bool _isSumbnail;
+  late String _statusText;
+  late bool _isCropping;
+  @override
+  void initState() {
+    _loadingImage = false;
+    _currentImage = 0;
+    _isCircleUi = widget.isSquare ? false : true;
+    _isSumbnail = false;
+    _statusText = '';
+    _isCropping = false;
+    super.initState();
+  }
 
   void cropImage(Uint8List croppedData) {
     setState(() {
@@ -103,15 +114,26 @@ class _CropPageState extends State<CropPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        IconButton(
-                          icon: Icon(Icons.radio_button_unchecked_outlined),
-                          onPressed: () {
-                            _isCircleUi = true;
-                            _controller
-                              ..withCircleUi = true
-                              ..aspectRatio = 1;
-                          },
-                        ),
+                        if (!widget.isSquare)
+                          IconButton(
+                            icon: Icon(Icons.radio_button_unchecked_outlined),
+                            onPressed: () {
+                              _isCircleUi = true;
+                              _controller
+                                ..withCircleUi = true
+                                ..aspectRatio = 1;
+                            },
+                          ),
+                        if (widget.isSquare)
+                          IconButton(
+                            icon: Icon(Icons.crop_square),
+                            onPressed: () {
+                              _isCircleUi = false;
+                              _controller
+                                ..withCircleUi = false
+                                ..aspectRatio = 1;
+                            },
+                          ),
                       ],
                     ),
                     const SizedBox(height: 16),

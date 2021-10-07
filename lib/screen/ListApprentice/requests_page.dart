@@ -19,11 +19,14 @@ class RequestsPage extends StatefulWidget {
   _RequestsPageState createState() => _RequestsPageState();
 }
 
+late int? sendReqestInBackPage;
+
 class _RequestsPageState extends State<RequestsPage> {
   late ScrollController _scrollController;
   @override
   void initState() {
     _scrollController = ScrollController()..addListener(_listener);
+    sendReqestInBackPage = -1;
     super.initState();
   }
 
@@ -38,14 +41,19 @@ class _RequestsPageState extends State<RequestsPage> {
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
-    return Container(
-      // color: Color(0xffffffff),
-      color: Color(0xffFBFBFB),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pop(sendReqestInBackPage);
+        return Future.value(false);
+      },
       child: Scaffold(
         appBar: AppBarWidget(
           title: 'درخواست ها',
+          onBack: () {
+            Navigator.of(context).pop(sendReqestInBackPage);
+          },
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xffFBFBFB),
         body: Container(
             width: sizeScreen.width,
             padding: EdgeInsets.symmetric(horizontal: padding),
@@ -84,11 +92,9 @@ class _RequestsPageState extends State<RequestsPage> {
 }
 
 class ItemRequest extends StatelessWidget {
-  const ItemRequest({
-    Key? key,
-    required this.coachStudentVm,
-    required this.sizeScreen,
-  }) : super(key: key);
+  ItemRequest(
+      {Key? key, required this.coachStudentVm, required this.sizeScreen})
+      : super(key: key);
 
   final Size sizeScreen;
   final CoachStudentVm coachStudentVm;
@@ -100,7 +106,9 @@ class ItemRequest extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.of(context).pushNamed(ProfileApprenticePage.routeName,
-              arguments: coachStudentVm);
+              arguments: coachStudentVm.studentId);
+          // BlocProvider.of<GetCoachStudentsBloc>(context)
+          //     .add(GetCoachStudentsLoadingEvent());
         },
         child: Container(
           margin: EdgeInsets.symmetric(vertical: padding),
@@ -132,10 +140,11 @@ class ItemRequest extends StatelessWidget {
                         if (state is ChangeStatusLoadedState) {
                           if (state.resultObject != null) {
                             if (state.resultObject!.success!)
-                              BlocProvider.of<GetCoachStudentsBloc>(context)
-                                  .add(GetCoachStudentsLoadingEvent());
-                            Fluttertoast.showToast(
-                                msg: state.resultObject!.message!);
+                              Fluttertoast.showToast(
+                                  msg: state.resultObject!.message!);
+                            BlocProvider.of<GetCoachStudentsBloc>(context)
+                                .add(GetCoachStudentsLoadingEvent());
+                            sendReqestInBackPage = 0;
                           }
                         }
                       },
@@ -158,10 +167,11 @@ class ItemRequest extends StatelessWidget {
                         if (state is ChangeStatusLoadedState) {
                           if (state.resultObject != null) {
                             if (state.resultObject!.success!)
-                              BlocProvider.of<GetCoachStudentsBloc>(context)
-                                  .add(GetCoachStudentsLoadingEvent());
-                            Fluttertoast.showToast(
-                                msg: state.resultObject!.message!);
+                              Fluttertoast.showToast(
+                                  msg: state.resultObject!.message!);
+                            BlocProvider.of<GetCoachStudentsBloc>(context)
+                                .add(GetCoachStudentsLoadingEvent());
+                            sendReqestInBackPage = 1;
                           }
                         }
                       },
