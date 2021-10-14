@@ -29,8 +29,10 @@ class AnonymousPlanTypeDetailFormVm extends BaseViewModel {
     dayNumber = json['dayNumber'];
     termNumber = json['termNumber'];
     displayOrder = json['displayOrder'];
-    title = json['title'];
-    description = json['description'];
+    nameMovementController = TextEditingController();
+    descriptionController = TextEditingController();
+    title = nameMovementController!.text = json['title'];
+    description = descriptionController!.text = json['description'];
   }
 
   Map<String, dynamic> toJson() {

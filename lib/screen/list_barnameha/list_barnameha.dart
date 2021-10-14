@@ -10,7 +10,9 @@ import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/components/no_data.dart';
+import 'package:gym_app/components/set_selected_route.dart';
 import 'package:gym_app/extensions/ext.dart';
+import 'package:gym_app/screen/EditProgramOtherSports/edit_program_other_sports_page.dart';
 
 class ListBarnamehaPage extends StatefulWidget {
   const ListBarnamehaPage({Key? key}) : super(key: key);
@@ -35,7 +37,8 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
     super.initState();
   }
 
-  _listener() {
+  void _listener() {
+    print('_listern was called');
     if (_exerciseScrollController.position.pixels ==
         _exerciseScrollController.position.maxScrollExtent) {
       BlocProvider.of<GetPlansBySortBloc>(context)
@@ -44,7 +47,8 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
     }
   }
 
-  _listenerDiet() {
+  void _listenerDiet() {
+    print('_listern was called');
     if (_dietScrollController.position.pixels ==
         _dietScrollController.position.maxScrollExtent) {
       BlocProvider.of<GetPlansBySortBloc>(context)
@@ -184,7 +188,10 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
                                       planTypeLogvm: state
                                           .page_planTypeLogVm!.items![index]);
                                 else
-                                  return MyWaiting();
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: MyWaiting(),
+                                  );
                               },
                               itemCount: state.page_planTypeLogVm!.hasNext!
                                   ? state.page_planTypeLogVm!.items!.length + 1
@@ -371,7 +378,11 @@ class ItemLoadedFirstProgram extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       child: InkWell(
                         borderRadius: BorderRadius.circular(10),
-                        onTap: () {},
+                        onTap: () {
+                          SetSelectedRoute()
+                            ..setSelectedRoute(context, planTypeLogvm.planType,
+                                planTypeLogvm.planTypeId);
+                        },
                         child: Container(
                           padding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 5),

@@ -29,8 +29,10 @@ class DietPlanTypeDetailFormVm extends BaseViewModel {
     dayNumber = json['dayNumber'];
     mealNumber = json['mealNumber'];
     displayOrder = json['displayOrder'];
-    title = json['title'];
-    description = json['description'];
+    nameDietController = TextEditingController();
+    descriptionController = TextEditingController();
+    title = nameDietController!.text = json['title'];
+    description = descriptionController!.text = json['description'];
   }
 
   Map<String, dynamic> toJson() {

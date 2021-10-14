@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/AnonymousPlanTypeDetail/AnonymousPlanTypeDetailFormVm.dart';
 import 'package:gym_app/blocs/AnonymousPlanType/bloc/create_using_form_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/main.dart';
-import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateMovementOtherSports/create_movement_other_sports_page.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
@@ -41,7 +40,7 @@ class CreateProgramOtherSportsSettingPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'ایجاد برنامه سایر رشته ها',
+                            'برنامه سایر رشته ها',
                             style: textStyle.copyWith(
                                 fontSize: kFontSizeText(
                                     sizeScreen, FontSize.subTitle),
@@ -226,15 +225,40 @@ class _DaysTaskState extends State<DaysTask> {
               SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
-                  setState(() {
-                    widget.anonymousPlantypeFormVm.dayTerms!.add(
-                        AnonymousPlanTypeDayTermVm(
-                            currentTerm: 1,
-                            termsCount: 1,
-                            dayNumber: widget
-                                    .anonymousPlantypeFormVm.dayTerms!.length +
-                                1));
-                  });
+                  //***** new for change struct of create program  */
+                  if (widget
+                      .anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                      .where((element) =>
+                          element.nameMovementController!.text.isEmpty)
+                      .toList()
+                      .isEmpty)
+                    //***** new for change struct of create program  */
+                    setState(() {
+                      widget.anonymousPlantypeFormVm.dayTerms!.add(
+                          AnonymousPlanTypeDayTermVm(
+                              currentTerm: 1,
+                              termsCount: 1,
+                              dayNumber: widget.anonymousPlantypeFormVm
+                                      .dayTerms!.length +
+                                  1));
+                      //***** new for change struct of create program  */
+                      widget
+                          .anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                          .add(AnonymousPlanTypeDetailFormVm(
+                              descriptionController: TextEditingController(),
+                              nameMovementController: TextEditingController(),
+                              dayNumber: widget
+                                  .anonymousPlantypeFormVm.dayTerms!.length,
+                              termNumber: 1,
+                              displayOrder: MyHomePage.lastDisplayOtherSports +=
+                                  1));
+                      //***** new for change struct of create program  */
+                    });
+                  //***** new for change struct of create program  */
+                  else
+                    Fluttertoast.showToast(
+                        msg: 'لطفا آیتم های روز فعلی رو پر کنید');
+                  //***** new for change struct of create program  */
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(

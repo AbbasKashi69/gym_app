@@ -44,7 +44,7 @@ class _ProgramListPageState extends State<ProgramListPage> {
     if (_exerciseScrollController.position.pixels ==
         _exerciseScrollController.position.maxScrollExtent) {
       BlocProvider.of<GetPlansBySortBloc>(context)
-        ..add(GetPlansBySortLoadedEvent(planType: 1));
+        ..add(GetPlansBySortLoadedEvent(planType: 4));
     }
   }
 
@@ -106,7 +106,7 @@ class _ProgramListPageState extends State<ProgramListPage> {
                                     children: [
                                       GestureDetector(
                                         onTap: () {
-                                          planTypeId = 1;
+                                          planTypeId = 4;
                                           BlocProvider.of<GetPlansBySortBloc>(
                                                   context)
                                               .add(GetPlansBySortLoadingEvent(

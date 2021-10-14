@@ -15,13 +15,13 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 
 class CreateMovementOtherSportsPage extends StatefulWidget {
   static const routeName = '/CreateMovementOtherSportsPage';
-  const CreateMovementOtherSportsPage(
+  CreateMovementOtherSportsPage(
       {Key? key,
-      required this.anonymousPlanTypeDayTermVm,
-      required this.anonymousPlantypeFormVm})
+      required this.anonymousPlanTypeDayTermVmOriginal,
+      required this.anonymousPlantypeFormVmOriginal})
       : super(key: key);
-  final AnonymousPlanTypeDayTermVm anonymousPlanTypeDayTermVm;
-  final AnonymousPlantypeFormVm anonymousPlantypeFormVm;
+  AnonymousPlanTypeDayTermVm anonymousPlanTypeDayTermVmOriginal;
+  AnonymousPlantypeFormVm anonymousPlantypeFormVmOriginal;
 
   @override
   _CreateMovementOtherSportsPageState createState() =>
@@ -30,251 +30,301 @@ class CreateMovementOtherSportsPage extends StatefulWidget {
 
 class _CreateMovementOtherSportsPageState
     extends State<CreateMovementOtherSportsPage> {
+  late AnonymousPlanTypeDayTermVm anonymousPlanTypeDayTermVm;
+  late AnonymousPlantypeFormVm anonymousPlantypeFormVm;
+  @override
+  void initState() {
+    super.initState();
+    anonymousPlanTypeDayTermVm = AnonymousPlanTypeDayTermVm(
+        currentTerm: widget.anonymousPlanTypeDayTermVmOriginal.currentTerm,
+        dayNumber: widget.anonymousPlanTypeDayTermVmOriginal.dayNumber,
+        termsCount: widget.anonymousPlanTypeDayTermVmOriginal.termsCount);
+    // anonymousPlanTypeDayTermVm = widget.anonymousPlanTypeDayTermVmOriginal;
+    anonymousPlantypeFormVm = AnonymousPlantypeFormVm(
+        dayCount: widget.anonymousPlantypeFormVmOriginal.dayCount,
+        dayTerms: widget.anonymousPlantypeFormVmOriginal.dayTerms,
+        totalTerm: widget.anonymousPlantypeFormVmOriginal.totalTerm,
+        anonymousPlanTypeDetailForms: widget
+            .anonymousPlantypeFormVmOriginal.anonymousPlanTypeDetailForms!);
+    // anonymousPlantypeFormVm = widget.anonymousPlantypeFormVmOriginal;
+  }
+
   bool isEmptyTextField = true;
+
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
-    return WillPopScope(
-      onWillPop: () async {
-        List<AnonymousPlanTypeDetailFormVm> x = widget
-            .anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
-            .where((element) =>
-                element.dayNumber ==
-                widget.anonymousPlanTypeDayTermVm.dayNumber)
-            .toList();
-        for (int i = 0; i < x.length; i++) {
-          x[i].nameMovementController!.clear();
-          x[i].descriptionController!.clear();
-        }
-        return Future.value(true);
-      },
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: kColorAppbar,
-        appBar: AppBarWidget(
-          title: widget.anonymousPlanTypeDayTermVm.dayNumber != 3
-              ? 'روز ${widget.anonymousPlanTypeDayTermVm.dayNumber.toString().toWord()}م'
-              : 'روز سوم',
-          onBack: () async {
-            List<AnonymousPlanTypeDetailFormVm> x = widget
-                .anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
-                .where((element) =>
-                    element.dayNumber ==
-                    widget.anonymousPlanTypeDayTermVm.dayNumber)
-                .toList();
-            for (int i = 0; i < x.length; i++) {
-              x[i].nameMovementController!.clear();
-              x[i].descriptionController!.clear();
-            }
-            Navigator.of(context).pop();
-          },
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            decoration: kBodyDecoration,
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: padding / 2),
-                  margin: EdgeInsets.symmetric(vertical: padding),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(children: [
-                      Row(
-                        children: List.generate(
-                          widget.anonymousPlanTypeDayTermVm.termsCount!,
-                          (index) => ItemFilterChip(
-                              index: index + 1,
-                              onChangeValue: () {
-                                setState(() {
-                                  widget.anonymousPlanTypeDayTermVm
-                                      .currentTerm = index + 1;
-                                });
-                              },
-                              deleteItemfunc: (idx) {
-                                if (widget.anonymousPlanTypeDayTermVm
-                                        .termsCount! >
-                                    1) {
-                                  widget.anonymousPlantypeFormVm
-                                      .anonymousPlanTypeDetailForms!
-                                      .removeWhere((s) => s.termNumber == idx);
-                                  for (var item in widget
-                                      .anonymousPlantypeFormVm
-                                      .anonymousPlanTypeDetailForms!
-                                      .where((element) =>
-                                          element.termNumber! > idx)) {
-                                    item.termNumber = item.termNumber! - 1;
-                                  }
-                                  widget.anonymousPlanTypeDayTermVm.termsCount =
-                                      widget.anonymousPlanTypeDayTermVm
-                                              .termsCount! -
-                                          1;
-                                  widget.anonymousPlanTypeDayTermVm
-                                      .currentTerm = 1;
-
-                                  setState(() {});
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: kColorAppbar,
+      appBar: AppBarWidget(
+        title: anonymousPlanTypeDayTermVm.dayNumber != 3
+            ? 'روز ${anonymousPlanTypeDayTermVm.dayNumber.toString().toWord()}م'
+            : 'روز سوم',
+      ),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Container(
+          decoration: kBodyDecoration,
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: padding / 2),
+                margin: EdgeInsets.symmetric(vertical: padding),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(children: [
+                    Row(
+                      children: List.generate(
+                        anonymousPlanTypeDayTermVm.termsCount!,
+                        (index) => ItemFilterChip(
+                            index: index + 1,
+                            onChangeValue: () {
+                              setState(() {
+                                anonymousPlanTypeDayTermVm.currentTerm =
+                                    index + 1;
+                              });
+                            },
+                            deleteItemfunc: (idx) {
+                              if (anonymousPlanTypeDayTermVm.termsCount! > 1) {
+                                anonymousPlantypeFormVm
+                                    .anonymousPlanTypeDetailForms!
+                                    .removeWhere((s) => s.termNumber == idx);
+                                for (var item in anonymousPlantypeFormVm
+                                    .anonymousPlanTypeDetailForms!
+                                    .where((element) =>
+                                        element.termNumber! > idx)) {
+                                  item.termNumber = item.termNumber! - 1;
                                 }
-                              },
-                              isSelected: widget
-                                  .anonymousPlanTypeDayTermVm.currentTerm!),
-                        ),
+                                anonymousPlanTypeDayTermVm.termsCount =
+                                    anonymousPlanTypeDayTermVm.termsCount! - 1;
+                                anonymousPlanTypeDayTermVm.currentTerm = 1;
+
+                                setState(() {});
+                              }
+                            },
+                            isSelected:
+                                anonymousPlanTypeDayTermVm.currentTerm!),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          widget.anonymousPlanTypeDayTermVm.termsCount =
-                              widget.anonymousPlanTypeDayTermVm.termsCount! + 1;
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        //***** new for change struct of create program  */
+                        if (anonymousPlantypeFormVm
+                            .anonymousPlanTypeDetailForms!
+                            .where((element) =>
+                                element.dayNumber ==
+                                    anonymousPlanTypeDayTermVm.dayNumber &&
+                                element.termNumber ==
+                                    anonymousPlanTypeDayTermVm.currentTerm &&
+                                element.nameMovementController!.text.isEmpty)
+                            .toList()
+                            .isEmpty) {
+                          AnonymousPlanTypeDetailFormVm data =
+                              AnonymousPlanTypeDetailFormVm();
+                          data.descriptionController = TextEditingController();
+                          data.nameMovementController = TextEditingController();
+                          data.dayNumber = anonymousPlanTypeDayTermVm.dayNumber;
+                          data.termNumber =
+                              anonymousPlanTypeDayTermVm.currentTerm! + 1;
+                          data.displayOrder =
+                              MyHomePage.lastDisplayOtherSports += 1;
+                          anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                              .removeWhere(
+                                  (s) => s.displayOrder == data.displayOrder);
+                          anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                              .add(data);
+                          anonymousPlanTypeDayTermVm.termsCount =
+                              anonymousPlanTypeDayTermVm.termsCount! + 1;
                           setState(() {});
-                        },
-                        child: DottedBorder(
-                            borderType: BorderType.Circle,
-                            dashPattern: [5],
-                            color: parseColor('#707070'),
-                            child: Container(
-                              padding: EdgeInsets.all(padding),
-                              decoration: BoxDecoration(shape: BoxShape.circle),
-                              child: Center(
-                                child: Icon(
-                                  Icons.add,
-                                  color: parseColor('#565656'),
-                                ),
+                        } else
+                          Fluttertoast.showToast(
+                              msg: 'آیتم های نوبت فعلی را پر کنید');
+                        //***** new for change struct of create program  */
+                      },
+                      child: DottedBorder(
+                          borderType: BorderType.Circle,
+                          dashPattern: [5],
+                          color: parseColor('#707070'),
+                          child: Container(
+                            padding: EdgeInsets.all(padding),
+                            decoration: BoxDecoration(shape: BoxShape.circle),
+                            child: Center(
+                              child: Icon(
+                                Icons.add,
+                                color: parseColor('#565656'),
                               ),
-                            )),
-                      )
-                    ]),
-                  ),
+                            ),
+                          )),
+                    )
+                  ]),
                 ),
-                widget.anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
-                        .where((s) =>
-                            s.dayNumber ==
-                                widget.anonymousPlanTypeDayTermVm.dayNumber &&
-                            s.termNumber ==
-                                widget.anonymousPlanTypeDayTermVm.currentTerm)
-                        .toList()
-                        .isEmpty
-                    ? Center(
-                        child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 50),
-                        child: NoData(),
-                      ))
-                    : Column(
-                        children: List.generate(
-                            widget.anonymousPlantypeFormVm
-                                .anonymousPlanTypeDetailForms!
-                                .where((s) =>
-                                    s.dayNumber ==
-                                        widget.anonymousPlanTypeDayTermVm
-                                            .dayNumber &&
-                                    s.termNumber ==
-                                        widget.anonymousPlanTypeDayTermVm
-                                            .currentTerm)
-                                .toList()
-                                .length,
-                            (index) => ItemAddedMovementOtherSports(
-                                  deleteMovement: (int displayOrder) {
+              ),
+              anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                      .where((s) =>
+                          s.dayNumber == anonymousPlanTypeDayTermVm.dayNumber &&
+                          s.termNumber ==
+                              anonymousPlanTypeDayTermVm.currentTerm)
+                      .toList()
+                      .isEmpty
+                  ? Center(
+                      child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 50),
+                      child: NoData(),
+                    ))
+                  : Column(
+                      children: List.generate(
+                          anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                              .where((s) =>
+                                  s.dayNumber ==
+                                      anonymousPlanTypeDayTermVm.dayNumber &&
+                                  s.termNumber ==
+                                      anonymousPlanTypeDayTermVm.currentTerm)
+                              .toList()
+                              .length,
+                          (index) => ItemAddedMovementOtherSports(
+                                deleteMovement: (int displayOrder) {
+                                  //***** new for change struct of create program  */
+                                  if (anonymousPlantypeFormVm
+                                          .anonymousPlanTypeDetailForms!
+                                          .where((element) =>
+                                              element.dayNumber ==
+                                                  anonymousPlanTypeDayTermVm
+                                                      .dayNumber &&
+                                              element.termNumber ==
+                                                  anonymousPlanTypeDayTermVm
+                                                      .currentTerm)
+                                          .toList()
+                                          .length >
+                                      1) {
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     setState(() {
-                                      widget.anonymousPlantypeFormVm
+                                      anonymousPlantypeFormVm
                                           .anonymousPlanTypeDetailForms!
                                           .removeWhere((s) =>
                                               s.displayOrder == displayOrder);
                                     });
-                                  },
-                                  data: widget.anonymousPlantypeFormVm
-                                      .anonymousPlanTypeDetailForms!
-                                      .where((s) =>
-                                          s.dayNumber ==
-                                              widget.anonymousPlanTypeDayTermVm
-                                                  .dayNumber &&
-                                          s.termNumber ==
-                                              widget.anonymousPlanTypeDayTermVm
-                                                  .currentTerm)
-                                      .toList()[index],
-                                )),
-                      ),
-                GestureDetector(
-                  onTap: () {
+                                  }
+                                  //***** new for change struct of create program  */
+
+                                  else {
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            'نوبت شما باید حداقل یک حرکت داشته باشد');
+                                  }
+                                },
+                                data: anonymousPlantypeFormVm
+                                    .anonymousPlanTypeDetailForms!
+                                    .where((s) =>
+                                        s.dayNumber ==
+                                            anonymousPlanTypeDayTermVm
+                                                .dayNumber &&
+                                        s.termNumber ==
+                                            anonymousPlanTypeDayTermVm
+                                                .currentTerm)
+                                    .toList()[index],
+                              )),
+                    ),
+              GestureDetector(
+                onTap: () {
+                  //***** new for change struct of create program  */
+                  if (anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                      .where((element) =>
+                          element.dayNumber ==
+                              anonymousPlanTypeDayTermVm.dayNumber &&
+                          element.termNumber ==
+                              anonymousPlanTypeDayTermVm.currentTerm &&
+                          element.nameMovementController!.text.isEmpty)
+                      .toList()
+                      .isEmpty)
+                  //***** new for change struct of create program  */
+                  {
                     AnonymousPlanTypeDetailFormVm data =
                         AnonymousPlanTypeDetailFormVm();
                     data.descriptionController = TextEditingController();
                     data.nameMovementController = TextEditingController();
-                    data.dayNumber =
-                        widget.anonymousPlanTypeDayTermVm.dayNumber;
-                    data.termNumber =
-                        widget.anonymousPlanTypeDayTermVm.currentTerm;
+                    data.dayNumber = anonymousPlanTypeDayTermVm.dayNumber;
+                    data.termNumber = anonymousPlanTypeDayTermVm.currentTerm;
                     data.displayOrder = MyHomePage.lastDisplayOtherSports += 1;
-                    widget.anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                    anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
                         .removeWhere(
                             (s) => s.displayOrder == data.displayOrder);
-                    widget.anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                    anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
                         .add(data);
                     setState(() {});
-                  },
-                  child: Container(
-                    width: gw(0.8),
-                    height: gh(0.07),
-                    child: DottedBorder(
-                      borderType: BorderType.RRect,
-                      color: parseColor('#00B4D8'),
-                      dashPattern: [5],
-                      radius: Radius.elliptical(20, 20),
-                      child: Container(
-                        // width: gw(0.8),
-                        // height: gh(0.03),
-                        child: Center(
-                          child: Text(
-                            'حرکت جدید',
-                            style: textStyle.copyWith(
-                                fontSize: kFontSizeText(
-                                    sizeScreen, FontSize.subTitle),
-                                color: parseColor('#00B4D8')),
-                          ),
+                  } else
+                    Fluttertoast.showToast(msg: 'حرکت فعلی رو پر کنید');
+                },
+                child: Container(
+                  width: gw(0.8),
+                  height: gh(0.07),
+                  child: DottedBorder(
+                    borderType: BorderType.RRect,
+                    color: parseColor('#00B4D8'),
+                    dashPattern: [5],
+                    radius: Radius.elliptical(20, 20),
+                    child: Container(
+                      // width: gw(0.8),
+                      // height: gh(0.03),
+                      child: Center(
+                        child: Text(
+                          'حرکت جدید',
+                          style: textStyle.copyWith(
+                              fontSize:
+                                  kFontSizeText(sizeScreen, FontSize.subTitle),
+                              color: parseColor('#00B4D8')),
                         ),
                       ),
                     ),
                   ),
                 ),
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: padding * 2),
-                    child: CustomeButton(
-                      sizeScreen: sizeScreen,
-                      title: 'ثبت برنامه',
-                      onTap: () async {
-                        List<AnonymousPlanTypeDetailFormVm> x = widget
-                            .anonymousPlantypeFormVm
-                            .anonymousPlanTypeDetailForms!
-                            .where((element) =>
-                                element.dayNumber ==
-                                widget.anonymousPlanTypeDayTermVm.dayNumber)
-                            .toList();
-                        if (x.isNotEmpty) {
-                          for (int i = 0; i < x.length; i++) {
-                            if (x[i].nameMovementController!.text.isEmpty) {
-                              await Fluttertoast.showToast(
-                                  msg:
-                                      'نام حرکت در روز ${x[i].dayNumber.toString().toWord()}م و نوبت ${x[i].termNumber.toString().toWord()}م خالی است');
-                              isEmptyTextField = true;
-                              break;
-                            }
-                            isEmptyTextField = false;
+              ),
+              Container(
+                  margin: EdgeInsets.symmetric(vertical: padding * 2),
+                  child: CustomeButton(
+                    sizeScreen: sizeScreen,
+                    title: 'ثبت برنامه',
+                    onTap: () async {
+                      List<AnonymousPlanTypeDetailFormVm> x =
+                          anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                              .where((element) =>
+                                  element.dayNumber ==
+                                  anonymousPlanTypeDayTermVm.dayNumber)
+                              .toList();
+                      if (x.isNotEmpty) {
+                        for (int i = 0; i < x.length; i++) {
+                          if (x[i].nameMovementController!.text.isEmpty) {
+                            await Fluttertoast.showToast(
+                                msg:
+                                    'نام حرکت در روز ${x[i].dayNumber.toString().toWord()}م و نوبت ${x[i].termNumber.toString().toWord()}م خالی است');
+                            isEmptyTextField = true;
+                            break;
                           }
-                          if (!isEmptyTextField) {
-                            await Get.showSnackbar(GetBar(
-                              duration: Duration(seconds: 2),
-                              backgroundColor: Colors.black,
-                              snackStyle: SnackStyle.FLOATING,
-                              message:
-                                  'برنامه ی روز ${widget.anonymousPlanTypeDayTermVm.dayNumber.toString().toWord()}م ثبت شد',
-                            ));
-                            Future.delayed(Duration(seconds: 1), () {
-                              Navigator.of(context).pop(true);
-                            });
-                          }
+                          isEmptyTextField = false;
                         }
-                      },
-                    )),
-              ],
-            ),
+                        if (!isEmptyTextField) {
+                          widget.anonymousPlanTypeDayTermVmOriginal =
+                              anonymousPlanTypeDayTermVm;
+                          widget.anonymousPlantypeFormVmOriginal =
+                              anonymousPlantypeFormVm;
+                          await Get.showSnackbar(GetBar(
+                            duration: Duration(seconds: 2),
+                            backgroundColor: Colors.black,
+                            snackStyle: SnackStyle.FLOATING,
+                            message:
+                                'برنامه ی روز ${anonymousPlanTypeDayTermVm.dayNumber.toString().toWord()}م ثبت شد',
+                          ));
+                          Future.delayed(Duration(seconds: 1), () {
+                            Navigator.of(context).pop(true);
+                          });
+                        }
+                      }
+                    },
+                  )),
+            ],
           ),
         ),
       ),

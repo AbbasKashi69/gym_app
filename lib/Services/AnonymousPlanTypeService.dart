@@ -14,7 +14,7 @@ class AnonymousPlanTypeService {
       '/api/AnonymousPlanType/EditUsingForm';
   static const String url_delte = '/api/AnonymousPlanType/Delete';
   static const String url_findByIdInForm =
-      'api/AnonymousPlanType/FindByIdInForm';
+      '/api/AnonymousPlanType/FindByIdInForm';
 
   Future<ResultObject?> createUsingForm(
       AnonymousPlantypeFormVm anonymousPlantypeFormVm) async {

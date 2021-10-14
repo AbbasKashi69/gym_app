@@ -4,11 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/AnonymousPlanTypeDetail/AnonymousPlanTypeDetailFormVm.dart';
 import 'package:gym_app/ViewModels/CurrentUserVm.dart';
 import 'package:gym_app/ViewModels/Person/PersonListVm.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_students_as_person_list_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customeTextField.dart';
+import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateProgramOtherSports/components/select_student_screen.dart';
 import 'package:gym_app/screen/CreateProgramOtherSportsSetting/create_program_other_sports_setting_pages.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
@@ -27,13 +29,18 @@ class CreateProgramOtherSportsPage extends StatelessWidget {
   final TextEditingController _descriptionTextEditingController =
       TextEditingController();
   final AnonymousPlantypeFormVm anonymousPlantypeFormVm =
-      AnonymousPlantypeFormVm(
-          students: [],
-          dayTerms: [
-        AnonymousPlanTypeDayTermVm(dayNumber: 1, termsCount: 1, currentTerm: 1)
-      ],
-          anonymousPlanTypeDetailForms: [],
-          isPrivate: CurrentUserVm.roleType != 3 ? false : true);
+      AnonymousPlantypeFormVm(students: [], dayTerms: [
+    AnonymousPlanTypeDayTermVm(dayNumber: 1, termsCount: 1, currentTerm: 1)
+  ], anonymousPlanTypeDetailForms: [
+    //***** new for change struct of create program  */
+    AnonymousPlanTypeDetailFormVm(
+        descriptionController: TextEditingController(),
+        nameMovementController: TextEditingController(),
+        dayNumber: 1,
+        termNumber: 1,
+        displayOrder: MyHomePage.lastDisplayOtherSports += 1)
+    //***** new for change struct of create program  */
+  ], isPrivate: CurrentUserVm.roleType != 3 ? false : true);
   final GlobalKey<FormState> _createOtherSportKey = GlobalKey<FormState>();
 
   Future<void> setStartTimePicker(BuildContext context) async {

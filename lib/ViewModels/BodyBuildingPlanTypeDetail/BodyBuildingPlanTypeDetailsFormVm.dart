@@ -42,11 +42,20 @@ class BodyBuildingPlanTypeDetailsFormVm extends BaseViewModel {
     dayNumber = json['dayNumber'];
     termNumber = json['termNumber'];
     displayOrder = json['displayOrder'];
-    title = json['title'];
-    description = json['description'];
+    nameMovementController = TextEditingController();
+    descriptionController = TextEditingController();
+    setController = TextEditingController();
+    title = nameMovementController!.text = json['title'];
+    description = descriptionController!.text = json['description'];
     setCount = json['setCount'];
+    setController!.text = json['setCount'].toString();
     setDescription = json['setDescription'];
     setItems = json['setItems'].cast<int>();
+    if (json['setItems'] != null) {
+      listSetItemsTextController = [];
+      json['setItems'].forEach((v) => listSetItemsTextController!
+          .add(TextEditingController()..text = v.toString()));
+    }
     if (json['superMoves'] != null) {
       superMoves = [];
       json['superMoves'].forEach((v) =>

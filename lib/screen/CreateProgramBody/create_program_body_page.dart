@@ -234,7 +234,7 @@ class CreateProgramBodyPage extends StatelessWidget {
                     ),
                     SizedBox(height: padding * 2),
                     CurrentUserVm.roleType != 3
-                        ? ItemAddedStudents(
+                        ? ItemAddedStudentsBodyBuilding(
                             bodyBuildingPlanTypeFormVm:
                                 bodyBuildingPlanTypeFormVm,
                             sizeScreen: sizeScreen)
@@ -311,8 +311,8 @@ class CreateProgramBodyPage extends StatelessWidget {
   }
 }
 
-class ItemAddedStudents extends StatefulWidget {
-  const ItemAddedStudents({
+class ItemAddedStudentsBodyBuilding extends StatefulWidget {
+  const ItemAddedStudentsBodyBuilding({
     Key? key,
     required this.bodyBuildingPlanTypeFormVm,
     required this.sizeScreen,
@@ -322,10 +322,12 @@ class ItemAddedStudents extends StatefulWidget {
   final Size sizeScreen;
 
   @override
-  _ItemAddedStudentsState createState() => _ItemAddedStudentsState();
+  _ItemAddedStudentsBodyBuildingState createState() =>
+      _ItemAddedStudentsBodyBuildingState();
 }
 
-class _ItemAddedStudentsState extends State<ItemAddedStudents> {
+class _ItemAddedStudentsBodyBuildingState
+    extends State<ItemAddedStudentsBodyBuilding> {
   @override
   Widget build(BuildContext context) {
     return Column(

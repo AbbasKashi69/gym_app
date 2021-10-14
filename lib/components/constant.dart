@@ -9,7 +9,8 @@ const textStyle = TextStyle(
   fontWeight: FontWeight.w400,
   fontFamily: 'IRANSans',
 );
-
+const String url_noImage =
+    'https://www.pngitem.com/pimgs/m/445-4457103_no-profile-picture-jpg-hd-png-download.png';
 const double padding = 10;
 const kColorBackGroundQrCode = Color(0xffF2F2F2);
 const kColorBackGround = Color(0xffffffff);

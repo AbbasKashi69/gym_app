@@ -53,9 +53,9 @@ class DietPlanTypeFormVm {
     endDate = json['endDate'];
     nEndDate = json['nEndDate'];
     isPrivate = json['isPrivate'];
-    if (json['dietPlanTypeDetailForms	'] != null) {
+    if (json['dietPlanTypeDetailForms'] != null) {
       dietPlanTypeDetailForms = [];
-      json['dietPlanTypeDetailForms	'].forEach((v) {
+      json['dietPlanTypeDetailForms'].forEach((v) {
         dietPlanTypeDetailForms!.add(new DietPlanTypeDetailFormVm.fromJson(v));
       });
     }

@@ -229,7 +229,7 @@ class CreateProgramDietPage extends StatelessWidget {
                     ),
                     SizedBox(height: padding * 2),
                     CurrentUserVm.roleType != 3
-                        ? ItemAddedStudents(
+                        ? ItemAddedStudentsDiet(
                             dietPlantypeFormVm: dietPlantypeFormVm,
                             sizeScreen: sizeScreen)
                         : Container(),
@@ -305,8 +305,8 @@ class CreateProgramDietPage extends StatelessWidget {
   }
 }
 
-class ItemAddedStudents extends StatefulWidget {
-  const ItemAddedStudents({
+class ItemAddedStudentsDiet extends StatefulWidget {
+  const ItemAddedStudentsDiet({
     Key? key,
     required this.dietPlantypeFormVm,
     required this.sizeScreen,
@@ -316,10 +316,10 @@ class ItemAddedStudents extends StatefulWidget {
   final Size sizeScreen;
 
   @override
-  _ItemAddedStudentsState createState() => _ItemAddedStudentsState();
+  _ItemAddedStudentsDietState createState() => _ItemAddedStudentsDietState();
 }
 
-class _ItemAddedStudentsState extends State<ItemAddedStudents> {
+class _ItemAddedStudentsDietState extends State<ItemAddedStudentsDiet> {
   @override
   Widget build(BuildContext context) {
     return Column(

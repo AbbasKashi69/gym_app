@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/ChatMessage/ChatMessageVm.dart';
 import 'package:gym_app/ViewModels/CoachStudent/CoachStudentProfileVm.dart';
 import 'package:gym_app/ViewModels/WalletLog/IncreaseCreditVm.dart';
 import 'package:gym_app/ViewModels/BodyBuildingPlanType/BodyBuildingPlanTypeFormVm.dart';
@@ -21,9 +22,12 @@ import 'package:gym_app/blocs/Account/bloc/submit_register_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/verify_code_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/verify_code_reset_passwrod_bloc.dart';
 import 'package:gym_app/blocs/AnonymousPlanType/bloc/create_using_form_bloc.dart';
+import 'package:gym_app/blocs/AnonymousPlanType/bloc/find_by_id_in_form_other_sports_bloc.dart';
 import 'package:gym_app/blocs/BodyBuildingMovement/bloc/get_user_body_building_movement_list_bloc.dart';
 import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/create_using_form_body_building_bloc.dart';
+import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/find_by_id_in_form_body_building_bloc.dart';
 import 'package:gym_app/blocs/BottomNav/bloc/bottom_nav_bloc.dart';
+import 'package:gym_app/blocs/ChatMessage/bloc/get_all_message_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/chage_status_by_id_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/change_status_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_coach_student_profile_bloc.dart';
@@ -32,8 +36,10 @@ import 'package:gym_app/blocs/CoachStudent/bloc/get_student_coaches_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_students_as_person_list_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/request_to_coach_bloc.dart';
 import 'package:gym_app/blocs/DietPlanType/bloc/create_using_form_diet_bloc.dart';
+import 'package:gym_app/blocs/DietPlanType/bloc/find_by_id_in_form_diet_bloc.dart';
 import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/blocs/Resume/bloc/get_resume_bloc.dart';
+import 'package:gym_app/blocs/RoomChat/bloc/get_all_room_chat_bloc.dart';
 import 'package:gym_app/blocs/Subscription/bloc/get_subscription_bloc.dart';
 import 'package:gym_app/blocs/UserFlow/bloc/create_user_flow_bloc.dart';
 import 'package:gym_app/blocs/UserFlow/bloc/get_user_flow_by_date_bloc.dart';
@@ -50,6 +56,9 @@ import 'package:gym_app/screen/CreateProgramOtherSports/create_program_other_spo
 import 'package:gym_app/screen/CreateProgramOtherSportsSetting/create_program_other_sports_setting_pages.dart';
 import 'package:gym_app/screen/CropPage/crop_page.dart';
 import 'package:gym_app/screen/DetailElan/detail_elan_page.dart';
+import 'package:gym_app/screen/EditProgramBodyBuilding/edit_program_body_building.dart';
+import 'package:gym_app/screen/EditProgramDiet/edit_program_diet_page.dart';
+import 'package:gym_app/screen/EditProgramOtherSports/edit_program_other_sports_page.dart';
 import 'package:gym_app/screen/Elanha/elan_page.dart';
 import 'package:gym_app/screen/Home/home_page.dart';
 import 'package:gym_app/screen/Cv/cv_page.dart';
@@ -66,6 +75,7 @@ import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 import 'package:gym_app/screen/Register/register_page.dart';
 import 'package:gym_app/screen/Scan/scan_page.dart';
 import 'package:gym_app/screen/Wallet/Increase_page.dart';
+import 'package:gym_app/screen/chat/chat_page.dart';
 import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
 import 'package:gym_app/screen/observeProgramBody/observe_program_body_page.dart';
 import 'package:gym_app/screen/observeProgramOtherSports/observe_other_sports_page.dart';
@@ -213,8 +223,10 @@ class MyRouter {
           var myVm = routeSettings.arguments as MyVm;
           return MaterialPageRoute(
               builder: (context) => CreateMovementOtherSportsPage(
-                    anonymousPlanTypeDayTermVm: myVm.anonymousPlanTypeDayTermVm,
-                    anonymousPlantypeFormVm: myVm.anonymousPlantypeFormVm,
+                    anonymousPlanTypeDayTermVmOriginal:
+                        myVm.anonymousPlanTypeDayTermVm,
+                    anonymousPlantypeFormVmOriginal:
+                        myVm.anonymousPlantypeFormVm,
                   ));
         }
       case CreateMovementDietPage.routeName:
@@ -344,7 +356,24 @@ class MyRouter {
 
       //****** new */
       case ChatListPage.routeName:
-        return MaterialPageRoute(builder: (context) => ChatListPage());
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                  create: (context) =>
+                      GetAllRoomChatBloc()..add(GetAllRoomChatLoadingEvent()),
+                  child: ChatListPage(),
+                ));
+      case ChatPage.routeName:
+        {
+          ChatMessageVm chatMessageVm =
+              routeSettings.arguments as ChatMessageVm;
+          return MaterialPageRoute(
+              builder: (context) => BlocProvider(
+                    create: (context) => GetAllMessageBloc()
+                      ..add(GetAllMessageLoadingEvent(
+                          roomId: chatMessageVm.roomChatId)),
+                    child: ChatPage(chatMessageVm: chatMessageVm),
+                  ));
+        }
       case LoginPage.routeName:
         return MaterialPageRoute(
             builder: (context) => BlocProvider(
@@ -443,6 +472,63 @@ class MyRouter {
                     isSquare: true,
                   ));
         }
+      //** rout for edit programs is started from here */
+      case EditProgramOtherSportsPage.routeName:
+        {
+          int id = routeSettings.arguments as int;
+          return MaterialPageRoute(
+              builder: (context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) => FindByIdInFormOtherSportsBloc()
+                          ..add(FindByIdInFormOtherSportsLoadingEvent(id: id)),
+                      ),
+                      BlocProvider(
+                        create: (context) => GetStudentsAsPersonListBloc()
+                          ..add(GetStudentsAsPersonListLoadingEvent()),
+                      ),
+                    ],
+                    child: EditProgramOtherSportsPage(),
+                  ));
+        }
+      case EditProgramBodyBuilding.routeName:
+        {
+          int id = routeSettings.arguments as int;
+          return MaterialPageRoute(
+              builder: (context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                          create: (context) => FindByIdInFormBodyBuildingBloc()
+                            ..add(FindByIdInFormBodyBuildingLoadingEvent(
+                                id: id))),
+                      BlocProvider(
+                        create: (context) => GetStudentsAsPersonListBloc()
+                          ..add(GetStudentsAsPersonListLoadingEvent()),
+                      ),
+                    ],
+                    child: EditProgramBodyBuilding(),
+                  ));
+        }
+      case EditProgramDietPage.routeName:
+        {
+          int id = routeSettings.arguments as int;
+          return MaterialPageRoute(
+              builder: (context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                          create: (context) => FindByIdInFormDietBloc()
+                            ..add(FindByIdInFormDietLoadingEvent(id: id))),
+                      BlocProvider(
+                        create: (context) => GetStudentsAsPersonListBloc()
+                          ..add(GetStudentsAsPersonListLoadingEvent()),
+                      ),
+                    ],
+                    child: EditProgramDietPage(),
+                  ));
+        }
+
+      //** rout for edit programs is finished  */
+
       default:
         return MaterialPageRoute(builder: (context) => ScanPage());
     }

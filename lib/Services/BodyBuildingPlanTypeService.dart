@@ -14,7 +14,7 @@ class BodyBuildingPlanTypeService {
       '/api/BodyBuildingPlanType/EditUsingForm';
   static const String url_delte = '/api/BodyBuildingPlanType/Delete';
   static const String url_findByIdInForm =
-      'api/BodyBuildingPlanType/FindByIdInForm';
+      '/api/BodyBuildingPlanType/FindByIdInForm';
 
   Future<ResultObject?> createUsingForm(
       BodyBuildingPlanTypeFormVm bodyBuildingPlanTypeFormVm) async {

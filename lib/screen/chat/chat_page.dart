@@ -9,9 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:gym_app/ViewModels/ChatMessage/ChatMessageVm.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/custom_switch.dart';
 import 'package:gym_app/components/dynamic_appbar.dart';
+import 'package:gym_app/components/my_Image.dart';
 import 'package:gym_app/extensions/ext.dart';
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
@@ -20,13 +22,16 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:file_picker/file_picker.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+  const ChatPage({Key? key, required this.chatMessageVm}) : super(key: key);
+  static const String routeName = '/chatPage';
+  final ChatMessageVm chatMessageVm;
 
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
+  late types.User _user;
   // For the testing purposes, you should probably use https://pub.dev/packages/uuid
   String randomString() {
     final random = Random.secure();
@@ -35,8 +40,6 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   List<types.Message> _messages = [];
-  final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
-
   void _addMessage(types.CustomMessage message) {
     setState(() {
       _messages.insert(0, message);
@@ -58,12 +61,19 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void initState() {
+    _user = types.User(
+      // id: '06c33e8b-e835-4736-80f4-63f44b66666c',
+      id: widget.chatMessageVm.roomChatId.toString(),
+      lastName: widget.chatMessageVm.titel,
+      imageUrl: widget.chatMessageVm.pic ?? url_noImage,
+    );
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final Size sizeScreen = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
         // FocusScope.of(context).requestFocus(FocusNode());
@@ -106,7 +116,7 @@ class _ChatPageState extends State<ChatPage> {
                                 ? 30
                                 : 20,
                             backgroundImage: NetworkImage(
-                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU'),
+                                widget.chatMessageVm.pic ?? url_noImage),
                           ),
                           Positioned(
                               bottom: 0,
@@ -129,13 +139,22 @@ class _ChatPageState extends State<ChatPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Flexible(child: Text("علی کریمی")),
                           Flexible(
+                              flex: 3,
                               child: Text(
-                            "آنلاین",
-                            style: TextStyle(
-                                color: parseColor('#00B4D8'), fontSize: 13),
-                          ))
+                                widget.chatMessageVm.titel,
+                                style: textStyle.copyWith(
+                                    fontSize: kFontSizeText(
+                                        sizeScreen, FontSize.title),
+                                    fontWeight: FontWeight.w600),
+                              )),
+                          Spacer()
+                          // Flexible(
+                          //     child: Text(
+                          //   "آنلاین",
+                          //   style: TextStyle(
+                          //       color: parseColor('#00B4D8'), fontSize: 13),
+                          // ))
                         ],
                       )
                     ],
@@ -155,7 +174,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ),
         body: SafeArea(
-          bottom: false,
+          // bottom: false,
           child: Stack(
             children: [
               GestureDetector(
@@ -170,7 +189,7 @@ class _ChatPageState extends State<ChatPage> {
                   messages: _messages,
                   onSendPressed: (p0) {},
                   user: _user,
-                  showUserAvatars: false,
+                  showUserAvatars: true,
                   showUserNames: true,
                   theme: DefaultChatTheme(
                     backgroundColor: parseColor('#FBFBFB'),
@@ -329,8 +348,8 @@ class _ChatPageState extends State<ChatPage> {
                           height: gh(0.05),
                           child: CircleAvatar(
                             backgroundColor: Colors.white,
-                            backgroundImage: NetworkImage(
-                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiLA28J7m4Jbacks8ceGZoQC-QgRLqbje9nA&usqp=CAU'),
+                            backgroundImage:
+                                NetworkImage(_user.imageUrl ?? url_noImage),
                           ),
                         ),
                         SizedBox(

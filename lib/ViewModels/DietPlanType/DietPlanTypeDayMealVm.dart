@@ -9,14 +9,14 @@ class DietPlanTypeDayMealVm extends BaseViewModel {
 
   DietPlanTypeDayMealVm.fromJson(Map<String, dynamic> json) {
     dayNumber = json['dayNumber'];
-    currentTerm = json['currentTerm'];
+    currentTerm = json['currentMeal'];
     mealsCount = json['mealsCount'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['dayNumber'] = this.dayNumber;
-    data['currentTerm'] = this.currentTerm;
+    data['currentMeal'] = this.currentTerm;
     data['mealsCount'] = this.mealsCount;
     return data;
   }
