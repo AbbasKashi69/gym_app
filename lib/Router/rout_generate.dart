@@ -22,6 +22,7 @@ import 'package:gym_app/blocs/Account/bloc/submit_register_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/verify_code_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/verify_code_reset_passwrod_bloc.dart';
 import 'package:gym_app/blocs/AnonymousPlanType/bloc/create_using_form_bloc.dart';
+import 'package:gym_app/blocs/AnonymousPlanType/bloc/edit_using_form_other_sports_bloc.dart';
 import 'package:gym_app/blocs/AnonymousPlanType/bloc/find_by_id_in_form_other_sports_bloc.dart';
 import 'package:gym_app/blocs/BodyBuildingMovement/bloc/get_user_body_building_movement_list_bloc.dart';
 import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/create_using_form_body_building_bloc.dart';
@@ -36,6 +37,7 @@ import 'package:gym_app/blocs/CoachStudent/bloc/get_student_coaches_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_students_as_person_list_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/request_to_coach_bloc.dart';
 import 'package:gym_app/blocs/DietPlanType/bloc/create_using_form_diet_bloc.dart';
+import 'package:gym_app/blocs/DietPlanType/bloc/edit_using_form_diet_bloc.dart';
 import 'package:gym_app/blocs/DietPlanType/bloc/find_by_id_in_form_diet_bloc.dart';
 import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/blocs/Resume/bloc/get_resume_bloc.dart';
@@ -234,8 +236,9 @@ class MyRouter {
           var myDietVm = routeSettings.arguments as MyDietVm;
           return MaterialPageRoute(
               builder: (context) => CreateMovementDietPage(
-                    dietPlanTypeDayTermVm: myDietVm.dietPlanTypeDayMealVm,
-                    dietPlanTypeFormVm: myDietVm.dietPlanTypeFormVm,
+                    dietPlanTypeDayTermVmOriginal:
+                        myDietVm.dietPlanTypeDayMealVm,
+                    dietPlanTypeFormVmOriginal: myDietVm.dietPlanTypeFormVm,
                   ));
         }
       case ProgramListPage.routeName:
@@ -260,8 +263,15 @@ class MyRouter {
         {
           var anonymousPlantypeFormVm = routeSettings.arguments;
           return MaterialPageRoute(
-              builder: (context) => BlocProvider(
-                    create: (context) => CreateUsingFormOthersSportsBloc(),
+              builder: (context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) => CreateUsingFormOthersSportsBloc(),
+                      ),
+                      BlocProvider(
+                        create: (context) => EditUsingFormOtherSportsBloc(),
+                      ),
+                    ],
                     child: CreateProgramOtherSportsSettingPage(
                         anonymousPlantypeFormVm:
                             anonymousPlantypeFormVm as AnonymousPlantypeFormVm),
@@ -271,8 +281,15 @@ class MyRouter {
         {
           var dietPlanTypeFormVm = routeSettings.arguments;
           return MaterialPageRoute(
-              builder: (context) => BlocProvider(
-                    create: (context) => CreateUsingFormDietBloc(),
+              builder: (context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) => CreateUsingFormDietBloc(),
+                      ),
+                      BlocProvider(
+                        create: (context) => EditUsingFormDietBloc(),
+                      ),
+                    ],
                     child: CreateProgramDietSettingPage(
                         dietPlanTypeFormVm:
                             dietPlanTypeFormVm as DietPlanTypeFormVm),

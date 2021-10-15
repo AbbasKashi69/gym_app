@@ -73,6 +73,8 @@ class _ProgramListPageState extends State<ProgramListPage> {
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(12), topLeft: Radius.circular(12))),
         child: SingleChildScrollView(
+          controller:
+              isAlign ? _exerciseScrollController : _dietScrollController,
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
@@ -251,9 +253,6 @@ class _ProgramListPageState extends State<ProgramListPage> {
                       return ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        controller: isAlign
-                            ? _exerciseScrollController
-                            : _dietScrollController,
                         padding: EdgeInsets.only(bottom: padding),
                         itemBuilder: (context, index) {
                           if (index < state.page_planTypeLogVm!.items!.length)

@@ -20,9 +20,11 @@ class DietPlanTypeFormVm {
   List<DietPlanTypeDetailFormVm>? dietPlanTypeDetailForms;
   List<PersonListVm>? students;
   List<DietPlanTypeDayMealVm>? dayMeals;
+  bool? isCreate;
 
   DietPlanTypeFormVm(
-      {this.id = 0,
+      {this.isCreate,
+      this.id = 0,
       this.coachId = 0,
       this.coachFullName,
       this.title,
@@ -100,4 +102,6 @@ class DietPlanTypeFormVm {
     }
     return data;
   }
+
+  void setIsCreate(bool newIsCreated) => this.isCreate = newIsCreated;
 }

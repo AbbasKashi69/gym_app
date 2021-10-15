@@ -35,18 +35,12 @@ class _CreateMovementOtherSportsPageState
   @override
   void initState() {
     super.initState();
-    anonymousPlanTypeDayTermVm = AnonymousPlanTypeDayTermVm(
-        currentTerm: widget.anonymousPlanTypeDayTermVmOriginal.currentTerm,
-        dayNumber: widget.anonymousPlanTypeDayTermVmOriginal.dayNumber,
-        termsCount: widget.anonymousPlanTypeDayTermVmOriginal.termsCount);
-    // anonymousPlanTypeDayTermVm = widget.anonymousPlanTypeDayTermVmOriginal;
-    anonymousPlantypeFormVm = AnonymousPlantypeFormVm(
-        dayCount: widget.anonymousPlantypeFormVmOriginal.dayCount,
-        dayTerms: widget.anonymousPlantypeFormVmOriginal.dayTerms,
-        totalTerm: widget.anonymousPlantypeFormVmOriginal.totalTerm,
-        anonymousPlanTypeDetailForms: widget
-            .anonymousPlantypeFormVmOriginal.anonymousPlanTypeDetailForms!);
-    // anonymousPlantypeFormVm = widget.anonymousPlantypeFormVmOriginal;
+    anonymousPlanTypeDayTermVm = widget.anonymousPlanTypeDayTermVmOriginal;
+    anonymousPlantypeFormVm = widget.anonymousPlantypeFormVmOriginal;
+    //   anonymousPlanTypeDayTermVm = AnonymousPlanTypeDayTermVm.fromJson(
+    //       widget.anonymousPlanTypeDayTermVmOriginal.toJson());
+    //   anonymousPlantypeFormVm = AnonymousPlantypeFormVm.fromJson(
+    //       widget.anonymousPlantypeFormVmOriginal.toJson());
   }
 
   bool isEmptyTextField = true;
@@ -110,30 +104,8 @@ class _CreateMovementOtherSportsPageState
                     GestureDetector(
                       onTap: () {
                         //***** new for change struct of create program  */
-                        if (anonymousPlantypeFormVm
-                            .anonymousPlanTypeDetailForms!
-                            .where((element) =>
-                                element.dayNumber ==
-                                    anonymousPlanTypeDayTermVm.dayNumber &&
-                                element.termNumber ==
-                                    anonymousPlanTypeDayTermVm.currentTerm &&
-                                element.nameMovementController!.text.isEmpty)
-                            .toList()
-                            .isEmpty) {
-                          AnonymousPlanTypeDetailFormVm data =
-                              AnonymousPlanTypeDetailFormVm();
-                          data.descriptionController = TextEditingController();
-                          data.nameMovementController = TextEditingController();
-                          data.dayNumber = anonymousPlanTypeDayTermVm.dayNumber;
-                          data.termNumber =
-                              anonymousPlanTypeDayTermVm.currentTerm! + 1;
-                          data.displayOrder =
-                              MyHomePage.lastDisplayOtherSports += 1;
-                          anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
-                              .removeWhere(
-                                  (s) => s.displayOrder == data.displayOrder);
-                          anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
-                              .add(data);
+                        if (listCurrentDayCurrentTerm(2).isEmpty) {
+                          createAnonymousPlanTypeDetailFormvm(false);
                           anonymousPlanTypeDayTermVm.termsCount =
                               anonymousPlanTypeDayTermVm.termsCount! + 1;
                           setState(() {});
@@ -160,13 +132,7 @@ class _CreateMovementOtherSportsPageState
                   ]),
                 ),
               ),
-              anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
-                      .where((s) =>
-                          s.dayNumber == anonymousPlanTypeDayTermVm.dayNumber &&
-                          s.termNumber ==
-                              anonymousPlanTypeDayTermVm.currentTerm)
-                      .toList()
-                      .isEmpty
+              listCurrentDayCurrentTerm(1).isEmpty
                   ? Center(
                       child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 50),
@@ -174,29 +140,11 @@ class _CreateMovementOtherSportsPageState
                     ))
                   : Column(
                       children: List.generate(
-                          anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
-                              .where((s) =>
-                                  s.dayNumber ==
-                                      anonymousPlanTypeDayTermVm.dayNumber &&
-                                  s.termNumber ==
-                                      anonymousPlanTypeDayTermVm.currentTerm)
-                              .toList()
-                              .length,
+                          listCurrentDayCurrentTerm(1).length,
                           (index) => ItemAddedMovementOtherSports(
                                 deleteMovement: (int displayOrder) {
                                   //***** new for change struct of create program  */
-                                  if (anonymousPlantypeFormVm
-                                          .anonymousPlanTypeDetailForms!
-                                          .where((element) =>
-                                              element.dayNumber ==
-                                                  anonymousPlanTypeDayTermVm
-                                                      .dayNumber &&
-                                              element.termNumber ==
-                                                  anonymousPlanTypeDayTermVm
-                                                      .currentTerm)
-                                          .toList()
-                                          .length >
-                                      1) {
+                                  if (listCurrentDayCurrentTerm(1).length > 1) {
                                     FocusScope.of(context)
                                         .requestFocus(FocusNode());
                                     setState(() {
@@ -216,44 +164,16 @@ class _CreateMovementOtherSportsPageState
                                             'نوبت شما باید حداقل یک حرکت داشته باشد');
                                   }
                                 },
-                                data: anonymousPlantypeFormVm
-                                    .anonymousPlanTypeDetailForms!
-                                    .where((s) =>
-                                        s.dayNumber ==
-                                            anonymousPlanTypeDayTermVm
-                                                .dayNumber &&
-                                        s.termNumber ==
-                                            anonymousPlanTypeDayTermVm
-                                                .currentTerm)
-                                    .toList()[index],
+                                data: listCurrentDayCurrentTerm(1)[index],
                               )),
                     ),
               GestureDetector(
                 onTap: () {
                   //***** new for change struct of create program  */
-                  if (anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
-                      .where((element) =>
-                          element.dayNumber ==
-                              anonymousPlanTypeDayTermVm.dayNumber &&
-                          element.termNumber ==
-                              anonymousPlanTypeDayTermVm.currentTerm &&
-                          element.nameMovementController!.text.isEmpty)
-                      .toList()
-                      .isEmpty)
+                  if (listCurrentDayCurrentTerm(2).isEmpty)
                   //***** new for change struct of create program  */
                   {
-                    AnonymousPlanTypeDetailFormVm data =
-                        AnonymousPlanTypeDetailFormVm();
-                    data.descriptionController = TextEditingController();
-                    data.nameMovementController = TextEditingController();
-                    data.dayNumber = anonymousPlanTypeDayTermVm.dayNumber;
-                    data.termNumber = anonymousPlanTypeDayTermVm.currentTerm;
-                    data.displayOrder = MyHomePage.lastDisplayOtherSports += 1;
-                    anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
-                        .removeWhere(
-                            (s) => s.displayOrder == data.displayOrder);
-                    anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
-                        .add(data);
+                    createAnonymousPlanTypeDetailFormvm(true);
                     setState(() {});
                   } else
                     Fluttertoast.showToast(msg: 'حرکت فعلی رو پر کنید');
@@ -306,8 +226,15 @@ class _CreateMovementOtherSportsPageState
                           isEmptyTextField = false;
                         }
                         if (!isEmptyTextField) {
+                          // widget.anonymousPlanTypeDayTermVmOriginal =
+                          //     AnonymousPlanTypeDayTermVm.fromJson(
+                          //         anonymousPlanTypeDayTermVm.toJson());
+
                           widget.anonymousPlanTypeDayTermVmOriginal =
                               anonymousPlanTypeDayTermVm;
+                          // widget.anonymousPlantypeFormVmOriginal =
+                          //     AnonymousPlantypeFormVm.fromJson(
+                          //         anonymousPlantypeFormVm.toJson());
                           widget.anonymousPlantypeFormVmOriginal =
                               anonymousPlantypeFormVm;
                           await Get.showSnackbar(GetBar(
@@ -329,6 +256,36 @@ class _CreateMovementOtherSportsPageState
         ),
       ),
     );
+  }
+
+  void createAnonymousPlanTypeDetailFormvm(bool isNewMovement) {
+    AnonymousPlanTypeDetailFormVm data = AnonymousPlanTypeDetailFormVm();
+    data.descriptionController = TextEditingController();
+    data.nameMovementController = TextEditingController();
+    data.dayNumber = anonymousPlanTypeDayTermVm.dayNumber;
+    data.termNumber = isNewMovement
+        ? anonymousPlanTypeDayTermVm.currentTerm
+        : anonymousPlanTypeDayTermVm.currentTerm! + 1;
+    data.displayOrder = MyHomePage.lastDisplayOtherSports += 1;
+    anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+        .removeWhere((s) => s.displayOrder == data.displayOrder);
+    anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!.add(data);
+  }
+
+  List<AnonymousPlanTypeDetailFormVm> listCurrentDayCurrentTerm(int type) {
+    if (type == 1) {
+      return anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+          .where((element) =>
+              element.dayNumber == anonymousPlanTypeDayTermVm.dayNumber &&
+              element.termNumber == anonymousPlanTypeDayTermVm.currentTerm)
+          .toList();
+    } else
+      return anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+          .where((element) =>
+              element.dayNumber == anonymousPlanTypeDayTermVm.dayNumber &&
+              element.termNumber == anonymousPlanTypeDayTermVm.currentTerm &&
+              element.nameMovementController!.text.isEmpty)
+          .toList();
   }
 }
 

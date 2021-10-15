@@ -10,7 +10,7 @@ class DietPlanTypeService {
 
   static const String url_createUsingForm = '/api/DietPlanType/CreateUsingForm';
   static const String url_findByIdInForm = '/api/DietPlanType/FindByIdInForm';
-  static const String url_editUsingForm = 'api/DietPlanType/EditUsingForm';
+  static const String url_editUsingForm = '/api/DietPlanType/EditUsingForm';
   Future<ResultObject?> createUsingForm(
       DietPlanTypeFormVm dietPlanTypeFormVm) async {
     var response = await repository!

@@ -5,10 +5,12 @@ import 'package:get/get.dart';
 import 'package:gym_app/ViewModels/CurrentUserVm.dart';
 import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeDayMealVm.dart';
 import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/DietPlanTypeDetail/DietPlanTypeDetailFormVm.dart';
 import 'package:gym_app/ViewModels/Person/PersonListVm.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_students_as_person_list_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customeTextField.dart';
+import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateProgramDietSetting/create_program_diet_setting_page.dart';
 import 'package:gym_app/screen/CreateProgramOtherSports/components/select_student_screen.dart';
 import 'package:gym_app/screen/CreateProgramOtherSports/create_program_other_sports_page.dart';
@@ -28,11 +30,19 @@ class CreateProgramDietPage extends StatelessWidget {
   final TextEditingController _descriptionTextEditingController =
       TextEditingController();
   final DietPlanTypeFormVm dietPlantypeFormVm = DietPlanTypeFormVm(
+      isCreate: true,
       students: [],
       dayMeals: [
         DietPlanTypeDayMealVm(dayNumber: 1, mealsCount: 1, currentTerm: 1)
       ],
-      dietPlanTypeDetailForms: [],
+      dietPlanTypeDetailForms: [
+        DietPlanTypeDetailFormVm(
+            descriptionController: TextEditingController(),
+            nameDietController: TextEditingController(),
+            dayNumber: 1,
+            mealNumber: 1,
+            displayOrder: MyHomePage.lastDisplayOtherSports += 1)
+      ],
       isPrivate: CurrentUserVm.roleType != 3 ? false : true);
   final GlobalKey<FormState> _dietProgramKey = GlobalKey<FormState>();
 
@@ -83,10 +93,6 @@ class CreateProgramDietPage extends StatelessWidget {
                 child: Column(
                   children: [
                     TextFormField(
-                      validator: (String? value) {
-                        if (value!.isEmpty) return 'هزینه نمیتواند خالی باشد';
-                        return null;
-                      },
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       keyboardType: TextInputType.phone,
                       textInputAction: TextInputAction.next,

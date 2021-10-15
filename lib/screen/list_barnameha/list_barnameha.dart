@@ -80,6 +80,9 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(12), topLeft: Radius.circular(12))),
         child: SingleChildScrollView(
+          controller: _selectedTab == 0
+              ? _exerciseScrollController
+              : _dietScrollController,
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
@@ -176,9 +179,6 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
                               state.page_planTypeLogVm!.items != null &&
                               state.page_planTypeLogVm!.items!.isNotEmpty
                           ? ListView.builder(
-                              controller: _selectedTab == 0
-                                  ? _exerciseScrollController
-                                  : _dietScrollController,
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {

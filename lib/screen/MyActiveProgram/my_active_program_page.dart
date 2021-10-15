@@ -84,6 +84,9 @@ class _MyActiveProgramPageState extends State<MyActiveProgramPage>
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(12), topLeft: Radius.circular(12))),
         child: SingleChildScrollView(
+          controller: _selectedTab == 0
+              ? _exerciseScrollController
+              : _dietScrollController,
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
@@ -182,9 +185,6 @@ class _MyActiveProgramPageState extends State<MyActiveProgramPage>
                               state.page_planTypeLogVm!.items != null &&
                               state.page_planTypeLogVm!.items!.isNotEmpty
                           ? ListView.builder(
-                              controller: _selectedTab == 0
-                                  ? _exerciseScrollController
-                                  : _dietScrollController,
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {

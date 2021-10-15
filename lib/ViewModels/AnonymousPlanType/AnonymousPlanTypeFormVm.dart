@@ -19,6 +19,7 @@ class AnonymousPlantypeFormVm {
   List<AnonymousPlanTypeDetailFormVm>? anonymousPlanTypeDetailForms;
   List<PersonListVm>? students;
   List<AnonymousPlanTypeDayTermVm>? dayTerms;
+  bool? isCreate;
 
   AnonymousPlantypeFormVm(
       {this.id = 0,
@@ -36,6 +37,7 @@ class AnonymousPlantypeFormVm {
       this.isPrivate,
       this.anonymousPlanTypeDetailForms,
       this.students,
+      this.isCreate,
       this.dayTerms});
 
   AnonymousPlantypeFormVm.fromJson(Map<String, dynamic> json) {

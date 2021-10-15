@@ -7,6 +7,7 @@ import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanTypeDetail/AnonymousPlanTypeDetailFormVm.dart';
 import 'package:gym_app/blocs/AnonymousPlanType/bloc/create_using_form_bloc.dart';
+import 'package:gym_app/blocs/AnonymousPlanType/bloc/edit_using_form_other_sports_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/main.dart';
@@ -195,28 +196,38 @@ class _DaysTaskState extends State<DaysTask> {
                                       .toString()
                                       .toWord(),
                                   deleteItem: () {
-                                    widget.anonymousPlantypeFormVm.dayTerms!
-                                        .removeAt(index);
-                                    widget.anonymousPlantypeFormVm
-                                        .anonymousPlanTypeDetailForms!
-                                        .removeWhere((element) =>
-                                            element.dayNumber == index + 1);
+                                    //***** new for change struct of create program  */
+                                    if (widget.anonymousPlantypeFormVm.dayTerms!
+                                            .length >
+                                        1) {
+                                      widget.anonymousPlantypeFormVm.dayTerms!
+                                          .removeAt(index);
+                                      widget.anonymousPlantypeFormVm
+                                          .anonymousPlanTypeDetailForms!
+                                          .removeWhere((element) =>
+                                              element.dayNumber == index + 1);
 
-                                    for (var item in widget
-                                        .anonymousPlantypeFormVm
-                                        .anonymousPlanTypeDetailForms!
-                                        .where((element) =>
-                                            element.dayNumber! > index)) {
-                                      item.dayNumber = item.dayNumber! - 1;
-                                    }
+                                      for (var item in widget
+                                          .anonymousPlantypeFormVm
+                                          .anonymousPlanTypeDetailForms!
+                                          .where((element) =>
+                                              element.dayNumber! > index)) {
+                                        item.dayNumber = item.dayNumber! - 1;
+                                      }
 
-                                    for (var item in widget
-                                        .anonymousPlantypeFormVm.dayTerms!
-                                        .where((element) =>
-                                            element.dayNumber! > index)) {
-                                      item.dayNumber = item.dayNumber! - 1;
-                                    }
-                                    setState(() {});
+                                      for (var item in widget
+                                          .anonymousPlantypeFormVm.dayTerms!
+                                          .where((element) =>
+                                              element.dayNumber! > index)) {
+                                        item.dayNumber = item.dayNumber! - 1;
+                                      }
+                                      setState(() {});
+                                    } else
+                                      //***** new for change struct of create program  */
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              'برنامه باید حداقل یک روز داشته باشد');
+                                    //***** new for change struct of create program  */
                                   }),
                             ),
                           ),
@@ -229,6 +240,9 @@ class _DaysTaskState extends State<DaysTask> {
                   if (widget
                       .anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
                       .where((element) =>
+                          element.dayNumber ==
+                              widget.anonymousPlantypeFormVm.dayTerms!.last
+                                  .dayNumber &&
                           element.nameMovementController!.text.isEmpty)
                       .toList()
                       .isEmpty)
@@ -288,55 +302,104 @@ class _DaysTaskState extends State<DaysTask> {
               SizedBox(
                 height: 20,
               ),
-              BlocConsumer<CreateUsingFormOthersSportsBloc,
-                  CreateUsingFormOthersSportsState>(
-                listener: (context, state) async {
-                  if (state is CreateUsingFormOthersSportsLoadedState) {
-                    if (state.resultObject != null &&
-                        state.resultObject!.success!) {
-                      await Fluttertoast.showToast(
-                          msg: state.resultObject!.message!);
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          MyHomePage.routeName, (route) => false);
-                    } else if (state.resultObject != null)
-                      Fluttertoast.showToast(msg: state.resultObject!.message!);
-                    else
-                      Fluttertoast.showToast(msg: 'دوباره امتحان کنید');
-                  }
-                },
-                builder: (context, state) {
-                  if (state is CreateUsingFormOthersSportsLoadingState)
-                    return MyWaiting();
-                  else
-                    return CustomeButton(
-                        sizeScreen: widget.sizeScreen,
-                        title: "ثبت",
-                        onTap: () {
-                          if (widget.anonymousPlantypeFormVm.dayTerms!
-                                  .isNotEmpty &&
-                              widget.anonymousPlantypeFormVm
-                                  .anonymousPlanTypeDetailForms!.isNotEmpty &&
-                              widget.anonymousPlantypeFormVm
-                                  .anonymousPlanTypeDetailForms!
-                                  .where((element) => element
-                                      .nameMovementController!.text.isNotEmpty)
-                                  .toList()
-                                  .isNotEmpty) {
-                            BlocProvider.of<CreateUsingFormOthersSportsBloc>(
-                                    context)
-                                .add(CreateUsingFormOtherSportsLoadingEvent(
-                                    anonymousPlantypeFormVm:
-                                        widget.anonymousPlantypeFormVm));
-                          } else
-                            Fluttertoast.showToast(
-                                msg: 'برنامه باید حداقل یک آیتم داشته باشد');
-                        });
-                },
-              )
+              if (widget.anonymousPlantypeFormVm.isCreate!)
+                _onTapCreate()
+              else
+                _onTapEdit()
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _onTapCreate() {
+    return BlocConsumer<CreateUsingFormOthersSportsBloc,
+        CreateUsingFormOthersSportsState>(
+      listener: (context, state) async {
+        if (state is CreateUsingFormOthersSportsLoadedState) {
+          if (state.resultObject != null && state.resultObject!.success!) {
+            await Fluttertoast.showToast(msg: state.resultObject!.message!);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                MyHomePage.routeName, (route) => false);
+          } else if (state.resultObject != null)
+            Fluttertoast.showToast(msg: state.resultObject!.message!);
+          else
+            Fluttertoast.showToast(msg: 'دوباره امتحان کنید');
+        }
+      },
+      builder: (context, state) {
+        if (state is CreateUsingFormOthersSportsLoadingState)
+          return MyWaiting();
+        else
+          return CustomeButton(
+              sizeScreen: widget.sizeScreen,
+              title: "ثبت",
+              onTap: () {
+                //***** new for change struct of create program  */
+                if (widget.anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                    .where((element) =>
+                        element.dayNumber ==
+                            widget.anonymousPlantypeFormVm.dayTerms!.last
+                                .dayNumber &&
+                        element.nameMovementController!.text.isEmpty)
+                    .toList()
+                    .isEmpty) {
+                  BlocProvider.of<CreateUsingFormOthersSportsBloc>(context).add(
+                      CreateUsingFormOtherSportsLoadingEvent(
+                          anonymousPlantypeFormVm:
+                              widget.anonymousPlantypeFormVm));
+                } else
+                  Fluttertoast.showToast(
+                      msg: 'آیتم های روز آخر خود را پر کنید');
+                //***** new for change struct of create program  */
+              });
+      },
+    );
+  }
+
+  Widget _onTapEdit() {
+    return BlocConsumer<EditUsingFormOtherSportsBloc,
+        EditUsingFormOtherSportsState>(
+      listener: (context, state) async {
+        if (state is EditUsingFormOtherSportsLoadedState) {
+          if (state.resultObject != null && state.resultObject!.success!) {
+            await Fluttertoast.showToast(msg: state.resultObject!.message!);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                MyHomePage.routeName, (route) => false);
+          } else if (state.resultObject != null)
+            Fluttertoast.showToast(msg: state.resultObject!.message!);
+          else
+            Fluttertoast.showToast(msg: 'دوباره امتحان کنید');
+        }
+      },
+      builder: (context, state) {
+        if (state is EditUsingFormOtherSportsLoadingState)
+          return MyWaiting();
+        else
+          return CustomeButton(
+              sizeScreen: widget.sizeScreen,
+              title: "ثبت",
+              onTap: () {
+                //***** new for change struct of create program  */
+                if (widget.anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+                    .where((element) =>
+                        element.dayNumber ==
+                            widget.anonymousPlantypeFormVm.dayTerms!.last
+                                .dayNumber &&
+                        element.nameMovementController!.text.isEmpty)
+                    .toList()
+                    .isEmpty) {
+                  BlocProvider.of<EditUsingFormOtherSportsBloc>(context).add(
+                      EditUsingFormOtherSportsLoadingEvent(
+                          anonymousPlantypeFormVm:
+                              widget.anonymousPlantypeFormVm));
+                } else
+                  Fluttertoast.showToast(
+                      msg: 'آیتم های روز آخر خود را پر کنید');
+                //***** new for change struct of create program  */
+              });
+      },
     );
   }
 }

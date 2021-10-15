@@ -344,6 +344,7 @@ class ItemLoadedEditingProgramDiet extends StatelessWidget {
                   title: 'ادامه',
                   onTap: () {
                     if (dietProgramKey.currentState!.validate()) {
+                      dietPlantypeFormVm.setIsCreate(false);
                       dietPlantypeFormVm.title =
                           titleTextEditingController.text;
                       dietPlantypeFormVm.totalPrice = int.tryParse(

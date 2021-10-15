@@ -345,6 +345,7 @@ class ItemLoadedEditingProgramOtherSports extends StatelessWidget {
                   title: 'ادامه',
                   onTap: () {
                     if (editOtherSportKey.currentState!.validate()) {
+                      anonymousPlantypeFormVm.isCreate = false;
                       anonymousPlantypeFormVm.title =
                           titleTextEditingController.text;
                       anonymousPlantypeFormVm.totalPrice = int.tryParse(

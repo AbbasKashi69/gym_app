@@ -29,18 +29,24 @@ class CreateProgramOtherSportsPage extends StatelessWidget {
   final TextEditingController _descriptionTextEditingController =
       TextEditingController();
   final AnonymousPlantypeFormVm anonymousPlantypeFormVm =
-      AnonymousPlantypeFormVm(students: [], dayTerms: [
-    AnonymousPlanTypeDayTermVm(dayNumber: 1, termsCount: 1, currentTerm: 1)
-  ], anonymousPlanTypeDetailForms: [
-    //***** new for change struct of create program  */
-    AnonymousPlanTypeDetailFormVm(
-        descriptionController: TextEditingController(),
-        nameMovementController: TextEditingController(),
-        dayNumber: 1,
-        termNumber: 1,
-        displayOrder: MyHomePage.lastDisplayOtherSports += 1)
-    //***** new for change struct of create program  */
-  ], isPrivate: CurrentUserVm.roleType != 3 ? false : true);
+      AnonymousPlantypeFormVm(
+          isCreate: true,
+          students: [],
+          dayTerms: [
+            AnonymousPlanTypeDayTermVm(
+                dayNumber: 1, termsCount: 1, currentTerm: 1)
+          ],
+          anonymousPlanTypeDetailForms: [
+            //***** new for change struct of create program  */
+            AnonymousPlanTypeDetailFormVm(
+                descriptionController: TextEditingController(),
+                nameMovementController: TextEditingController(),
+                dayNumber: 1,
+                termNumber: 1,
+                displayOrder: MyHomePage.lastDisplayOtherSports += 1)
+            //***** new for change struct of create program  */
+          ],
+          isPrivate: CurrentUserVm.roleType != 3 ? false : true);
   final GlobalKey<FormState> _createOtherSportKey = GlobalKey<FormState>();
 
   Future<void> setStartTimePicker(BuildContext context) async {
