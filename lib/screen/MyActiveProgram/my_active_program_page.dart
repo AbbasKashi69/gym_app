@@ -10,6 +10,7 @@ import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/components/no_data.dart';
+import 'package:gym_app/components/set_selected_route.dart';
 import 'package:gym_app/extensions/ext.dart';
 
 class MyActiveProgramPage extends StatefulWidget {
@@ -381,7 +382,11 @@ class ItemLoadedActiveProgram extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       child: InkWell(
                         borderRadius: BorderRadius.circular(10),
-                        onTap: () {},
+                        onTap: () {
+                          SetSelectedRoute()
+                            ..setSelectedRoute(context, planTypeLogvm.planType,
+                                planTypeLogvm.planTypeId);
+                        },
                         child: Container(
                           padding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 5),

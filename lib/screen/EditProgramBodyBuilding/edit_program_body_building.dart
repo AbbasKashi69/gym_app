@@ -356,10 +356,7 @@ class ItemLoadedEditingProgramBodyBuilding extends StatelessWidget {
                   title: 'ادامه',
                   onTap: () {
                     if (editBodyKey.currentState!.validate()) {
-                      bodyBuildingPlanTypeFormVm.dayTerms = [
-                        BodyBuildingPlanDayTermVm(
-                            dayNumber: 1, termsCount: 1, currentTerm: 1)
-                      ];
+                      bodyBuildingPlanTypeFormVm.isCreate = false;
                       bodyBuildingPlanTypeFormVm.title =
                           titleTextEditingController.text;
                       bodyBuildingPlanTypeFormVm.totalPrice = int.tryParse(

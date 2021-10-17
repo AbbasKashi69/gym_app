@@ -26,6 +26,7 @@ import 'package:gym_app/blocs/AnonymousPlanType/bloc/edit_using_form_other_sport
 import 'package:gym_app/blocs/AnonymousPlanType/bloc/find_by_id_in_form_other_sports_bloc.dart';
 import 'package:gym_app/blocs/BodyBuildingMovement/bloc/get_user_body_building_movement_list_bloc.dart';
 import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/create_using_form_body_building_bloc.dart';
+import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/edit_using_form_body_building_bloc.dart';
 import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/find_by_id_in_form_body_building_bloc.dart';
 import 'package:gym_app/blocs/BottomNav/bloc/bottom_nav_bloc.dart';
 import 'package:gym_app/blocs/ChatMessage/bloc/get_all_message_bloc.dart';
@@ -213,9 +214,9 @@ class MyRouter {
               builder: (context) => BlocProvider(
                     create: (context) => GetUserBodyBuildingMovementListBloc(),
                     child: CreateMovementPage(
-                      bodyBuildingPlanTypeFormVm:
+                      bodyBuildingPlanTypeFormVmOriginal:
                           myBodyVm.bodyBuildingPlanTypeFormVm,
-                      bodyBuildingPlanDayTermVm:
+                      bodyBuildingPlanDayTermVmOriginal:
                           myBodyVm.bodyBuildingPlanDayTermVm,
                     ),
                   ));
@@ -252,12 +253,20 @@ class MyRouter {
         {
           var bodyBuildingPlanTypeFormVm = routeSettings.arguments;
           return MaterialPageRoute(
-              builder: (context) => BlocProvider(
-                  create: (context) => CreateUsingFormBodyBuildingBloc(),
-                  child: CreateProgramBodySettingPage(
-                    bodyBuildingPlanTypeFormVm: bodyBuildingPlanTypeFormVm
-                        as BodyBuildingPlanTypeFormVm,
-                  )));
+              builder: (context) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                          create: (context) =>
+                              CreateUsingFormBodyBuildingBloc(),
+                        ),
+                        BlocProvider(
+                          create: (context) => EditUsingFormBodyBuildingBloc(),
+                        ),
+                      ],
+                      child: CreateProgramBodySettingPage(
+                        bodyBuildingPlanTypeFormVm: bodyBuildingPlanTypeFormVm
+                            as BodyBuildingPlanTypeFormVm,
+                      )));
         }
       case CreateProgramOtherSportsSettingPage.routeName:
         {

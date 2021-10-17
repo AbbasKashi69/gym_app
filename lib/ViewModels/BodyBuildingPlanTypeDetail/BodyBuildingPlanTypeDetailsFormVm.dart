@@ -33,6 +33,8 @@ class BodyBuildingPlanTypeDetailsFormVm extends BaseViewModel {
       this.setItems,
       this.superMoves,
       this.setController,
+      this.descriptionController,
+      this.nameMovementController,
       this.listSetItemsTextController});
 
   BodyBuildingPlanTypeDetailsFormVm.fromJson(Map<String, dynamic> json) {

@@ -37,7 +37,7 @@ class _ObserveOtherSportsPageState extends State<ObserveOtherSportsPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'ایجاد برنامه بدنسازی',
+                                'مشاهده ی برنامه سایر رشته ها',
                                 style: textStyle.copyWith(
                                     fontSize: kFontSizeText(
                                         sizeScreen, FontSize.subTitle),
@@ -81,6 +81,38 @@ class _ObserveOtherSportsPageState extends State<ObserveOtherSportsPage> {
                               ),
                             ],
                           )),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 5),
+                          child: Row(
+                            children: [
+                              Text(
+                                'روز سوم',
+                                style: textStyle.copyWith(
+                                    color: Colors.white,
+                                    fontSize: kFontSizeText(
+                                        sizeScreen, FontSize.normal)),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.white,
+                                size: kFontSizeText(
+                                    sizeScreen, FontSize.subTitle),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text('نوبت اول',
+                                  style: textStyle.copyWith(
+                                      color: Colors.white,
+                                      fontSize: kFontSizeText(
+                                          sizeScreen, FontSize.normal)))
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -95,42 +127,15 @@ class _ObserveOtherSportsPageState extends State<ObserveOtherSportsPage> {
                             margin: EdgeInsets.symmetric(vertical: padding),
                             child: Row(
                               children: [
-                                Expanded(
-                                  flex: 5,
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      'حرکت',
-                                      style: textStyle.copyWith(
-                                          fontSize: kFontSizeText(
-                                              sizeScreen, FontSize.title)),
-                                    ),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    'حرکت',
+                                    style: textStyle.copyWith(
+                                        fontSize: kFontSizeText(
+                                            sizeScreen, FontSize.title)),
                                   ),
                                 ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      'ست',
-                                      style: textStyle.copyWith(
-                                          fontSize: kFontSizeText(
-                                              sizeScreen, FontSize.title)),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      'تکرار',
-                                      style: textStyle.copyWith(
-                                          fontSize: kFontSizeText(
-                                              sizeScreen, FontSize.title)),
-                                    ),
-                                  ),
-                                )
                               ],
                             ),
                           ),

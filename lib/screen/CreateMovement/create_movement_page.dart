@@ -22,11 +22,11 @@ class CreateMovementPage extends StatefulWidget {
   static const routeName = '/CreateMovementPage';
   const CreateMovementPage(
       {Key? key,
-      required this.bodyBuildingPlanDayTermVm,
-      required this.bodyBuildingPlanTypeFormVm})
+      required this.bodyBuildingPlanDayTermVmOriginal,
+      required this.bodyBuildingPlanTypeFormVmOriginal})
       : super(key: key);
-  final BodyBuildingPlanDayTermVm bodyBuildingPlanDayTermVm;
-  final BodyBuildingPlanTypeFormVm bodyBuildingPlanTypeFormVm;
+  final BodyBuildingPlanDayTermVm bodyBuildingPlanDayTermVmOriginal;
+  final BodyBuildingPlanTypeFormVm bodyBuildingPlanTypeFormVmOriginal;
 
   @override
   _CreateMovementPageState createState() => _CreateMovementPageState();
@@ -34,249 +34,235 @@ class CreateMovementPage extends StatefulWidget {
 
 class _CreateMovementPageState extends State<CreateMovementPage> {
   bool isEmptyTextField = true;
+  late BodyBuildingPlanDayTermVm bodyBuildingPlanDayTermVm;
+  late BodyBuildingPlanTypeFormVm bodyBuildingPlanTypeFormVm;
+  @override
+  void initState() {
+    super.initState();
+    bodyBuildingPlanDayTermVm = widget.bodyBuildingPlanDayTermVmOriginal;
+    bodyBuildingPlanTypeFormVm = widget.bodyBuildingPlanTypeFormVmOriginal;
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
-    return WillPopScope(
-      onWillPop: () async {
-        List<BodyBuildingPlanTypeDetailsFormVm> x = widget
-            .bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
-            .where((element) =>
-                element.dayNumber == widget.bodyBuildingPlanDayTermVm.dayNumber)
-            .toList();
-        for (int i = 0; i < x.length; i++) {
-          x[i].nameMovementController!.clear();
-          x[i].descriptionController!.clear();
-        }
-        return Future.value(true);
-      },
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: kColorAppbar,
-        appBar: AppBarWidget(
-          title: widget.bodyBuildingPlanDayTermVm.dayNumber != 3
-              ? 'روز ${widget.bodyBuildingPlanDayTermVm.dayNumber.toString().toWord()}م'
-              : 'روز سوم',
-          onBack: () async {
-            List<BodyBuildingPlanTypeDetailsFormVm> x = widget
-                .bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
-                .where((element) =>
-                    element.dayNumber ==
-                    widget.bodyBuildingPlanDayTermVm.dayNumber)
-                .toList();
-            for (int i = 0; i < x.length; i++) {
-              x[i].nameMovementController!.clear();
-              x[i].descriptionController!.clear();
-            }
-            Navigator.of(context).pop();
-          },
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            decoration: kBodyDecoration,
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: padding / 2),
-                  margin: EdgeInsets.symmetric(vertical: padding),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(children: [
-                      Row(
-                        children: List.generate(
-                          widget.bodyBuildingPlanDayTermVm.termsCount!,
-                          (index) => ItemFilterChip(
-                              index: index + 1,
-                              onChangeValue: () {
-                                setState(() {
-                                  widget.bodyBuildingPlanDayTermVm.currentTerm =
-                                      index + 1;
-                                });
-                              },
-                              deleteItemfunc: (idx) {
-                                if (widget
-                                        .bodyBuildingPlanDayTermVm.termsCount! >
-                                    1) {
-                                  widget.bodyBuildingPlanTypeFormVm
-                                      .bodyBuildingPlanTypeDetails!
-                                      .removeWhere((s) => s.termNumber == idx);
-                                  for (var item in widget
-                                      .bodyBuildingPlanTypeFormVm
-                                      .bodyBuildingPlanTypeDetails!
-                                      .where((element) =>
-                                          element.termNumber! > idx)) {
-                                    item.termNumber = item.termNumber! - 1;
-                                  }
-                                  widget.bodyBuildingPlanDayTermVm.termsCount =
-                                      widget.bodyBuildingPlanDayTermVm
-                                              .termsCount! -
-                                          1;
-                                  widget.bodyBuildingPlanDayTermVm.currentTerm =
-                                      1;
-
-                                  setState(() {});
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: kColorAppbar,
+      appBar: AppBarWidget(
+        title: bodyBuildingPlanDayTermVm.dayNumber != 3
+            ? 'روز ${bodyBuildingPlanDayTermVm.dayNumber.toString().toWord()}م'
+            : 'روز سوم',
+      ),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Container(
+          decoration: kBodyDecoration,
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: padding / 2),
+                margin: EdgeInsets.symmetric(vertical: padding),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(children: [
+                    Row(
+                      children: List.generate(
+                        bodyBuildingPlanDayTermVm.termsCount!,
+                        (index) => ItemFilterChip(
+                            index: index + 1,
+                            onChangeValue: () {
+                              setState(() {
+                                bodyBuildingPlanDayTermVm.currentTerm =
+                                    index + 1;
+                              });
+                            },
+                            deleteItemfunc: (idx) {
+                              if (bodyBuildingPlanDayTermVm.termsCount! > 1) {
+                                bodyBuildingPlanTypeFormVm
+                                    .bodyBuildingPlanTypeDetails!
+                                    .removeWhere((s) => s.termNumber == idx);
+                                for (var item in bodyBuildingPlanTypeFormVm
+                                    .bodyBuildingPlanTypeDetails!
+                                    .where((element) =>
+                                        element.termNumber! > idx)) {
+                                  item.termNumber = item.termNumber! - 1;
                                 }
-                              },
-                              isSelected: widget
-                                  .bodyBuildingPlanDayTermVm.currentTerm!),
-                        ),
+                                bodyBuildingPlanDayTermVm.termsCount =
+                                    bodyBuildingPlanDayTermVm.termsCount! - 1;
+                                bodyBuildingPlanDayTermVm.currentTerm = 1;
+
+                                setState(() {});
+                              }
+                            },
+                            isSelected: bodyBuildingPlanDayTermVm.currentTerm!),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          widget.bodyBuildingPlanDayTermVm.termsCount =
-                              widget.bodyBuildingPlanDayTermVm.termsCount! + 1;
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        if (listCurrentDayCurrentTerm(2).isEmpty) {
+                          createBodyBuildingPlanTypeDetailFormVm(false);
+                          bodyBuildingPlanDayTermVm.termsCount =
+                              bodyBuildingPlanDayTermVm.termsCount! + 1;
                           setState(() {});
-                        },
-                        child: DottedBorder(
-                            borderType: BorderType.Circle,
-                            dashPattern: [5],
-                            color: parseColor('#707070'),
-                            child: Container(
-                              padding: EdgeInsets.all(padding),
-                              decoration: BoxDecoration(shape: BoxShape.circle),
-                              child: Center(
-                                child: Icon(
-                                  Icons.add,
-                                  color: parseColor('#565656'),
-                                ),
+                        } else
+                          Fluttertoast.showToast(
+                              msg: 'آیتم های نوبت فعلی را پر کنید');
+                      },
+                      child: DottedBorder(
+                          borderType: BorderType.Circle,
+                          dashPattern: [5],
+                          color: parseColor('#707070'),
+                          child: Container(
+                            padding: EdgeInsets.all(padding),
+                            decoration: BoxDecoration(shape: BoxShape.circle),
+                            child: Center(
+                              child: Icon(
+                                Icons.add,
+                                color: parseColor('#565656'),
                               ),
-                            )),
-                      )
-                    ]),
-                  ),
+                            ),
+                          )),
+                    )
+                  ]),
                 ),
-                widget.bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
-                        .where((s) =>
-                            s.dayNumber ==
-                                widget.bodyBuildingPlanDayTermVm.dayNumber &&
-                            s.termNumber ==
-                                widget.bodyBuildingPlanDayTermVm.currentTerm)
-                        .toList()
-                        .isEmpty
-                    ? Center(
-                        child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 50),
-                        child: NoData(),
-                      ))
-                    : Column(
-                        children: List.generate(
-                            widget.bodyBuildingPlanTypeFormVm
-                                .bodyBuildingPlanTypeDetails!
-                                .where((s) =>
-                                    s.dayNumber ==
-                                        widget.bodyBuildingPlanDayTermVm
-                                            .dayNumber &&
-                                    s.termNumber ==
-                                        widget.bodyBuildingPlanDayTermVm
-                                            .currentTerm)
-                                .toList()
-                                .length,
-                            (index) => ItemAddedMovementBodyBuilding(
-                                  bodyBuildingPlanTypeFormVm:
-                                      widget.bodyBuildingPlanTypeFormVm,
-                                  bodyBuildingPlanDayTermVm:
-                                      widget.bodyBuildingPlanDayTermVm,
-                                  deleteMovement: (int displayOrder) {
+              ),
+              listCurrentDayCurrentTerm(1).isEmpty
+                  ? Center(
+                      child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 50),
+                      child: NoData(),
+                    ))
+                  : Column(
+                      children: List.generate(
+                          listCurrentDayCurrentTerm(1).length,
+                          (index) => ItemAddedMovementBodyBuilding(
+                                bodyBuildingPlanTypeFormVm:
+                                    bodyBuildingPlanTypeFormVm,
+                                bodyBuildingPlanDayTermVm:
+                                    bodyBuildingPlanDayTermVm,
+                                deleteMovement: (int displayOrder) {
+                                  if (listCurrentDayCurrentTerm(1).length > 1) {
                                     FocusScope.of(context).unfocus();
                                     setState(() {
-                                      widget.bodyBuildingPlanTypeFormVm
+                                      bodyBuildingPlanTypeFormVm
                                           .bodyBuildingPlanTypeDetails!
                                           .removeWhere((s) =>
                                               s.displayOrder == displayOrder);
                                     });
-                                  },
-                                  data: widget.bodyBuildingPlanTypeFormVm
-                                      .bodyBuildingPlanTypeDetails!
-                                      .where((s) =>
-                                          s.dayNumber ==
-                                              widget.bodyBuildingPlanDayTermVm
-                                                  .dayNumber &&
-                                          s.termNumber ==
-                                              widget.bodyBuildingPlanDayTermVm
-                                                  .currentTerm)
-                                      .toList()[index],
-                                )),
-                      ),
-                GestureDetector(
-                  onTap: () {
-                    BodyBuildingPlanTypeDetailsFormVm data =
-                        BodyBuildingPlanTypeDetailsFormVm();
-                    data.descriptionController = TextEditingController();
-                    data.nameMovementController = TextEditingController();
-                    data.setController = TextEditingController();
-                    data.dayNumber = widget.bodyBuildingPlanDayTermVm.dayNumber;
-                    data.termNumber =
-                        widget.bodyBuildingPlanDayTermVm.currentTerm;
-                    data.displayOrder = MyHomePage.lastDisplayOtherSports += 1;
-                    widget
-                        .bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
-                        .removeWhere(
-                            (s) => s.displayOrder == data.displayOrder);
-                    widget
-                        .bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
-                        .add(data);
+                                  } else {
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            'نوبت شما باید حداقل یک حرکت داشته باشد');
+                                  }
+                                },
+                                data: listCurrentDayCurrentTerm(1)[index],
+                              )),
+                    ),
+              GestureDetector(
+                onTap: () {
+                  if (listCurrentDayCurrentTerm(2).isEmpty) {
+                    createBodyBuildingPlanTypeDetailFormVm(true);
                     setState(() {});
-                  },
-                  child: Container(
-                    width: gw(0.8),
-                    height: gh(0.07),
-                    child: DottedBorder(
-                      borderType: BorderType.RRect,
-                      color: parseColor('#00B4D8'),
-                      dashPattern: [5],
-                      radius: Radius.elliptical(20, 20),
-                      child: Container(
-                        // width: gw(0.8),
-                        // height: gh(0.03),
-                        child: Center(
-                          child: Text(
-                            'حرکت جدید',
-                            style: textStyle.copyWith(
-                                fontSize: kFontSizeText(
-                                    sizeScreen, FontSize.subTitle),
-                                color: parseColor('#00B4D8')),
-                          ),
+                  } else
+                    Fluttertoast.showToast(msg: 'حرکت فعلی رو پر کنید');
+                },
+                child: Container(
+                  width: gw(0.8),
+                  height: gh(0.07),
+                  child: DottedBorder(
+                    borderType: BorderType.RRect,
+                    color: parseColor('#00B4D8'),
+                    dashPattern: [5],
+                    radius: Radius.elliptical(20, 20),
+                    child: Container(
+                      // width: gw(0.8),
+                      // height: gh(0.03),
+                      child: Center(
+                        child: Text(
+                          'حرکت جدید',
+                          style: textStyle.copyWith(
+                              fontSize:
+                                  kFontSizeText(sizeScreen, FontSize.subTitle),
+                              color: parseColor('#00B4D8')),
                         ),
                       ),
                     ),
                   ),
                 ),
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: padding * 2),
-                    child: CustomeButton(
-                      sizeScreen: sizeScreen,
-                      title: 'ثبت برنامه',
-                      onTap: () async {
-                        List<BodyBuildingPlanTypeDetailsFormVm> x = widget
-                            .bodyBuildingPlanTypeFormVm
-                            .bodyBuildingPlanTypeDetails!
-                            .where((element) =>
-                                element.dayNumber ==
-                                widget.bodyBuildingPlanDayTermVm.dayNumber)
-                            .toList();
-                        if (x.isNotEmpty) {
-                          registerProgramDay(x);
-                          if (!isEmptyTextField) {
-                            await Get.showSnackbar(GetBar(
-                              duration: Duration(seconds: 2),
-                              backgroundColor: Colors.black,
-                              snackStyle: SnackStyle.FLOATING,
-                              message:
-                                  'برنامه ی روز ${widget.bodyBuildingPlanDayTermVm.dayNumber.toString().toWord()}م ثبت شد',
-                            ));
-                            Future.delayed(Duration(seconds: 1), () {
-                              Navigator.of(context).pop(true);
-                            });
-                          }
+              ),
+              Container(
+                  margin: EdgeInsets.symmetric(vertical: padding * 2),
+                  child: CustomeButton(
+                    sizeScreen: sizeScreen,
+                    title: 'ثبت برنامه',
+                    onTap: () async {
+                      List<BodyBuildingPlanTypeDetailsFormVm> x =
+                          bodyBuildingPlanTypeFormVm
+                              .bodyBuildingPlanTypeDetails!
+                              .where((element) =>
+                                  element.dayNumber ==
+                                  bodyBuildingPlanDayTermVm.dayNumber)
+                              .toList();
+                      if (x.isNotEmpty) {
+                        registerProgramDay(x);
+                        if (!isEmptyTextField) {
+                          await Get.showSnackbar(GetBar(
+                            duration: Duration(seconds: 2),
+                            backgroundColor: Colors.black,
+                            snackStyle: SnackStyle.FLOATING,
+                            message:
+                                'برنامه ی روز ${bodyBuildingPlanDayTermVm.dayNumber.toString().toWord()}م ثبت شد',
+                          ));
+                          Future.delayed(Duration(seconds: 1), () {
+                            Navigator.of(context).pop(true);
+                          });
                         }
-                      },
-                    )),
-              ],
-            ),
+                      }
+                    },
+                  )),
+            ],
           ),
         ),
       ),
     );
+  }
+
+  void createBodyBuildingPlanTypeDetailFormVm(bool isNewMovement) {
+    BodyBuildingPlanTypeDetailsFormVm data =
+        BodyBuildingPlanTypeDetailsFormVm();
+    data.descriptionController = TextEditingController();
+    data.nameMovementController = TextEditingController();
+    data.setController = TextEditingController();
+    data.dayNumber = bodyBuildingPlanDayTermVm.dayNumber;
+    data.termNumber = isNewMovement
+        ? bodyBuildingPlanDayTermVm.currentTerm
+        : bodyBuildingPlanDayTermVm.currentTerm! + 1;
+    data.displayOrder = MyHomePage.lastDisplayOtherSports += 1;
+    bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
+        .removeWhere((s) => s.displayOrder == data.displayOrder);
+    bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!.add(data);
+  }
+
+  List<BodyBuildingPlanTypeDetailsFormVm> listCurrentDayCurrentTerm(int type) {
+    if (type == 1) {
+      return bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
+          .where((s) =>
+              s.dayNumber == bodyBuildingPlanDayTermVm.dayNumber &&
+              s.termNumber == bodyBuildingPlanDayTermVm.currentTerm)
+          .toList();
+    } else
+      return bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
+          .where((s) =>
+              s.dayNumber == bodyBuildingPlanDayTermVm.dayNumber &&
+              s.termNumber == bodyBuildingPlanDayTermVm.currentTerm &&
+              (s.nameMovementController!.text.isEmpty ||
+                  s.setController!.text.isEmpty ||
+                  s.listSetItemsTextController!
+                      .any((element) => element.text.isEmpty)))
+          .toList();
   }
 
   void registerProgramDay(List<BodyBuildingPlanTypeDetailsFormVm> x) {

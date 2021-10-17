@@ -79,7 +79,7 @@ class CreateProgramOtherSportsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: kColorAppbar,
       appBar: AppBarWidget(
-        title: 'ایجاد برنامه سایر رشته ها',
+        title: 'برنامه سایر رشته ها',
       ),
       body: SingleChildScrollView(
         child: Form(

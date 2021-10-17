@@ -5,7 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gym_app/ViewModels/BodyBuildingPlanType/BodyBuildingPlanTypeFormVm.dart';
 import 'package:gym_app/ViewModels/BodyBuildingPlanTypeDetail/BodyBuildingPlanDayTermVm.dart';
+import 'package:gym_app/ViewModels/BodyBuildingPlanTypeDetail/BodyBuildingPlanTypeDetailsFormVm.dart';
 import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/create_using_form_body_building_bloc.dart';
+import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/edit_using_form_body_building_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/main.dart';
@@ -195,27 +197,35 @@ class _DaysTaskState extends State<DaysTask> {
                                       .toString()
                                       .toWord(),
                                   deleteItem: () {
-                                    widget.bodyBuildingPlanTypeFormVm.dayTerms!
-                                        .removeAt(index);
-                                    widget.bodyBuildingPlanTypeFormVm
-                                        .bodyBuildingPlanTypeDetails!
-                                        .removeWhere((element) =>
-                                            element.dayNumber == index + 1);
-                                    for (var item in widget
-                                        .bodyBuildingPlanTypeFormVm
-                                        .bodyBuildingPlanTypeDetails!
-                                        .where((element) =>
-                                            element.dayNumber! > index)) {
-                                      item.dayNumber = item.dayNumber! - 1;
-                                    }
-                                    for (var item in widget
-                                        .bodyBuildingPlanTypeFormVm.dayTerms!
-                                        .where((element) =>
-                                            element.dayNumber! > index)) {
-                                      item.dayNumber = item.dayNumber! - 1;
-                                    }
+                                    if (widget.bodyBuildingPlanTypeFormVm
+                                            .dayTerms!.length >
+                                        1) {
+                                      widget
+                                          .bodyBuildingPlanTypeFormVm.dayTerms!
+                                          .removeAt(index);
+                                      widget.bodyBuildingPlanTypeFormVm
+                                          .bodyBuildingPlanTypeDetails!
+                                          .removeWhere((element) =>
+                                              element.dayNumber == index + 1);
+                                      for (var item in widget
+                                          .bodyBuildingPlanTypeFormVm
+                                          .bodyBuildingPlanTypeDetails!
+                                          .where((element) =>
+                                              element.dayNumber! > index)) {
+                                        item.dayNumber = item.dayNumber! - 1;
+                                      }
+                                      for (var item in widget
+                                          .bodyBuildingPlanTypeFormVm.dayTerms!
+                                          .where((element) =>
+                                              element.dayNumber! > index)) {
+                                        item.dayNumber = item.dayNumber! - 1;
+                                      }
 
-                                    setState(() {});
+                                      setState(() {});
+                                    } else
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              'برنامه باید حداقل یک روز داشته باشد');
                                   }),
                             ),
                           ),
@@ -224,15 +234,42 @@ class _DaysTaskState extends State<DaysTask> {
               SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
-                  setState(() {
-                    widget.bodyBuildingPlanTypeFormVm.dayTerms!.add(
-                        BodyBuildingPlanDayTermVm(
-                            currentTerm: 1,
-                            termsCount: 1,
-                            dayNumber: widget.bodyBuildingPlanTypeFormVm
-                                    .dayTerms!.length +
-                                1));
-                  });
+                  if (widget
+                      .bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
+                      .where((element) =>
+                          element.dayNumber ==
+                                  widget.bodyBuildingPlanTypeFormVm.dayTerms!
+                                      .last.dayNumber &&
+                              element.nameMovementController!.text.isEmpty ||
+                          element.setController!.text.isEmpty)
+                      .toList()
+                      .isEmpty)
+                    setState(() {
+                      widget.bodyBuildingPlanTypeFormVm.dayTerms!.add(
+                          BodyBuildingPlanDayTermVm(
+                              currentTerm: 1,
+                              termsCount: 1,
+                              dayNumber: widget.bodyBuildingPlanTypeFormVm
+                                      .dayTerms!.length +
+                                  1));
+                      widget.bodyBuildingPlanTypeFormVm
+                          .bodyBuildingPlanTypeDetails!
+                          .add(BodyBuildingPlanTypeDetailsFormVm(
+                              descriptionController: TextEditingController(),
+                              nameMovementController: TextEditingController(),
+                              setController: TextEditingController(),
+                              listSetItemsTextController: [
+                                TextEditingController()
+                              ],
+                              dayNumber: widget
+                                  .bodyBuildingPlanTypeFormVm.dayTerms!.length,
+                              termNumber: 1,
+                              displayOrder: MyHomePage.lastDisplayOtherSports +=
+                                  1));
+                    });
+                  else
+                    Fluttertoast.showToast(
+                        msg: 'لطفا آیتم های روز فعلی رو پر کنید');
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(
@@ -262,55 +299,104 @@ class _DaysTaskState extends State<DaysTask> {
               SizedBox(
                 height: 20,
               ),
-              BlocConsumer<CreateUsingFormBodyBuildingBloc,
-                  CreateUsingFormBodyBuildingState>(
-                listener: (context, state) async {
-                  if (state is CreateUsingFormBodyBuildingLoadedState) {
-                    if (state.resultObject != null &&
-                        state.resultObject!.success!) {
-                      await Fluttertoast.showToast(
-                          msg: state.resultObject!.message!);
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          MyHomePage.routeName, (route) => false);
-                    } else if (state.resultObject != null)
-                      Fluttertoast.showToast(msg: state.resultObject!.message!);
-                    else
-                      Fluttertoast.showToast(msg: 'دوباره امتحان کنید');
-                  }
-                },
-                builder: (context, state) {
-                  if (state is CreateUsingFormBodyBuildingLoadingState)
-                    return MyWaiting();
-                  else
-                    return CustomeButton(
-                        sizeScreen: widget.sizeScreen,
-                        title: "ثبت",
-                        onTap: () {
-                          if (widget.bodyBuildingPlanTypeFormVm.dayTerms!
-                                  .isNotEmpty &&
-                              widget.bodyBuildingPlanTypeFormVm
-                                  .bodyBuildingPlanTypeDetails!.isNotEmpty &&
-                              widget.bodyBuildingPlanTypeFormVm
-                                  .bodyBuildingPlanTypeDetails!
-                                  .where((element) => element
-                                      .nameMovementController!.text.isNotEmpty)
-                                  .toList()
-                                  .isNotEmpty) {
-                            BlocProvider.of<CreateUsingFormBodyBuildingBloc>(
-                                    context)
-                                .add(CreateUsingFormBodyBuildingLoadingEvent(
-                                    bodyBuildingPlanTypeFormVm:
-                                        widget.bodyBuildingPlanTypeFormVm));
-                          } else
-                            Fluttertoast.showToast(
-                                msg: 'برنامه باید حداقل یک آیتم داشته باشد');
-                        });
-                },
-              )
+              if (widget.bodyBuildingPlanTypeFormVm.isCreate!)
+                _onTapCreate()
+              else
+                _onTapEdit()
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _onTapCreate() {
+    return BlocConsumer<CreateUsingFormBodyBuildingBloc,
+        CreateUsingFormBodyBuildingState>(
+      listener: (context, state) async {
+        if (state is CreateUsingFormBodyBuildingLoadedState) {
+          if (state.resultObject != null && state.resultObject!.success!) {
+            await Fluttertoast.showToast(msg: state.resultObject!.message!);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                MyHomePage.routeName, (route) => false);
+          } else if (state.resultObject != null)
+            Fluttertoast.showToast(msg: state.resultObject!.message!);
+          else
+            Fluttertoast.showToast(msg: 'دوباره امتحان کنید');
+        }
+      },
+      builder: (context, state) {
+        if (state is CreateUsingFormBodyBuildingLoadingState)
+          return MyWaiting();
+        else
+          return CustomeButton(
+              sizeScreen: widget.sizeScreen,
+              title: "ثبت",
+              onTap: () {
+                if (widget
+                    .bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
+                    .where((element) =>
+                        element.dayNumber ==
+                            widget.bodyBuildingPlanTypeFormVm.dayTerms!.last
+                                .dayNumber &&
+                        (element.nameMovementController!.text.isEmpty ||
+                            element.setController!.text.isEmpty))
+                    .toList()
+                    .isEmpty) {
+                  BlocProvider.of<CreateUsingFormBodyBuildingBloc>(context).add(
+                      CreateUsingFormBodyBuildingLoadingEvent(
+                          bodyBuildingPlanTypeFormVm:
+                              widget.bodyBuildingPlanTypeFormVm));
+                } else
+                  Fluttertoast.showToast(
+                      msg: 'برنامه باید حداقل یک آیتم داشته باشد');
+              });
+      },
+    );
+  }
+
+  Widget _onTapEdit() {
+    return BlocConsumer<EditUsingFormBodyBuildingBloc,
+        EditUsingFormBodyBuildingState>(
+      listener: (context, state) async {
+        if (state is EditUsingFormBodyBuildingLoadedState) {
+          if (state.resultObject != null && state.resultObject!.success!) {
+            await Fluttertoast.showToast(msg: state.resultObject!.message!);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                MyHomePage.routeName, (route) => false);
+          } else if (state.resultObject != null)
+            Fluttertoast.showToast(msg: state.resultObject!.message!);
+          else
+            Fluttertoast.showToast(msg: 'دوباره امتحان کنید');
+        }
+      },
+      builder: (context, state) {
+        if (state is EditUsingFormBodyBuildingLoadingState)
+          return MyWaiting();
+        else
+          return CustomeButton(
+              sizeScreen: widget.sizeScreen,
+              title: "ثبت",
+              onTap: () {
+                if (widget
+                    .bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
+                    .where((element) =>
+                        element.dayNumber ==
+                            widget.bodyBuildingPlanTypeFormVm.dayTerms!.last
+                                .dayNumber &&
+                        (element.nameMovementController!.text.isEmpty ||
+                            element.setController!.text.isEmpty))
+                    .toList()
+                    .isEmpty) {
+                  BlocProvider.of<EditUsingFormBodyBuildingBloc>(context).add(
+                      EditUsingFormBodyBuildingLoadingEvent(
+                          bodyBuildingPlanTypeFormVm:
+                              widget.bodyBuildingPlanTypeFormVm));
+                } else
+                  Fluttertoast.showToast(
+                      msg: 'آیتم های روز آخر خود را پر کنید');
+              });
+      },
     );
   }
 }

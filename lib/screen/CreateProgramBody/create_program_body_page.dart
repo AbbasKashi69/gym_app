@@ -4,11 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/ViewModels/BodyBuildingPlanType/BodyBuildingPlanTypeFormVm.dart';
 import 'package:gym_app/ViewModels/BodyBuildingPlanTypeDetail/BodyBuildingPlanDayTermVm.dart';
+import 'package:gym_app/ViewModels/BodyBuildingPlanTypeDetail/BodyBuildingPlanTypeDetailsFormVm.dart';
 import 'package:gym_app/ViewModels/CurrentUserVm.dart';
 import 'package:gym_app/ViewModels/Person/PersonListVm.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/get_students_as_person_list_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customeTextField.dart';
+import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateProgramOtherSports/components/select_student_screen.dart';
 import 'package:gym_app/screen/CreateProgramOtherSports/create_program_other_sports_page.dart';
 import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
@@ -29,15 +31,25 @@ class CreateProgramBodyPage extends StatelessWidget {
       TextEditingController();
   final BodyBuildingPlanTypeFormVm bodyBuildingPlanTypeFormVm =
       BodyBuildingPlanTypeFormVm(
+          isCreate: true,
           students: [],
           dayTerms: [
-        BodyBuildingPlanDayTermVm(
-          dayNumber: 1,
-          termsCount: 1,
-          currentTerm: 1,
-        )
-      ],
-          bodyBuildingPlanTypeDetails: [],
+            BodyBuildingPlanDayTermVm(
+              dayNumber: 1,
+              termsCount: 1,
+              currentTerm: 1,
+            )
+          ],
+          bodyBuildingPlanTypeDetails: [
+            BodyBuildingPlanTypeDetailsFormVm(
+                nameMovementController: TextEditingController(),
+                descriptionController: TextEditingController(),
+                setController: TextEditingController(),
+                listSetItemsTextController: [TextEditingController()],
+                dayNumber: 1,
+                termNumber: 1,
+                displayOrder: MyHomePage.lastDisplayOtherSports += 1)
+          ],
           isPrivate: CurrentUserVm.roleType != 3 ? false : true);
   final GlobalKey<FormState> _createBodyKey = GlobalKey<FormState>();
 

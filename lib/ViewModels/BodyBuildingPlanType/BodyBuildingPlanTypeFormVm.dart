@@ -19,6 +19,7 @@ class BodyBuildingPlanTypeFormVm extends BaseViewModel {
   List<BodyBuildingPlanTypeDetailsFormVm>? bodyBuildingPlanTypeDetails;
   List<PersonListVm>? students;
   List<BodyBuildingPlanDayTermVm>? dayTerms;
+  bool? isCreate;
 
   BodyBuildingPlanTypeFormVm(
       {this.id = 0,
@@ -35,7 +36,8 @@ class BodyBuildingPlanTypeFormVm extends BaseViewModel {
       this.nEndDate,
       this.bodyBuildingPlanTypeDetails,
       this.students,
-      this.dayTerms});
+      this.dayTerms,
+      this.isCreate});
 
   BodyBuildingPlanTypeFormVm.fromJson(Map<String, dynamic> json) {
     id = json['id'];

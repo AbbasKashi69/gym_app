@@ -6,10 +6,12 @@ import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/components/no_data.dart';
+import 'package:gym_app/components/set_selected_route.dart';
 import 'package:gym_app/extensions/ext.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
 import 'package:gym_app/screen/ProgramList/components/filter_screen.dart';
 import 'package:gym_app/screen/observeProgramBody/observe_program_body_page.dart';
+import 'package:gym_app/screen/observeProgramOtherSports/observe_other_sports_page.dart';
 
 class ProgramListPage extends StatefulWidget {
   static const routeName = '/programListPage';
@@ -500,8 +502,10 @@ class ItemDietary extends StatelessWidget {
                 children: [
                   MaterialButton(
                     onPressed: () {
+                      // Navigator.of(context)
+                      //     .pushNamed(ObserveProgramBody.routeName);
                       Navigator.of(context)
-                          .pushNamed(ObserveProgramBody.routeName);
+                          .pushNamed(ObserveOtherSportsPage.routeName);
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
@@ -520,7 +524,11 @@ class ItemDietary extends StatelessWidget {
                     width: padding / 2,
                   ),
                   MaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      SetSelectedRoute()
+                        ..setSelectedRoute(context, planTypeLogVm.planType,
+                            planTypeLogVm.planTypeId);
+                    },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                         side: BorderSide(color: Color(0xff707070))),
