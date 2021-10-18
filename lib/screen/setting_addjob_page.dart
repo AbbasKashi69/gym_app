@@ -6,7 +6,7 @@ import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/extensions/ext.dart';
 import 'package:gym_app/screen/CreateProgramBody/create_program_body_page.dart';
 import 'package:gym_app/screen/ListApprentice/list_Apprentice_page.dart';
-import 'package:gym_app/screen/settings/setting_addjob_final_page.dart';
+import 'package:gym_app/screen/setting_addjob_final_page.dart';
 
 class SettingAddJobPage extends StatefulWidget {
   const SettingAddJobPage({Key? key}) : super(key: key);

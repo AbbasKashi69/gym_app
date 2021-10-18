@@ -1,8 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:gym_app/ViewModels/Transaction/TransactionVm.dart';
+import 'package:gym_app/ViewModels/WalletLog/IncreaseCreditVm.dart';
+import 'package:gym_app/ViewModels/WalletLog/transferBankVm.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/get_transfer_to_card_bank_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/increase_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/transfer_to_cart_bank_bloc.dart';
+import 'package:gym_app/components/constant.dart';
+import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/screen/Wallet/model/user_cart_model.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
@@ -22,21 +32,24 @@ class _TransferToBankPageState extends State<TransferToBankPage> {
   late String label = "";
   bool subPrice = false;
   int count = 0;
+  final _formKey = GlobalKey<FormState>();
 
+  TextEditingController _controllerAmount = TextEditingController();
+  TextEditingController _controllerCartNumber = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     userList.add(UserCartModel(
         userName: "علی زحمتکش",
-        cartNumber: "6037-6974-7021-4522",
+        cartNumber: "6037697470214522",
         bankName: "سپه"));
     userList.add(UserCartModel(
         userName: "محمد رضا",
-        cartNumber: "6037-6974-7021-4522",
+        cartNumber: "6037697470214522",
         bankName: "مسکن"));
     userList.add(UserCartModel(
-        userName: "زهرا", cartNumber: "6037-6974-7021-4522", bankName: "ملت"));
+        userName: "زهرا", cartNumber: "6037697470214522", bankName: "ملت"));
   }
 
   @override
@@ -108,42 +121,45 @@ class _TransferToBankPageState extends State<TransferToBankPage> {
                 SizedBox(
                   height: Get.height * 0.035,
                 ),
-                TextField(
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  controller: _controller,
-                  onChanged: (value) {
-                    setState(() {
-                      _isFill = true;
-                      label = value;
-                      subPrice = true;
-                      if (value.isEmpty) {
-                        setState(() {
-                          _isFill = false;
-                        });
-                      }
-                    });
-                  },
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(0),
-                      helperText:
-                          "${label.toWord()} ${subPrice ? "تومان" : ""}",
-                      helperStyle: TextStyle(
-                          color: Colors.black,
-                          fontFamily: "IRANSans",
-                          fontSize: Get.height * 0.02),
-                      labelText: "مقدار",
-                      labelStyle: TextStyle(
-                          color: Colors.black54,
-                          fontSize: Get.height * 0.025,
-                          fontFamily: "IRANSans"),
-                      suffix: Text(
-                        "تومان",
-                        style: TextStyle(
+                Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    controller: _controllerAmount,
+                    onChanged: (value) {
+                      setState(() {
+                        _isFill = true;
+                        label = value;
+                        subPrice = true;
+                        if (value.isEmpty) {
+                          setState(() {
+                            _isFill = false;
+                          });
+                        }
+                      });
+                    },
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(0),
+                        helperText:
+                            "${label.toWord()} ${subPrice ? "تومان" : ""}",
+                        helperStyle: TextStyle(
                             color: Colors.black,
                             fontFamily: "IRANSans",
-                            fontSize: Get.height * 0.024),
-                      )),
+                            fontSize: Get.height * 0.02),
+                        labelText: "مقدار",
+                        labelStyle: TextStyle(
+                            color: Colors.black54,
+                            fontSize: Get.height * 0.025,
+                            fontFamily: "IRANSans"),
+                        suffix: Text(
+                          "تومان",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: "IRANSans",
+                              fontSize: Get.height * 0.024),
+                        )),
+                  ),
                 ),
                 InkWell(
                   onTap: () {
@@ -384,22 +400,87 @@ class _TransferToBankPageState extends State<TransferToBankPage> {
                                            ),
                                          ),
                                        ),
-                                       Container(
-                                         height: Get.height * 0.08,
-                                         width: Get.width * 0.4,
-                                         decoration: BoxDecoration(
-                                           gradient: LinearGradient(
-                                             colors: [
-                                               Color.fromRGBO(20, 186, 219, 1),
-                                               Color.fromRGBO(60, 198, 226, 1)
-                                             ]
-                                           ),
-                                           borderRadius: BorderRadius.circular(30)
+
+                                         BlocConsumer<TransferToCartBankBloc, TransferToCartBankState>(
+                                           listener: (context, state) {
+                                             if (state is TransferToCartBankLoadedState) {
+                                               if (state.resultObject != null && state.resultObject!.success!) {
+                                                 // BlocProvider.of<TransferToCartBankBloc>(context).add(
+                                                 //   TransferToCartBankLoadingEvent(transferToBankVm: TransferToBankVm(
+                                                 //     amount: int.parse(_controllerAmount.text),
+                                                 //     bankId: int.parse(userList[count].cartNumber),
+                                                 //   ))
+                                                 // );
+                                                 Fluttertoast.showToast(msg: state.resultObject!.message ?? "");
+
+                                               } else if (state.resultObject != null) {
+                                                 Fluttertoast.showToast(msg: state.resultObject!.message ?? "");
+                                               } else
+                                                 Fluttertoast.showToast(
+                                                   msg: 'دوباره امتحان کنید',
+                                                 );
+                                             }
+                                           },
+                                           builder: (context, state) {
+                                             if (state is TransferToCartBankLoadingState)
+                                               return MyWaiting();
+                                             else
+                                               return BlocConsumer<TransferToCartBankBloc, TransferToCartBankState>(
+                                                 listener: (context, state) {
+                                                   if (state is TransferToCartBankLoadedState) {
+                                                     if (state.resultObject != null &&
+                                                         state.resultObject!.success!) {
+                                                       // BlocProvider.of<TransferToCartBankBloc>(context).add(
+                                                       //     TransferToCartBankLoadingEvent(transferToBankVm: TransferToBankVm(
+                                                       //       amount: int.parse(_controllerAmount.text),
+                                                       //       bankId: int.parse(userList[count].cartNumber),
+                                                       //     ))
+                                                       // );
+
+                                                     } else if (state.resultObject != null) {
+                                                       Fluttertoast.showToast(
+                                                           msg: state.resultObject!.message ?? "");
+                                                     } else
+                                                       Fluttertoast.showToast(
+                                                         msg: 'دوباره امتحان کنید',
+                                                       );
+                                                   }
+                                                 },
+                                                 builder: (context, state) {
+                                                   if (state is TransferToCartBankLoadingState)
+                                                     return MyWaiting();
+                                                   else
+                                                     return  InkWell(
+                                                       onTap: () {
+                                                         if (_formKey.currentState!.validate()) {
+                                                           BlocProvider.of<TransferToCartBankBloc>(context).add(
+                                                               TransferToCartBankLoadingEvent(transferToBankVm: TransferToBankVm(
+                                                                 amount: int.parse(_controllerAmount.text),
+                                                                 bankId: int.parse(userList[count].cartNumber),
+                                                               ))
+                                                           );
+                                                         }
+                                                       },
+                                                       child: Container(
+                                                         height: Get.height * 0.08,
+                                                         width: Get.width * 0.4,
+                                                         decoration: BoxDecoration(
+                                                         gradient: LinearGradient(
+                                                         colors: [
+                                                         Color.fromRGBO(20, 186, 219, 1),
+                                                   Color.fromRGBO(60, 198, 226, 1)
+                                                   ]
+                                                   ),
+                                                   borderRadius: BorderRadius.circular(30)
+                                                   ),
+                                                         child: Center(child: Text("بله",style: TextStyle(color: Colors.white,fontSize: 17),),),
+                                                       ),
+                                                     );
+                                                 },
+                                               );
+                                           },
                                          ),
-                                         child: Center(
-                                           child: Text("بله",style: TextStyle(color: Colors.white,fontFamily: "IRANSans",fontSize: Get.height * 0.025,fontWeight: FontWeight.w600),),
-                                         ),
-                                       ),
+
 
                                      ],
                                    )

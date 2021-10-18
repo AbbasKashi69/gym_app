@@ -1,110 +1,95 @@
-
-
 import '../BaseViewModel.dart';
 
 class TransactionVm extends BaseViewModel {
+  int? id;
+  int? parentId;
+  String? bankName;
+  String? trackingCode;
+  double? amount;
+  String? nAmount;
+  String? phoneNumber;
+  String? creationDate;
+  String? nCreationDate;
+  bool? isSuccess;
+  String? description;
+  int? type;
+  String? nType;
+  int? userId;
 
+  TransactionVm({
+    this.id,
+    this.parentId,
+    this.bankName,
+    this.trackingCode,
+    this.amount,
+    this.phoneNumber,
+    this.nAmount,
+    this.creationDate,
+    this.nCreationDate,
+    this.isSuccess,
+    this.description,
+    this.type,
+    this.nType,
+    this.userId,
+  });
 
-    int? id;
-int? parentId;
-String? bankName;
-String? trackingCode;
-double? amount;
-String? nAmount;
-String? creationDate;
-String? nCreationDate;
-bool? isSuccess;
-String? description;
-int? type;
-String? nType;
-int? userId;
+  TransactionVm.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
 
+    parentId = json['parentId'];
 
+    bankName = json['bankName'];
 
+    trackingCode = json['trackingCode'];
+    phoneNumber = json['phoneOtherUser'];
+    amount = super.intToDouble(json['amount']);
 
-    TransactionVm(
-    {
-        this.id, 
-this.parentId, 
-this.bankName, 
-this.trackingCode, 
-this.amount, 
-this.nAmount, 
-this.creationDate, 
-this.nCreationDate, 
-this.isSuccess, 
-this.description, 
-this.type, 
-this.nType, 
-this.userId, 
+    nAmount = json['nAmount'];
 
-    });
+    creationDate = json['creationDate'];
 
+    nCreationDate = json['nCreationDate'];
 
-    TransactionVm.fromJson(Map<String, dynamic> json) {
-        
-        id = json['id'];
+    isSuccess = json['isSuccess'];
 
-parentId = json['parentId'];
+    description = json['description'];
 
-bankName = json['bankName'];
+    type = json['type'];
 
-trackingCode = json['trackingCode'];
+    nType = json['nType'];
 
-amount = super.intToDouble(json['amount']);
+    userId = json['userId'];
+  }
 
-nAmount = json['nAmount'];
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
 
-creationDate = json['creationDate'];
+    data['id'] = this.id;
 
-nCreationDate = json['nCreationDate'];
+    data['parentId'] = this.parentId;
 
-isSuccess = json['isSuccess'];
+    data['bankName'] = this.bankName;
+    data['phoneOtherUser'] = this.phoneNumber;
+    data['trackingCode'] = this.trackingCode;
 
-description = json['description'];
+    data['amount'] = this.amount;
 
-type = json['type'];
+    data['nAmount'] = this.nAmount;
 
-nType = json['nType'];
+    data['creationDate'] = this.creationDate;
 
-userId = json['userId'];
+    data['nCreationDate'] = this.nCreationDate;
 
+    data['isSuccess'] = this.isSuccess;
 
-    }
+    data['description'] = this.description;
 
-    Map<String, dynamic> toJson() {
-        final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
 
+    data['nType'] = this.nType;
 
-        data['id'] = this.id;
+    data['userId'] = this.userId;
 
-data['parentId'] = this.parentId;
-
-data['bankName'] = this.bankName;
-
-data['trackingCode'] = this.trackingCode;
-
-data['amount'] = this.amount;
-
-data['nAmount'] = this.nAmount;
-
-data['creationDate'] = this.creationDate;
-
-data['nCreationDate'] = this.nCreationDate;
-
-data['isSuccess'] = this.isSuccess;
-
-data['description'] = this.description;
-
-data['type'] = this.type;
-
-data['nType'] = this.nType;
-
-data['userId'] = this.userId;
-
-
-
-
-        return data;
-    }
+    return data;
+  }
 }

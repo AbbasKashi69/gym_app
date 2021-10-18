@@ -20,6 +20,7 @@ class IncreaseBloc extends Bloc<IncreaseEvent, IncreaseState> {
       try {
         var data = await _logService.increaseCredit(event.increaseCreditVm);
         yield IncreaseLoadedState(resultObject: data);
+
       } catch (e) {
         print('error in  state' + e.toString());
         yield IncreaseErrorState(message: e.toString());

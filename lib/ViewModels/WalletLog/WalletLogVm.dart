@@ -4,18 +4,15 @@ import '../BaseViewModel.dart';
 
 class WalletLogVm extends BaseViewModel {
 
-
     int? id;
 int? userId;
 int? transactionId;
 double? walletValue;
 String? nWalletValue;
 String? creationDate;
+int? mobile;
 String? nCreationDate;
 String? description;
-
-
-
 
     WalletLogVm(
     {
@@ -23,7 +20,8 @@ String? description;
 this.userId, 
 this.transactionId, 
 this.walletValue, 
-this.nWalletValue, 
+this.nWalletValue,
+        this.mobile,
 this.creationDate, 
 this.nCreationDate, 
 this.description, 
@@ -36,6 +34,8 @@ this.description,
         id = json['id'];
 
 userId = json['userId'];
+
+mobile = json['phoneOtherUser'];
 
 transactionId = json['transactionId'];
 
@@ -60,6 +60,8 @@ description = json['description'];
 
 data['userId'] = this.userId;
 
+data['phoneOtherUser'] = this.mobile;
+
 data['transactionId'] = this.transactionId;
 
 data['walletValue'] = this.walletValue;
@@ -71,9 +73,6 @@ data['creationDate'] = this.creationDate;
 data['nCreationDate'] = this.nCreationDate;
 
 data['description'] = this.description;
-
-
-
 
         return data;
     }
