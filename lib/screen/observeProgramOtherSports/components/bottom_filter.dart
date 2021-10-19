@@ -5,35 +5,43 @@ class BottomFilter extends StatelessWidget {
   const BottomFilter(
       {Key? key,
       required this.title,
-      required this.index,
       required this.onTapBottomFilter,
-      required this.itemSelected})
+      required this.isDoneByMe,
+      required this.currentDay,
+      required this.currentDayForSend})
       : super(key: key);
   final String title;
-  final int index;
-  final int itemSelected;
   final Function onTapBottomFilter;
+  final bool isDoneByMe;
+  final int currentDay;
+  final int currentDayForSend;
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
-    return GestureDetector(
-      onTap: () {
-        onTapBottomFilter();
-      },
-      child: Container(
-        decoration: BoxDecoration(
-            color:
-                itemSelected == index ? Color(0xff48CAE4) : Color(0xffCAF0F8),
-            borderRadius: BorderRadius.horizontal(
-                right: Radius.circular(30), left: Radius.circular(30))),
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: padding),
-        child: Center(
-          child: Text(
-            title,
-            style: textStyle.copyWith(
-                fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
-                color:
-                    itemSelected == index ? Colors.white : Color(0xff0096C7)),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          onTapBottomFilter();
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              color: isDoneByMe && currentDay == currentDayForSend
+                  ? Color(0xff48CAE4)
+                  : Color(0xffCAF0F8),
+              // color: Color(0xffCAF0F8),
+              borderRadius: BorderRadius.horizontal(
+                  right: Radius.circular(30), left: Radius.circular(30))),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: padding),
+          child: Center(
+            child: Text(
+              title,
+              style: textStyle.copyWith(
+                  fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
+                  color: isDoneByMe && currentDay == currentDayForSend
+                      ? Colors.white
+                      : Color(0xff0096C7)),
+            ),
           ),
         ),
       ),

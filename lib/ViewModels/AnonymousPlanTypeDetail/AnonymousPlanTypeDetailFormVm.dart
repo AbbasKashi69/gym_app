@@ -32,7 +32,7 @@ class AnonymousPlanTypeDetailFormVm extends BaseViewModel {
     nameMovementController = TextEditingController();
     descriptionController = TextEditingController();
     title = nameMovementController!.text = json['title'];
-    description = descriptionController!.text = json['description'];
+    description = descriptionController!.text = json['description'] ?? "";
   }
 
   Map<String, dynamic> toJson() {

@@ -24,10 +24,12 @@ import 'package:gym_app/blocs/Account/bloc/verify_code_reset_passwrod_bloc.dart'
 import 'package:gym_app/blocs/AnonymousPlanType/bloc/create_using_form_bloc.dart';
 import 'package:gym_app/blocs/AnonymousPlanType/bloc/edit_using_form_other_sports_bloc.dart';
 import 'package:gym_app/blocs/AnonymousPlanType/bloc/find_by_id_in_form_other_sports_bloc.dart';
+import 'package:gym_app/blocs/AnonymousPlanTypeLog/bloc/change_current_day_bloc.dart';
 import 'package:gym_app/blocs/BodyBuildingMovement/bloc/get_user_body_building_movement_list_bloc.dart';
 import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/create_using_form_body_building_bloc.dart';
 import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/edit_using_form_body_building_bloc.dart';
 import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/find_by_id_in_form_body_building_bloc.dart';
+import 'package:gym_app/blocs/BodyBuildingPlantypeLog/bloc/change_current_day_body_building_bloc.dart';
 import 'package:gym_app/blocs/BottomNav/bloc/bottom_nav_bloc.dart';
 import 'package:gym_app/blocs/ChatMessage/bloc/get_all_message_bloc.dart';
 import 'package:gym_app/blocs/CoachStudent/bloc/chage_status_by_id_bloc.dart';
@@ -40,6 +42,7 @@ import 'package:gym_app/blocs/CoachStudent/bloc/request_to_coach_bloc.dart';
 import 'package:gym_app/blocs/DietPlanType/bloc/create_using_form_diet_bloc.dart';
 import 'package:gym_app/blocs/DietPlanType/bloc/edit_using_form_diet_bloc.dart';
 import 'package:gym_app/blocs/DietPlanType/bloc/find_by_id_in_form_diet_bloc.dart';
+import 'package:gym_app/blocs/DietPlanTypeLog/bloc/change_current_day_diet_bloc.dart';
 import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/blocs/Resume/bloc/get_resume_bloc.dart';
 import 'package:gym_app/blocs/RoomChat/bloc/get_all_room_chat_bloc.dart';
@@ -70,6 +73,7 @@ import 'package:gym_app/screen/ListApprentice/requests_page.dart';
 import 'package:gym_app/screen/ListCoach/list_coach_page.dart';
 import 'package:gym_app/screen/Login/login_page.dart';
 import 'package:gym_app/screen/MyActiveProgram/my_active_program_page.dart';
+import 'package:gym_app/screen/ObserveProgramDiet/observe_program_diet_page.dart';
 import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
 import 'package:gym_app/screen/PersonalInfoCoach/personal_info_coach_page.dart';
 import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';
@@ -305,10 +309,50 @@ class MyRouter {
                   ));
         }
       case ObserveProgramBody.routeName:
-        return MaterialPageRoute(builder: (context) => ObserveProgramBody());
+        {
+          int id = routeSettings.arguments as int;
+          return MaterialPageRoute(
+              builder: (context) => MultiBlocProvider(providers: [
+                    BlocProvider(
+                        create: (context) => FindByIdInFormBodyBuildingBloc()
+                          ..add(
+                            FindByIdInFormBodyBuildingLoadingEvent(id: id),
+                          )),
+                    BlocProvider(
+                      create: (context) => ChangeCurrentDayBodyBuildingBloc(),
+                    ),
+                  ], child: ObserveProgramBody(planId: id)));
+        }
       case ObserveOtherSportsPage.routeName:
-        return MaterialPageRoute(
-            builder: (context) => ObserveOtherSportsPage());
+        {
+          int id = routeSettings.arguments as int;
+          return MaterialPageRoute(
+              builder: (context) => MultiBlocProvider(providers: [
+                    BlocProvider(
+                        create: (context) => FindByIdInFormOtherSportsBloc()
+                          ..add(
+                            FindByIdInFormOtherSportsLoadingEvent(id: id),
+                          )),
+                    BlocProvider(
+                      create: (context) => ChangeCurrentDayBloc(),
+                    ),
+                  ], child: ObserveOtherSportsPage(planId: id)));
+        }
+      case ObserveProgramDietPage.routeName:
+        {
+          int id = routeSettings.arguments as int;
+          return MaterialPageRoute(
+              builder: (context) => MultiBlocProvider(providers: [
+                    BlocProvider(
+                        create: (context) => FindByIdInFormDietBloc()
+                          ..add(
+                            FindByIdInFormDietLoadingEvent(id: id),
+                          )),
+                    BlocProvider(
+                      create: (context) => ChangeCurrentDayDietBloc(),
+                    ),
+                  ], child: ObserveProgramDietPage(planId: id)));
+        }
       case ListCoachPage.routeName:
         return MaterialPageRoute(
             builder: (context) => MultiBlocProvider(providers: [

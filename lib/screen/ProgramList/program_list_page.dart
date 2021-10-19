@@ -502,10 +502,9 @@ class ItemDietary extends StatelessWidget {
                 children: [
                   MaterialButton(
                     onPressed: () {
-                      // Navigator.of(context)
-                      //     .pushNamed(ObserveProgramBody.routeName);
-                      Navigator.of(context)
-                          .pushNamed(ObserveOtherSportsPage.routeName);
+                      SetSelectedRoute()
+                        ..setSelectedRouteObserveProgram(context,
+                            planTypeLogVm.planType, planTypeLogVm.planTypeId);
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),

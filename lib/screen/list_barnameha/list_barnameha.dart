@@ -38,7 +38,6 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
   }
 
   void _listener() {
-    print('_listern was called');
     if (_exerciseScrollController.position.pixels ==
         _exerciseScrollController.position.maxScrollExtent) {
       BlocProvider.of<GetPlansBySortBloc>(context)
@@ -48,7 +47,6 @@ class _ListBarnamehaPageState extends State<ListBarnamehaPage>
   }
 
   void _listenerDiet() {
-    print('_listern was called');
     if (_dietScrollController.position.pixels ==
         _dietScrollController.position.maxScrollExtent) {
       BlocProvider.of<GetPlansBySortBloc>(context)
@@ -357,7 +355,11 @@ class ItemLoadedFirstProgram extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       child: InkWell(
                         onTap: () {
-                          print('ccc');
+                          SetSelectedRoute()
+                            ..setSelectedRouteObserveProgram(
+                                context,
+                                planTypeLogvm.planType,
+                                planTypeLogvm.planTypeId);
                         },
                         borderRadius: BorderRadius.circular(10),
                         child: Container(

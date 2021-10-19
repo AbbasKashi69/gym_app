@@ -12,6 +12,8 @@ class BodyBuildingPlanTypeLogService {
       '/api/BodyBuildingPlanTypeLog/GetPlansBySort';
   static const String url_payPlanUsingWallet =
       '/api/BodyBuildingPlanTypeLog/PayPlanUsingWallet';
+  static const String url_changeCurrentDay =
+      '/api/BodyBuildingPlanTypeLog/ChangeCurrentDay';
   Future<Page_BodyBuildingPlanTypeLogVm?> getAll([int pageNumber = 1]) async {
     var response =
         await repository!.get(url_getAll + '?pageNumber=$pageNumber');
@@ -39,6 +41,16 @@ class BodyBuildingPlanTypeLogService {
   Future<ResultObject?> payPlanUsingWallet(int planLogId) async {
     var response = await repository!
         .post(url_payPlanUsingWallet + '?planLogId=$planLogId', {});
+    if (response != null) {
+      ResultObject result = ResultObject.fromJson(response);
+      return result;
+    }
+    return null;
+  }
+
+  Future<ResultObject?> changeCurrentDay(int planId, int? addedDay) async {
+    var response = await repository!
+        .post(url_changeCurrentDay + '?planId=$planId&addedDay=$addedDay', {});
     if (response != null) {
       ResultObject result = ResultObject.fromJson(response);
       return result;

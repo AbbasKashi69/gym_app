@@ -32,7 +32,7 @@ class DietPlanTypeDetailFormVm extends BaseViewModel {
     nameDietController = TextEditingController();
     descriptionController = TextEditingController();
     title = nameDietController!.text = json['title'];
-    description = descriptionController!.text = json['description'];
+    description = descriptionController!.text = json['description'] ?? "";
   }
 
   Map<String, dynamic> toJson() {

@@ -12,6 +12,8 @@ class AnonymousPlanTypeLogService {
       '/api/AnonymousPlanTypeLog/GetPlansBySort';
   static const String url_payPlanUsingWallet =
       '/api/AnonymousPlanTypeLog/PayPlanUsingWallet';
+  static const String url_changeCurrentDay =
+      '/api/AnonymousPlanTypeLog/ChangeCurrentDay';
 
   Future<Page_AnonymousPlanTypeLogVm?> getAll([int pageNumber = 1]) async {
     var response =
@@ -42,6 +44,16 @@ class AnonymousPlanTypeLogService {
     if (response != null) {
       Page_AnonymousPlanTypeLogVm result =
           Page_AnonymousPlanTypeLogVm.fromJson(response);
+      return result;
+    }
+    return null;
+  }
+
+  Future<ResultObject?> changeCurrentDay(int planId, int? addedDay) async {
+    var response = await repository!
+        .post(url_changeCurrentDay + '?planId=$planId&addedDay=$addedDay', {});
+    if (response != null) {
+      ResultObject result = ResultObject.fromJson(response);
       return result;
     }
     return null;

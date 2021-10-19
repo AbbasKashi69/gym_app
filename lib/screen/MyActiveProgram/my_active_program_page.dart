@@ -361,7 +361,11 @@ class ItemLoadedActiveProgram extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       child: InkWell(
                         onTap: () {
-                          print('ccc');
+                          SetSelectedRoute()
+                            ..setSelectedRouteObserveProgram(
+                                context,
+                                planTypeLogvm.planType,
+                                planTypeLogvm.planTypeId);
                         },
                         borderRadius: BorderRadius.circular(10),
                         child: Container(

@@ -3,9 +3,12 @@ import 'package:gym_app/components/constant.dart';
 
 import 'description_screen.dart';
 
-class ItemOtherSport extends StatelessWidget {
-  const ItemOtherSport({Key? key, required this.data}) : super(key: key);
-  final dynamic data;
+class ItemDescriptionMovement extends StatelessWidget {
+  const ItemDescriptionMovement(
+      {Key? key, required this.description, required this.title})
+      : super(key: key);
+  final String? title;
+  final String? description;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,7 @@ class ItemOtherSport extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  data['name'],
+                  title ?? "",
                   style: textStyle.copyWith(
                       fontSize: kFontSizeText(sizeScreen, FontSize.title)),
                 ),
@@ -35,8 +38,8 @@ class ItemOtherSport extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                       side: BorderSide(color: Color(0xff707070))),
                   onPressed: () async {
-                    await DescriptionOtherSports()
-                        .description(context, sizeScreen, data);
+                    await DescriptionOtherSports().description(
+                        context, sizeScreen, title ?? "", description ?? "");
                   },
                   padding:
                       EdgeInsets.symmetric(horizontal: 20, vertical: padding),

@@ -30,7 +30,7 @@ class TurnItem extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: padding),
         child: Center(
           child: Text(
-            'نوبت $title',
+            'نوبت $titleم',
             style: textStyle.copyWith(
                 fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
                 color:

@@ -16,6 +16,7 @@ class AnonymousPlantypeFormVm {
   String? endDate;
   String? nEndDate;
   bool? isPrivate;
+  int? currentDay;
   List<AnonymousPlanTypeDetailFormVm>? anonymousPlanTypeDetailForms;
   List<PersonListVm>? students;
   List<AnonymousPlanTypeDayTermVm>? dayTerms;
@@ -38,7 +39,8 @@ class AnonymousPlantypeFormVm {
       this.anonymousPlanTypeDetailForms,
       this.students,
       this.isCreate,
-      this.dayTerms});
+      this.dayTerms,
+      this.currentDay});
 
   AnonymousPlantypeFormVm.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -54,6 +56,7 @@ class AnonymousPlantypeFormVm {
     endDate = json['endDate'];
     nEndDate = json['nEndDate'];
     isPrivate = json['isPrivate'];
+    currentDay = json['currentDay'];
     if (json['anonymousPlanTypeDetailForms'] != null) {
       anonymousPlanTypeDetailForms = [];
       json['anonymousPlanTypeDetailForms'].forEach((v) {

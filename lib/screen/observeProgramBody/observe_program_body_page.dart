@@ -1,243 +1,403 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gym_app/ViewModels/BodyBuildingPlanType/BodyBuildingPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/BodyBuildingPlanTypeDetail/BodyBuildingPlanTypeDetailsFormVm.dart';
+import 'package:gym_app/blocs/BodyBuildingPlanType/bloc/find_by_id_in_form_body_building_bloc.dart';
+import 'package:gym_app/blocs/BodyBuildingPlantypeLog/bloc/change_current_day_body_building_bloc.dart';
 import 'package:gym_app/components/constant.dart';
+import 'package:gym_app/components/myWaiting.dart';
+import 'package:gym_app/components/no_data.dart';
+import 'package:gym_app/screen/observeProgramOtherSports/components/bottom_filter.dart';
+import 'package:gym_app/screen/observeProgramOtherSports/components/trun_item.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
+
+late int dayCount;
+late int termCounInDay;
+late int currentDay;
+late int currentTerm;
+late int currentDayForSend;
+late int planId;
+late BodyBuildingPlanTypeFormVm bodyBuildingPlanTypeFormVm;
 
 class ObserveProgramBody extends StatefulWidget {
   static const routeName = '/ObseveProgramBody';
-  const ObserveProgramBody({Key? key}) : super(key: key);
+  const ObserveProgramBody({Key? key, required this.planId}) : super(key: key);
+  final int planId;
 
   @override
   _ObserveProgramBodyState createState() => _ObserveProgramBodyState();
 }
 
 class _ObserveProgramBodyState extends State<ObserveProgramBody> {
-  int itemSelectedBottomFilter = 0;
-  int itemSelectedTopTurn = 0;
+  @override
+  void initState() {
+    super.initState();
+    dayCount = 0;
+    termCounInDay = 0;
+    currentDay = 1;
+    currentTerm = 1;
+    currentDayForSend = 0;
+    planId = widget.planId;
+    bodyBuildingPlanTypeFormVm = BodyBuildingPlanTypeFormVm();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Size sizeScreen = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: Color(0xff48CAE4),
-        body: Stack(
-          children: [
-            Container(
-              child: Column(
-                children: [
-                  Container(
-                    height: sizeScreen.height * 0.25,
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          margin: EdgeInsets.only(top: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'ایجاد برنامه بدنسازی',
-                                style: textStyle.copyWith(
-                                    fontSize: kFontSizeText(
-                                        sizeScreen, FontSize.subTitle),
-                                    color: Colors.white),
-                              ),
-                              GestureDetector(
-                                  onTap: () => Navigator.of(context).pop(),
-                                  child: SvgPicture.asset(
-                                    'assets/icons/backIcon.svg',
-                                    width: sizeScreen.width > 550 ? 40 : 25,
-                                    height: sizeScreen.width > 550 ? 40 : 25,
-                                    color: Colors.white,
-                                  )
-                                  // child: Container(),
-                                  )
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                              child: Column(
-                            children: [
-                              Spacer(),
-                              SingleChildScrollView(
-                                padding: EdgeInsets.symmetric(horizontal: 5),
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                    children: List.generate(
-                                        listTopTurn.length,
-                                        (index) => TurnItem(
-                                              title: listTopTurn[index]
-                                                  ['titleTurn'],
-                                              index: index,
-                                              itemSelected: itemSelectedTopTurn,
-                                              onTapTopTurn: () {
-                                                setState(() {
-                                                  itemSelectedTopTurn = index;
-                                                });
-                                              },
-                                            ))),
-                              ),
-                            ],
-                          )),
-                        )
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: kBodyDecoration,
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: padding),
-                            margin: EdgeInsets.symmetric(vertical: padding),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 5,
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      'حرکت',
-                                      style: textStyle.copyWith(
-                                          fontSize: kFontSizeText(
-                                              sizeScreen, FontSize.title)),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      'ست',
-                                      style: textStyle.copyWith(
-                                          fontSize: kFontSizeText(
-                                              sizeScreen, FontSize.title)),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      'تکرار',
-                                      style: textStyle.copyWith(
-                                          fontSize: kFontSizeText(
-                                              sizeScreen, FontSize.title)),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Divider(
-                            color: Color(0xff707070),
-                            thickness: 1,
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Expanded(
-                              child: ListView.builder(
-                            padding: EdgeInsets.only(bottom: 50),
-                            itemBuilder: (context, index) => LevelItemMovement(
-                              data: listLevelItemMovement[index],
-                            ),
-                            itemCount: listLevelItemMovement.length,
-                          ))
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                margin: EdgeInsets.only(bottom: padding),
-                width: sizeScreen.width > 550
-                    ? sizeScreen.width * 0.7
-                    : sizeScreen.width,
-                height: 50,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: List.generate(
-                        3,
-                        (index) => BottomFilter(
-                              onTapBottomFilter: () {
-                                setState(() {
-                                  itemSelectedBottomFilter = index;
-                                });
-                              },
-                              index: index,
-                              itemSelected: itemSelectedBottomFilter,
-                              title: listTitleBottomFilter[index],
-                            ))),
-              ),
-            )
-          ],
+        body: Container(
+          child: BlocConsumer<FindByIdInFormBodyBuildingBloc,
+              FindByIdInFormBodyBuildingState>(
+            listener: (context, state) {
+              if (state is FindByIdInFormBodyBuildingLoadedState) {
+                if (state.resultObject != null &&
+                    state.resultObject!.success!) {
+                  bodyBuildingPlanTypeFormVm =
+                      BodyBuildingPlanTypeFormVm.fromJson(
+                          state.resultObject!.extra! as Map<String, dynamic>);
+                  currentDay = bodyBuildingPlanTypeFormVm.currentDay!;
+                  currentDayForSend = bodyBuildingPlanTypeFormVm.currentDay!;
+                  dayCount = bodyBuildingPlanTypeFormVm.dayTerms!.length;
+                  termCounInDay = bodyBuildingPlanTypeFormVm.dayTerms!
+                      .where((element) => element.dayNumber == 1)
+                      .toList()
+                      .first
+                      .termsCount!;
+                }
+              }
+            },
+            builder: (context, state) {
+              return AnimatedSwitcher(
+                duration: const Duration(seconds: 1),
+                child: state is FindByIdInFormBodyBuildingLoadingState
+                    ? Center(
+                        child: MyWaiting(),
+                      )
+                    : state is FindByIdInFormBodyBuildingLoadedState &&
+                            state.resultObject != null &&
+                            state.resultObject!.success!
+                        ? ItemLoadedObserveBodyBuilding()
+                        : state is FindByIdInFormBodyBuildingLoadedState &&
+                                (state.resultObject == null ||
+                                    state.resultObject!.success!)
+                            ? Center(
+                                child: NoData(),
+                              )
+                            : Container(),
+              );
+            },
+          ),
         ));
   }
 }
 
-List listTopTurn = [
-  {'titleTurn': 'اول'},
-  {'titleTurn': 'دوم'},
-  {'titleTurn': 'سوم'},
-  {'titleTurn': 'چهارم'},
-  {'titleTurn': 'پنجم'},
-  {'titleTurn': 'ششم'},
-  {'titleTurn': 'هفتم'},
-  {'titleTurn': 'هشتم'},
-];
-List<String> listTitleBottomFilter = ['روز قبل', 'انجام دادم', 'روز بعد'];
+class ItemLoadedObserveBodyBuilding extends StatefulWidget {
+  const ItemLoadedObserveBodyBuilding({Key? key}) : super(key: key);
 
-class BottomFilter extends StatelessWidget {
-  const BottomFilter(
-      {Key? key,
-      required this.title,
-      required this.index,
-      required this.onTapBottomFilter,
-      required this.itemSelected})
-      : super(key: key);
-  final String title;
-  final int index;
-  final int itemSelected;
-  final Function onTapBottomFilter;
+  @override
+  _ItemLoadedObserveBodyBuildingState createState() =>
+      _ItemLoadedObserveBodyBuildingState();
+}
+
+class _ItemLoadedObserveBodyBuildingState
+    extends State<ItemLoadedObserveBodyBuilding> {
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
-    return GestureDetector(
-      onTap: () {
-        onTapBottomFilter();
-      },
-      child: Container(
-        decoration: BoxDecoration(
-            color:
-                itemSelected == index ? Color(0xff48CAE4) : Color(0xffCAF0F8),
-            borderRadius: BorderRadius.horizontal(
-                right: Radius.circular(30), left: Radius.circular(30))),
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: padding),
-        child: Center(
-          child: Text(
-            title,
-            style: textStyle.copyWith(
-                fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
-                color:
-                    itemSelected == index ? Colors.white : Color(0xff0096C7)),
+    return Stack(
+      children: [
+        Container(
+          child: Column(
+            children: [
+              Container(
+                height: sizeScreen.height * 0.25,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      margin: EdgeInsets.only(top: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'مشاهده برنامه بدنسازی',
+                            style: textStyle.copyWith(
+                                fontSize: kFontSizeText(
+                                    sizeScreen, FontSize.subTitle),
+                                color: Colors.white),
+                          ),
+                          GestureDetector(
+                              onTap: () => Navigator.of(context).pop(),
+                              child: SvgPicture.asset(
+                                'assets/icons/backIcon.svg',
+                                width: sizeScreen.width > 550 ? 40 : 25,
+                                height: sizeScreen.width > 550 ? 40 : 25,
+                                color: Colors.white,
+                              )
+                              // child: Container(),
+                              )
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                          child: Column(
+                        children: [
+                          Spacer(),
+                          SingleChildScrollView(
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: List.generate(
+                                    termCounInDay,
+                                    (index) => TurnItem(
+                                          title: index != 2
+                                              ? (index + 1).toString().toWord()
+                                              : 'سو',
+                                          index: index + 1,
+                                          itemSelected: currentTerm,
+                                          onTapTopTurn: () {
+                                            setState(() {
+                                              currentTerm = index + 1;
+                                            });
+                                          },
+                                        ))),
+                          ),
+                        ],
+                      )),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(
+                          top: padding, bottom: padding, right: padding),
+                      child: Row(
+                        children: [
+                          Text(
+                            'روز ${currentDay != 3 ? currentDay.toString().toWord() : 'سو'}م',
+                            style: textStyle.copyWith(
+                                color: Colors.white,
+                                fontSize:
+                                    kFontSizeText(sizeScreen, FontSize.normal)),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.white,
+                            size: kFontSizeText(sizeScreen, FontSize.subTitle),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                              'نوبت ${currentTerm != 3 ? currentTerm.toString().toWord() : 'سو'}م',
+                              style: textStyle.copyWith(
+                                  color: Colors.white,
+                                  fontSize: kFontSizeText(
+                                      sizeScreen, FontSize.normal)))
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  decoration: kBodyDecoration,
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: padding),
+                        margin: EdgeInsets.symmetric(vertical: padding),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 5,
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  'حرکت',
+                                  style: textStyle.copyWith(
+                                      fontSize: kFontSizeText(
+                                          sizeScreen, FontSize.title)),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  'ست',
+                                  style: textStyle.copyWith(
+                                      fontSize: kFontSizeText(
+                                          sizeScreen, FontSize.title)),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  'تکرار',
+                                  style: textStyle.copyWith(
+                                      fontSize: kFontSizeText(
+                                          sizeScreen, FontSize.title)),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Divider(
+                        color: Color(0xff707070),
+                        thickness: 1,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Expanded(
+                          child: ListView.builder(
+                        padding: EdgeInsets.only(bottom: 50),
+                        itemBuilder: (context, index) => LevelItemMovement(
+                            data: listLevelItemMovement[index],
+                            bodyBuildingPlanTypeDetailsFormVm:
+                                _listCurrentDayCurrentTerm()[index]),
+                        itemCount: _listCurrentDayCurrentTerm().length,
+                      ))
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
         ),
-      ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            margin: EdgeInsets.only(bottom: padding),
+            width: sizeScreen.width > 550
+                ? sizeScreen.width * 0.7
+                : sizeScreen.width,
+            height: 50,
+            child: Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: List.generate(
+                    3,
+                    (index) => index == 0 && currentDay == 1
+                        ? const Spacer(
+                            flex: 2,
+                          )
+                        : index == 2 && currentDay == dayCount
+                            ? const Spacer(
+                                flex: 2,
+                              )
+                            : Expanded(
+                                flex: 3,
+                                child: BlocConsumer<
+                                    ChangeCurrentDayBodyBuildingBloc,
+                                    ChangeCurrentDayBodyBuildingState>(
+                                  listener: (context, state) {
+                                    if (state
+                                        is ChangeCurrentDayBodyBuildingLoadedState) {
+                                      if (state.resultObject != null &&
+                                          state.resultObject!.success!)
+                                        setState(() {
+                                          currentDayForSend = currentDay;
+                                        });
+                                    }
+                                  },
+                                  builder: (context, state) {
+                                    if (state
+                                            is ChangeCurrentDayBodyBuildingLoadingState &&
+                                        state.index == index)
+                                      return MyWaiting();
+                                    else
+                                      return BottomFilter(
+                                        currentDay: currentDay,
+                                        currentDayForSend: currentDayForSend,
+                                        isDoneByMe: index == 1 ? true : false,
+                                        onTapBottomFilter: () {
+                                          // index == 0 it means we cklic previous day
+                                          if (index == 0) {
+                                            _onTapPreviousDay();
+                                          }
+                                          // index == 2 it means we cklic next day
+                                          else if (index == 2) {
+                                            _onTapNextDay();
+                                          }
+                                          // index != 0 and index !=2 it means we cklic on "done"
+                                          else {
+                                            _onTapDoneByMe(index);
+                                          }
+                                        },
+                                        title: listTitleBottomFilter[index],
+                                      );
+                                  },
+                                ),
+                              ))),
+          ),
+        )
+      ],
     );
+  }
+
+  void _onTapNextDay() {
+    setState(() {
+      currentDay += 1;
+      currentTerm = 1;
+      termCounInDay = bodyBuildingPlanTypeFormVm.dayTerms!
+          .where((element) => element.dayNumber == currentDay)
+          .toList()
+          .first
+          .termsCount!;
+    });
+  }
+
+  void _onTapPreviousDay() {
+    setState(() {
+      currentDay -= 1;
+      currentTerm = 1;
+      termCounInDay = bodyBuildingPlanTypeFormVm.dayTerms!
+          .where((element) => element.dayNumber == currentDay)
+          .toList()
+          .first
+          .termsCount!;
+    });
+  }
+
+  void _onTapDoneByMe(int index) {
+    if (currentDay != currentDayForSend) {
+      BlocProvider.of<ChangeCurrentDayBodyBuildingBloc>(context).add(
+          ChangeCurrentDayBodyBuildingLoadingEvent(
+              index: index, planId: planId, addedDay: currentDay));
+    }
+  }
+
+  List<BodyBuildingPlanTypeDetailsFormVm> _listCurrentDayCurrentTerm() {
+    return bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!
+        .where((element) =>
+            element.dayNumber == currentDay &&
+            element.termNumber == currentTerm)
+        .toList();
   }
 }
 
+List<String> listTitleBottomFilter = ['روز قبل', 'انجام دادم', 'روز بعد'];
+
 class LevelItemMovement extends StatelessWidget {
-  const LevelItemMovement({Key? key, required this.data}) : super(key: key);
+  const LevelItemMovement(
+      {Key? key,
+      required this.data,
+      required this.bodyBuildingPlanTypeDetailsFormVm})
+      : super(key: key);
   final dynamic data;
+  final BodyBuildingPlanTypeDetailsFormVm bodyBuildingPlanTypeDetailsFormVm;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -252,22 +412,36 @@ class LevelItemMovement extends StatelessWidget {
                 border: Border(
                     right: BorderSide(color: Color(0xff48CAE4), width: 5))),
             width: double.infinity,
-            child: Column(
-              children: List.generate(
-                data['itemsMovement'].length,
-                (index) => ItemMovement(
-                  data: data['itemsMovement'][index],
+            child: Column(children: [
+              Column(
+                children: List.generate(
+                  bodyBuildingPlanTypeDetailsFormVm.superMoves!.length,
+                  (index) => ItemMovement(
+                    bodyBuildingPlanTypeDetailsFormVm:
+                        bodyBuildingPlanTypeDetailsFormVm.superMoves![index],
+                    data: data['itemsMovement'][index],
+                  ),
                 ),
               ),
-            )),
+              ItemMovement(
+                bodyBuildingPlanTypeDetailsFormVm:
+                    bodyBuildingPlanTypeDetailsFormVm,
+                data: data['itemsMovement'][0],
+              ),
+            ])),
       ),
     );
   }
 }
 
 class ItemMovement extends StatelessWidget {
-  const ItemMovement({Key? key, required this.data}) : super(key: key);
+  const ItemMovement(
+      {Key? key,
+      required this.data,
+      required this.bodyBuildingPlanTypeDetailsFormVm})
+      : super(key: key);
   final dynamic data;
+  final BodyBuildingPlanTypeDetailsFormVm bodyBuildingPlanTypeDetailsFormVm;
 
   @override
   Widget build(BuildContext context) {
@@ -310,7 +484,7 @@ class ItemMovement extends StatelessWidget {
                   width: padding,
                 ),
                 Text(
-                  data['nameMovement'],
+                  bodyBuildingPlanTypeDetailsFormVm.title ?? "",
                   style: textStyle.copyWith(
                       fontSize: kFontSizeText(sizeScreen, FontSize.subTitle)),
                 )
@@ -322,7 +496,9 @@ class ItemMovement extends StatelessWidget {
             child: Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  data['set'],
+                  bodyBuildingPlanTypeDetailsFormVm.setCount != null
+                      ? bodyBuildingPlanTypeDetailsFormVm.setCount.toString()
+                      : "",
                   style: textStyle.copyWith(
                       fontSize: kFontSizeText(sizeScreen, FontSize.subTitle)),
                 )),
@@ -332,7 +508,7 @@ class ItemMovement extends StatelessWidget {
             child: Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  data['repeat'],
+                  setSetItems(),
                   style: textStyle.copyWith(
                       fontSize: kFontSizeText(sizeScreen, FontSize.subTitle)),
                 )),
@@ -341,46 +517,15 @@ class ItemMovement extends StatelessWidget {
       ),
     );
   }
-}
 
-class TurnItem extends StatelessWidget {
-  const TurnItem({
-    required this.index,
-    required this.itemSelected,
-    required this.onTapTopTurn,
-    required this.title,
-    Key? key,
-  }) : super(key: key);
-  final String title;
-  final int index;
-  final int itemSelected;
-  final Function onTapTopTurn;
-
-  @override
-  Widget build(BuildContext context) {
-    final Size sizeScreen = MediaQuery.of(context).size;
-    return GestureDetector(
-      onTap: () {
-        onTapTopTurn();
-      },
-      child: Container(
-        decoration: BoxDecoration(
-            color: itemSelected == index ? Colors.white : Color(0xff90E0EF),
-            borderRadius: BorderRadius.horizontal(
-                right: Radius.circular(30), left: Radius.circular(30))),
-        margin: EdgeInsets.only(right: padding, left: padding, bottom: padding),
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: padding),
-        child: Center(
-          child: Text(
-            'نوبت $title',
-            style: textStyle.copyWith(
-                fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
-                color:
-                    itemSelected == index ? Color(0xff00B4D8) : Colors.white),
-          ),
-        ),
-      ),
-    );
+  String setSetItems() {
+    String helpForReturn = "";
+    int mySize = bodyBuildingPlanTypeDetailsFormVm.setItems!.length;
+    for (int i = 0; i < mySize; i++) {
+      String x = i != mySize - 1 ? '-' : "";
+      helpForReturn += '${bodyBuildingPlanTypeDetailsFormVm.setItems![i]}' + x;
+    }
+    return helpForReturn;
   }
 }
 

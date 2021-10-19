@@ -17,6 +17,7 @@ class DietPlanTypeFormVm {
   String? endDate;
   String? nEndDate;
   bool? isPrivate;
+  int? currentDay;
   List<DietPlanTypeDetailFormVm>? dietPlanTypeDetailForms;
   List<PersonListVm>? students;
   List<DietPlanTypeDayMealVm>? dayMeals;
@@ -39,6 +40,7 @@ class DietPlanTypeFormVm {
       this.isPrivate,
       this.dietPlanTypeDetailForms,
       this.students,
+      this.currentDay,
       this.dayMeals});
 
   DietPlanTypeFormVm.fromJson(Map<String, dynamic> json) {
@@ -55,6 +57,7 @@ class DietPlanTypeFormVm {
     endDate = json['endDate'];
     nEndDate = json['nEndDate'];
     isPrivate = json['isPrivate'];
+    currentDay = json['currentDay'];
     if (json['dietPlanTypeDetailForms'] != null) {
       dietPlanTypeDetailForms = [];
       json['dietPlanTypeDetailForms'].forEach((v) {

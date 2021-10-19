@@ -16,6 +16,7 @@ class BodyBuildingPlanTypeFormVm extends BaseViewModel {
   String? nStartDate;
   String? endDate;
   String? nEndDate;
+  int? currentDay;
   List<BodyBuildingPlanTypeDetailsFormVm>? bodyBuildingPlanTypeDetails;
   List<PersonListVm>? students;
   List<BodyBuildingPlanDayTermVm>? dayTerms;
@@ -37,6 +38,7 @@ class BodyBuildingPlanTypeFormVm extends BaseViewModel {
       this.bodyBuildingPlanTypeDetails,
       this.students,
       this.dayTerms,
+      this.currentDay,
       this.isCreate});
 
   BodyBuildingPlanTypeFormVm.fromJson(Map<String, dynamic> json) {
@@ -52,6 +54,7 @@ class BodyBuildingPlanTypeFormVm extends BaseViewModel {
     nStartDate = json['nStartDate'];
     endDate = json['endDate'];
     nEndDate = json['nEndDate'];
+    currentDay = json['currentDay'];
     if (json['bodyBuildingPlanTypeDetails'] != null) {
       bodyBuildingPlanTypeDetails = [];
       json['bodyBuildingPlanTypeDetails'].forEach((v) {

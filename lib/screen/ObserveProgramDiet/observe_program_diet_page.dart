@@ -3,14 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanTypeDetail/AnonymousPlanTypeDetailFormVm.dart';
+import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/DietPlanTypeDetail/DietPlanTypeDetailFormVm.dart';
 import 'package:gym_app/blocs/AnonymousPlanType/bloc/find_by_id_in_form_other_sports_bloc.dart';
 import 'package:gym_app/blocs/AnonymousPlanTypeLog/bloc/change_current_day_bloc.dart';
+import 'package:gym_app/blocs/DietPlanType/bloc/find_by_id_in_form_diet_bloc.dart';
+import 'package:gym_app/blocs/DietPlanTypeLog/bloc/change_current_day_diet_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/myWaiting.dart';
 import 'package:gym_app/components/no_data.dart';
-import 'components/bottom_filter.dart';
-import 'components/item_other_sport.dart';
-import 'components/trun_item.dart';
+import 'package:gym_app/screen/observeProgramOtherSports/components/bottom_filter.dart';
+import 'package:gym_app/screen/observeProgramOtherSports/components/item_other_sport.dart';
+import 'package:gym_app/screen/observeProgramOtherSports/components/trun_item.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 late int dayCount;
@@ -19,18 +23,18 @@ late int currentDay;
 late int currentTerm;
 late int currentDayForSend;
 late int planId;
-late AnonymousPlantypeFormVm anonymousPlantypeFormVm;
+late DietPlanTypeFormVm dietPlanTypeFormVm;
 
-class ObserveOtherSportsPage extends StatefulWidget {
-  static const routeName = '/ObserveOtherSportsPage';
-  ObserveOtherSportsPage({Key? key, required this.planId}) : super(key: key);
+class ObserveProgramDietPage extends StatefulWidget {
+  static const routeName = '/ObserveProgramDietPage';
+  ObserveProgramDietPage({Key? key, required this.planId}) : super(key: key);
   final int planId;
 
   @override
-  _ObserveOtherSportsPageState createState() => _ObserveOtherSportsPageState();
+  _ObserveProgramDietPageState createState() => _ObserveProgramDietPageState();
 }
 
-class _ObserveOtherSportsPageState extends State<ObserveOtherSportsPage> {
+class _ObserveProgramDietPageState extends State<ObserveProgramDietPage> {
   @override
   void initState() {
     super.initState();
@@ -40,7 +44,7 @@ class _ObserveOtherSportsPageState extends State<ObserveOtherSportsPage> {
     currentTerm = 1;
     currentDayForSend = 0;
     planId = widget.planId;
-    anonymousPlantypeFormVm = AnonymousPlantypeFormVm();
+    dietPlanTypeFormVm = DietPlanTypeFormVm();
   }
 
   @override
@@ -48,38 +52,36 @@ class _ObserveOtherSportsPageState extends State<ObserveOtherSportsPage> {
     return Scaffold(
         backgroundColor: Color(0xff48CAE4),
         body: Container(
-          child: BlocConsumer<FindByIdInFormOtherSportsBloc,
-              FindByIdInFormOtherSportsState>(
+          child: BlocConsumer<FindByIdInFormDietBloc, FindByIdInFormDietState>(
             listener: (context, state) {
-              if (state is FindByIdInFormOtherSportsLoadedState) {
+              if (state is FindByIdInFormDietLoadedState) {
                 if (state.resultObject != null &&
                     state.resultObject!.success!) {
-                  anonymousPlantypeFormVm = AnonymousPlantypeFormVm.fromJson(
+                  dietPlanTypeFormVm = DietPlanTypeFormVm.fromJson(
                       state.resultObject!.extra! as Map<String, dynamic>);
-                  currentDay = anonymousPlantypeFormVm.currentDay!;
-                  currentDayForSend = anonymousPlantypeFormVm.currentDay!;
-                  dayCount = anonymousPlantypeFormVm.dayTerms!.length;
-                  termCounInDay = anonymousPlantypeFormVm.dayTerms!
+                  currentDay = dietPlanTypeFormVm.currentDay!;
+                  currentDayForSend = dietPlanTypeFormVm.currentDay!;
+                  dayCount = dietPlanTypeFormVm.dayMeals!.length;
+                  termCounInDay = dietPlanTypeFormVm.dayMeals!
                       .where((element) => element.dayNumber == 1)
                       .toList()
                       .first
-                      .termsCount!;
-                  currentDayForSend = anonymousPlantypeFormVm.currentDay!;
+                      .mealsCount!;
                 }
               }
             },
             builder: (context, state) {
               return AnimatedSwitcher(
                 duration: const Duration(seconds: 1),
-                child: state is FindByIdInFormOtherSportsLoadingState
+                child: state is FindByIdInFormDietLoadingState
                     ? Center(
                         child: MyWaiting(),
                       )
-                    : state is FindByIdInFormOtherSportsLoadedState &&
+                    : state is FindByIdInFormDietLoadedState &&
                             state.resultObject != null &&
                             state.resultObject!.success!
-                        ? ItemLoadedObserveOtherSports()
-                        : state is FindByIdInFormOtherSportsLoadedState &&
+                        ? ItemLoadedObserveDiet()
+                        : state is FindByIdInFormDietLoadedState &&
                                 (state.resultObject == null ||
                                     state.resultObject!.success!)
                             ? Center(
@@ -95,18 +97,16 @@ class _ObserveOtherSportsPageState extends State<ObserveOtherSportsPage> {
 
 List<String> listTitleBottomFilter = ['روز قبل', 'انجام دادم', 'روز بعد'];
 
-class ItemLoadedObserveOtherSports extends StatefulWidget {
-  const ItemLoadedObserveOtherSports({
+class ItemLoadedObserveDiet extends StatefulWidget {
+  const ItemLoadedObserveDiet({
     Key? key,
   }) : super(key: key);
 
   @override
-  _ItemLoadedObserveOtherSportsState createState() =>
-      _ItemLoadedObserveOtherSportsState();
+  _ItemLoadedObserveDietState createState() => _ItemLoadedObserveDietState();
 }
 
-class _ItemLoadedObserveOtherSportsState
-    extends State<ItemLoadedObserveOtherSports> {
+class _ItemLoadedObserveDietState extends State<ItemLoadedObserveDiet> {
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
@@ -126,7 +126,7 @@ class _ItemLoadedObserveOtherSportsState
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'مشاهده ی برنامه سایر رشته ها',
+                            'مشاهده ی برنامه غذایی',
                             style: textStyle.copyWith(
                                 fontSize: kFontSizeText(
                                     sizeScreen, FontSize.subTitle),
@@ -222,7 +222,7 @@ class _ItemLoadedObserveOtherSportsState
                             Align(
                               alignment: Alignment.centerRight,
                               child: Text(
-                                'حرکت',
+                                'وعده',
                                 style: textStyle.copyWith(
                                     fontSize: kFontSizeText(
                                         sizeScreen, FontSize.title)),
@@ -280,44 +280,52 @@ class _ItemLoadedObserveOtherSportsState
                               )
                             : Expanded(
                                 flex: 3,
-                                child: BlocConsumer<ChangeCurrentDayBloc,
-                                    ChangeCurrentDayState>(
-                                  listener: (context, state) {
-                                    if (state is ChangeCurrentDayLoadedState) {
-                                      if (state.resultObject != null &&
-                                          state.resultObject!.success!)
-                                        setState(() {
-                                          currentDayForSend = currentDay;
-                                        });
-                                    }
-                                  },
-                                  builder: (context, state) {
-                                    if (state is ChangeCurrentDayLoadingState &&
-                                        state.index == index)
-                                      return MyWaiting();
-                                    else
-                                      return BottomFilter(
-                                        currentDay: currentDay,
-                                        currentDayForSend: currentDayForSend,
-                                        isDoneByMe: index == 1 ? true : false,
-                                        onTapBottomFilter: () {
-                                          // index == 0 it means we cklic previous day
-                                          if (index == 0) {
-                                            _onTapPreviousDay();
-                                          }
-                                          // index == 2 it means we cklic next day
-                                          else if (index == 2) {
-                                            _onTapNextDay();
-                                          }
-                                          // index != 0 and index !=2 it means we cklic on "done"
-                                          else {
-                                            _onTapDoneByMe(index);
-                                          }
-                                        },
-                                        title: listTitleBottomFilter[index],
-                                      );
-                                  },
-                                ),
+                                child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 5),
+                                    child: BlocConsumer<
+                                        ChangeCurrentDayDietBloc,
+                                        ChangeCurrentDayDietState>(
+                                      listener: (context, state) {
+                                        if (state
+                                            is ChangeCurrentDayDietLoadedState) {
+                                          if (state.resultObject != null &&
+                                              state.resultObject!.success!)
+                                            setState(() {
+                                              currentDayForSend = currentDay;
+                                            });
+                                        }
+                                      },
+                                      builder: (context, state) {
+                                        if (state
+                                                is ChangeCurrentDayDietLoadingState &&
+                                            state.index == index)
+                                          return MyWaiting();
+                                        else
+                                          return BottomFilter(
+                                            currentDay: currentDay,
+                                            currentDayForSend:
+                                                currentDayForSend,
+                                            isDoneByMe:
+                                                index == 1 ? true : false,
+                                            onTapBottomFilter: () {
+                                              // index == 0 it means we cklic previous day
+                                              if (index == 0) {
+                                                _onTapPreviousDay();
+                                              }
+                                              // index == 2 it means we cklic next day
+                                              else if (index == 2) {
+                                                _onTapNextDay();
+                                              }
+                                              // index != 0 and index !=2 it means we cklic on "done"
+                                              else {
+                                                _onTapDoneByMe(index);
+                                              }
+                                            },
+                                            title: listTitleBottomFilter[index],
+                                          );
+                                      },
+                                    )),
                               ))),
           ),
         )
@@ -329,11 +337,11 @@ class _ItemLoadedObserveOtherSportsState
     setState(() {
       currentDay += 1;
       currentTerm = 1;
-      termCounInDay = anonymousPlantypeFormVm.dayTerms!
+      termCounInDay = dietPlanTypeFormVm.dayMeals!
           .where((element) => element.dayNumber == currentDay)
           .toList()
           .first
-          .termsCount!;
+          .mealsCount!;
     });
   }
 
@@ -341,27 +349,27 @@ class _ItemLoadedObserveOtherSportsState
     setState(() {
       currentDay -= 1;
       currentTerm = 1;
-      termCounInDay = anonymousPlantypeFormVm.dayTerms!
+      termCounInDay = dietPlanTypeFormVm.dayMeals!
           .where((element) => element.dayNumber == currentDay)
           .toList()
           .first
-          .termsCount!;
+          .mealsCount!;
     });
   }
 
   void _onTapDoneByMe(int index) {
     if (currentDay != currentDayForSend) {
-      BlocProvider.of<ChangeCurrentDayBloc>(context).add(
-          ChangeCurrentDayLoadingEvent(
+      BlocProvider.of<ChangeCurrentDayDietBloc>(context).add(
+          ChangeCurrentDayDietLoadingEvent(
               index: index, planId: planId, addedDay: currentDay));
     }
   }
 
-  List<AnonymousPlanTypeDetailFormVm> _listCurrentDayCurrentTerm() {
-    return anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!
+  List<DietPlanTypeDetailFormVm> _listCurrentDayCurrentTerm() {
+    return dietPlanTypeFormVm.dietPlanTypeDetailForms!
         .where((element) =>
             element.dayNumber == currentDay &&
-            element.termNumber == currentTerm)
+            element.mealNumber == currentTerm)
         .toList();
   }
 }

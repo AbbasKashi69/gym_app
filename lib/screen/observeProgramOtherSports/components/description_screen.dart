@@ -3,8 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gym_app/components/constant.dart';
 
 class DescriptionOtherSports {
-  Future<void> description(
-      BuildContext context, Size sizeScreen, dynamic data) async {
+  Future<void> description(BuildContext context, Size sizeScreen, String title,
+      String description) async {
     showModalBottomSheet(
         isDismissible: true,
         elevation: 20,
@@ -17,7 +17,7 @@ class DescriptionOtherSports {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10))),
-                constraints: BoxConstraints(minHeight: sizeScreen.height * 0.4),
+                constraints: BoxConstraints(minHeight: sizeScreen.height * 0.5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -35,7 +35,7 @@ class DescriptionOtherSports {
                       height: 30,
                     ),
                     Text(
-                      data['name'],
+                      title,
                       style: textStyle.copyWith(
                           fontSize: kFontSizeText(sizeScreen, FontSize.title),
                           fontWeight: FontWeight.w500),
@@ -49,7 +49,7 @@ class DescriptionOtherSports {
                       child: Container(
                         width: sizeScreen.width * 0.8,
                         child: Text(
-                          data['description'],
+                          description,
                           style: textStyle.copyWith(
                             fontSize:
                                 kFontSizeText(sizeScreen, FontSize.subTitle),

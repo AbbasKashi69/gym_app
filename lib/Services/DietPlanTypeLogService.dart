@@ -13,6 +13,8 @@ class DietPlanTypeLogService extends BaseViewModel {
   static const String url_getPlansBySort = 'api/DietPlanTypeLog/GetPlansBySort';
   static const String url_payPlanUsingWallet =
       '/api/DietPlanTypeLog/PayPlanUsingWallet';
+  static const String url_changeCurrentDay =
+      '/api/DietPlanTypeLog/ChangeCurrentDay';
 
   Future<Page_DietPlanTypeLogVm?> getAll([int pageNumber = 1]) async {
     var response =
@@ -39,6 +41,16 @@ class DietPlanTypeLogService extends BaseViewModel {
   Future<ResultObject?> payPlanUsingWallet(int planLogId) async {
     var response = await repository!
         .post(url_payPlanUsingWallet + '?planLogId=$planLogId', {});
+    if (response != null) {
+      ResultObject result = ResultObject.fromJson(response);
+      return result;
+    }
+    return null;
+  }
+
+  Future<ResultObject?> changeCurrentDay(int planId, int? addedDay) async {
+    var response = await repository!
+        .post(url_changeCurrentDay + '?planId=$planId&addedDay=$addedDay', {});
     if (response != null) {
       ResultObject result = ResultObject.fromJson(response);
       return result;
