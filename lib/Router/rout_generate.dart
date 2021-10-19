@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeDayTermVm.dart';
 import 'package:gym_app/ViewModels/AnonymousPlanType/AnonymousPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/BodyBuildingMovement/BodyBuildingMovementVm.dart';
 import 'package:gym_app/ViewModels/ChatMessage/ChatMessageVm.dart';
 import 'package:gym_app/ViewModels/CoachStudent/CoachStudentProfileVm.dart';
 import 'package:gym_app/ViewModels/WalletLog/IncreaseCreditVm.dart';
 import 'package:gym_app/ViewModels/BodyBuildingPlanType/BodyBuildingPlanTypeFormVm.dart';
 import 'package:gym_app/ViewModels/CoachStudent/CoachStudentVm.dart';
 import 'package:gym_app/ViewModels/DietPlanType/DietPlanTypeFormVm.dart';
+import 'package:gym_app/ViewModels/WalletLog/transferBankVm.dart';
+import 'package:gym_app/ViewModels/WalletLog/transferToOtherWalletVm.dart';
 import 'package:gym_app/blocs/Account/bloc/change_password_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/get_current_user_role_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/login_bloc.dart';
@@ -46,11 +49,19 @@ import 'package:gym_app/blocs/DietPlanTypeLog/bloc/change_current_day_diet_bloc.
 import 'package:gym_app/blocs/PlanType/bloc/get_plans_by_sort_bloc.dart';
 import 'package:gym_app/blocs/Resume/bloc/get_resume_bloc.dart';
 import 'package:gym_app/blocs/RoomChat/bloc/get_all_room_chat_bloc.dart';
+import 'package:gym_app/blocs/Setting/setting_bloc.dart';
 import 'package:gym_app/blocs/Subscription/bloc/get_subscription_bloc.dart';
 import 'package:gym_app/blocs/UserFlow/bloc/create_user_flow_bloc.dart';
 import 'package:gym_app/blocs/UserFlow/bloc/get_user_flow_by_date_bloc.dart';
 import 'package:gym_app/blocs/UserFlow/bloc/get_user_flow_chart_information_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/get_all_deposit_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/get_all_withraw_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/get_my_wallet_ballance_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/get_transfer_other_wallet_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/get_transfer_to_card_bank_bloc.dart';
 import 'package:gym_app/blocs/WalletLog/bloc/increase_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/transfer_other_wallet_bloc.dart';
+import 'package:gym_app/blocs/WalletLog/bloc/transfer_to_cart_bank_bloc.dart';
 import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateMovement/create_movement_page.dart';
 import 'package:gym_app/screen/CreateMovementDiet/create_movement_diet_page.dart';
@@ -82,6 +93,9 @@ import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 import 'package:gym_app/screen/Register/register_page.dart';
 import 'package:gym_app/screen/Scan/scan_page.dart';
 import 'package:gym_app/screen/Wallet/Increase_page.dart';
+import 'package:gym_app/screen/Wallet/tansfer_others_wallet.dart';
+import 'package:gym_app/screen/Wallet/transfer_page.dart';
+import 'package:gym_app/screen/Wallet/turnover_page.dart';
 import 'package:gym_app/screen/chat/chat_page.dart';
 import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
 import 'package:gym_app/screen/observeProgramBody/observe_program_body_page.dart';
@@ -93,6 +107,7 @@ import 'package:gym_app/screen/profile_page/profile_page.dart';
 import 'package:gym_app/screen/profile_page/reset_password1_page.dart';
 import 'package:gym_app/screen/profile_page/reset_password2_page.dart';
 import 'package:gym_app/screen/profile_page/reset_password3_page.dart';
+import 'package:gym_app/screen/setting_addjob_final_page.dart';
 import 'package:gym_app/screen/setting_page.dart';
 import 'package:gym_app/screen/subscription_page/subscription_page.dart';
 import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
@@ -160,9 +175,16 @@ class MyRouter {
         return MaterialPageRoute(builder: (context) => ProfilePage());
       case IncreaseWalletPage.routeName:
         return MaterialPageRoute(
-            builder: (context) => BlocProvider(
-                create: (context) => IncreaseBloc(),
-                child: IncreaseWalletPage()));
+            builder: (context) => MultiBlocProvider(providers: [
+                  BlocProvider(
+                    create: (context) => IncreaseBloc(),
+                  ),
+                  BlocProvider<GetMyWalletBallanceBloc>(
+                    create: (context) => GetMyWalletBallanceBloc()
+                      ..add(GetMyWalletBallanceLoadingEvent()),
+                  ),
+                ], child: IncreaseWalletPage()));
+
       case ProfileApprenticePage.routeName:
         {
           int id = routeSettings.arguments as int;
@@ -596,6 +618,58 @@ class MyRouter {
                     child: EditProgramDietPage(),
                   ));
         }
+      case TransferToBankPage.routeName:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider<TransferToCartBankBloc>(
+            create: (context) => TransferToCartBankBloc(),
+            child: TransferToBankPage(),
+          ),
+        );
+      case TransferOtherWallet.routeName:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider<TransferOtherWalletBloc>(
+            create: (context) => TransferOtherWalletBloc()
+              ..add(TransferToOtherWalletLoadingEvent(
+                  transferToOtherWalletVm: TransferToOtherWalletsVm())),
+            child: TransferOtherWallet(),
+          ),
+        );
+      case TurnoverPage.routeName:
+        return MaterialPageRoute(
+            builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider<GetTransferToOthersWalletsBloc>(
+                      create: (context) => GetTransferToOthersWalletsBloc()
+                        ..add(GetTransferToOthersWalletsLoadingEvent(
+                            pageNumber: 1, pageSize: 10)),
+                    ),
+                    BlocProvider<GetTransferToCardBankBloc>(
+                      create: (context) => GetTransferToCardBankBloc()
+                        ..add(GetTransferToCardBankLoadingEvent(
+                            pageNumber: 1, pageSize: 10)),
+                    ),
+                    BlocProvider(
+                      create: (context) => GetAllDepositBloc()
+                        ..add(GetAllDepositLoadingEvent(
+                            pageNumber: 1, pageSize: 10)),
+                    ),
+                    BlocProvider(
+                      create: (context) => GetAllWithdrawalBloc()
+                        ..add(GetAllWithdrawalLoadingEvent(
+                            pageNumber: 1, pageSize: 10)),
+                    ),
+                  ],
+                  child: TurnoverPage(),
+                ));
+      case SettingAddJobFinalPage.routeName:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => CreateBodyBuildingMovementBloc()
+              ..add(CreateBodyBuildingMovementLoadingEvent(
+                  bodyBuildingMovementVm: BodyBuildingMovementVm())),
+            child: SettingAddJobFinalPage(),
+          ),
+        );
 
       //** rout for edit programs is finished  */
 

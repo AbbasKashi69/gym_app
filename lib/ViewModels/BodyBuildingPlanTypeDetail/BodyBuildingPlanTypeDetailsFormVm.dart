@@ -48,7 +48,7 @@ class BodyBuildingPlanTypeDetailsFormVm extends BaseViewModel {
     descriptionController = TextEditingController();
     setController = TextEditingController();
     title = nameMovementController!.text = json['title'];
-    description = descriptionController!.text = json['description'];
+    description = descriptionController!.text = json['description'] ?? "";
     setCount = json['setCount'];
     setController!.text = json['setCount'].toString();
     setDescription = json['setDescription'];

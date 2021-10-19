@@ -60,7 +60,7 @@ class _ObserveProgramDietPageState extends State<ObserveProgramDietPage> {
                   dietPlanTypeFormVm = DietPlanTypeFormVm.fromJson(
                       state.resultObject!.extra! as Map<String, dynamic>);
                   currentDay = dietPlanTypeFormVm.currentDay!;
-                  currentDayForSend = dietPlanTypeFormVm.currentDay!;
+                  currentDayForSend = currentDay - 1;
                   dayCount = dietPlanTypeFormVm.dayMeals!.length;
                   termCounInDay = dietPlanTypeFormVm.dayMeals!
                       .where((element) => element.dayNumber == 1)
@@ -279,7 +279,7 @@ class _ItemLoadedObserveDietState extends State<ItemLoadedObserveDiet> {
                                 flex: 2,
                               )
                             : Expanded(
-                                flex: 3,
+                                flex: 2,
                                 child: Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 5),

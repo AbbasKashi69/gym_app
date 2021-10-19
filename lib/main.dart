@@ -37,9 +37,6 @@ import 'blocs/Subscription/bloc/get_subscription_invoice_bloc.dart';
 import 'blocs/WalletLog/bloc/get_all_deposit_bloc.dart';
 import 'blocs/WalletLog/bloc/get_all_withraw_bloc.dart';
 import 'blocs/WalletLog/bloc/get_my_deposit_bloc.dart';
-import 'blocs/WalletLog/bloc/get_my_deposit_bloc.dart';
-import 'blocs/WalletLog/bloc/get_my_deposit_bloc.dart';
-import 'blocs/WalletLog/bloc/get_my_deposit_bloc.dart';
 import 'blocs/WalletLog/bloc/get_my_withdrawal_bloc.dart';
 import 'blocs/WalletLog/bloc/get_my_wallet_ballance_bloc.dart';
 import 'blocs/WalletLog/bloc/get_transfer_other_wallet_bloc.dart';
@@ -59,46 +56,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(MultiBlocProvider(
-    providers: [
-      BlocProvider<IncreaseBloc>(
-        create: (context) => IncreaseBloc(),
-      ),
-
-      BlocProvider<TransferToCartBankBloc>(
-        create: (context) => TransferToCartBankBloc()..add(TransferToCartBankLoadingEvent(transferToBankVm: TransferToBankVm())),
-      ),
-      BlocProvider<TransferOtherWalletBloc>(
-        create: (context) => TransferOtherWalletBloc()..add(TransferToOtherWalletLoadingEvent(transferToOtherWalletVm: TransferToOtherWalletsVm())),
-      ),
-      BlocProvider<GetTransferToOthersWalletsBloc>(
-        create: (context) => GetTransferToOthersWalletsBloc()..add(GetTransferToOthersWalletsLoadingEvent(pageNumber: 1,pageSize: 10)),
-      ),
-      BlocProvider<GetTransferToCardBankBloc>(
-        create: (context) => GetTransferToCardBankBloc()..add(GetTransferToCardBankLoadingEvent(pageNumber: 1,pageSize: 10)),
-      ),
-      BlocProvider(
-        create: (context) =>
-        GetAllDepositBloc()..add(GetAllDepositLoadingEvent(pageNumber: 1, pageSize: 10)),
-        child: TurnoverPage(),
-      ),
-      BlocProvider(
-        create: (context) =>
-        GetAllWithdrawalBloc()..add(GetAllWithdrawalLoadingEvent(pageNumber: 1, pageSize: 10)),
-        child: TurnoverPage(),
-      ),
-      BlocProvider(
-        create: (context) =>
-        CreateBodyBuildingMovementBloc()..add(CreateBodyBuildingMovementLoadingEvent(bodyBuildingMovementVm: BodyBuildingMovementVm())),
-        child: SettingAddJobFinalPage(),
-      ),
-      BlocProvider<GetMyWalletBallanceBloc>(
-        create: (context) =>
-        GetMyWalletBallanceBloc()..add(GetMyWalletBallanceLoadingEvent()),
-      ),
-    ],
-    child: MyApp(),
-  ));
+  runApp(MyApp());
   start();
 }
 

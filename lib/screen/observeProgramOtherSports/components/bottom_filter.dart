@@ -18,29 +18,32 @@ class BottomFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size sizeScreen = MediaQuery.of(context).size;
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () {
-          onTapBottomFilter();
-        },
-        child: Container(
-          decoration: BoxDecoration(
-              color: isDoneByMe && currentDay == currentDayForSend
-                  ? Color(0xff48CAE4)
-                  : Color(0xffCAF0F8),
-              // color: Color(0xffCAF0F8),
-              borderRadius: BorderRadius.horizontal(
-                  right: Radius.circular(30), left: Radius.circular(30))),
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: padding),
-          child: Center(
-            child: Text(
-              title,
-              style: textStyle.copyWith(
-                  fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
-                  color: isDoneByMe && currentDay == currentDayForSend
-                      ? Colors.white
-                      : Color(0xff0096C7)),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 3),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            onTapBottomFilter();
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                color: isDoneByMe && currentDay == currentDayForSend
+                    ? Color(0xff48CAE4)
+                    : Color(0xffCAF0F8),
+                // color: Color(0xffCAF0F8),
+                borderRadius: BorderRadius.horizontal(
+                    right: Radius.circular(30), left: Radius.circular(30))),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: padding),
+            child: Center(
+              child: Text(
+                title,
+                style: textStyle.copyWith(
+                    fontSize: kFontSizeText(sizeScreen, FontSize.subTitle),
+                    color: isDoneByMe && currentDay == currentDayForSend
+                        ? Colors.white
+                        : Color(0xff0096C7)),
+              ),
             ),
           ),
         ),

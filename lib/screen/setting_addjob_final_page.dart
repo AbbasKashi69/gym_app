@@ -23,6 +23,7 @@ import '../../main.dart';
 
 class SettingAddJobFinalPage extends StatefulWidget {
   const SettingAddJobFinalPage({Key? key}) : super(key: key);
+  static const routeName = '/settingAndJobFinalPage';
 
   @override
   _SettingAddJobFinalPageState createState() => _SettingAddJobFinalPageState();
@@ -166,9 +167,10 @@ class _SettingAddJobFinalPageState extends State<SettingAddJobFinalPage> {
                               .add(CreateBodyBuildingMovementLoadingEvent(
                                   bodyBuildingMovementVm:
                                       BodyBuildingMovementVm(
-                                          title: "تست",
-                                        filePath: bodyBuildingMovementVm.uint8list.toString(),
-                                      )));
+                            title: "تست",
+                            filePath:
+                                bodyBuildingMovementVm.uint8list.toString(),
+                          )));
                         });
                 },
               )
@@ -221,7 +223,8 @@ class _SettingAddJobFinalPageState extends State<SettingAddJobFinalPage> {
             height: 300,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(12), topLeft: Radius.circular(12))),
+                    topRight: Radius.circular(12),
+                    topLeft: Radius.circular(12))),
             child: Column(
               children: [
                 SizedBox(
@@ -293,4 +296,3 @@ class _SettingAddJobFinalPageState extends State<SettingAddJobFinalPage> {
             )));
   }
 }
-

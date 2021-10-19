@@ -18,6 +18,7 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 
 class TransferToBankPage extends StatefulWidget {
   const TransferToBankPage({Key? key}) : super(key: key);
+  static const routeName = '/transferToBankPage';
 
   @override
   _TransferToBankPageState createState() => _TransferToBankPageState();
@@ -255,7 +256,6 @@ class _TransferToBankPageState extends State<TransferToBankPage> {
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
-
                                                 children: [
                                                   Text(
                                                     "${userList[index].cartNumber} ${userList[index].bankName}",
@@ -342,149 +342,168 @@ class _TransferToBankPageState extends State<TransferToBankPage> {
                   onTap: () {
                     _isFill
                         ? Get.bottomSheet(BottomSheet(
-                      elevation: 0,
+                            elevation: 0,
                             backgroundColor: Colors.transparent,
                             onClosing: () {},
-                            builder: (context) {
-                              return Container(
-                                height: Get.height * 0.4,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)),
-                                  color: Colors.white,
-                                ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.symmetric(vertical: 10),
-                                      height: Get.height * 0.009,
-                                      width: Get.width * 0.18,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
-                                          color: Colors.grey[300]),
-                                    ),
-                                    SizedBox(
-                                      height: Get.height * 0.03,
-                                    ),
-                                    Text(
-                                      "آیا از درخواست انتقال وجه به حساب بانکی اطمینان دارید؟",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontFamily: "IRANSans",
-                                          fontSize: Get.height * 0.025),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    SizedBox(
-                                      height: Get.height * 0.05
-                                    ),
-                                   Row(
-                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                     children: [
-                                       InkWell(
-                                         onTap: (){
-                                           Navigator.pop(context);
-                                         },
-                                         child: Container(
-                                           height: Get.height * 0.08,
-                                           width: Get.width * 0.4,
-                                           decoration: BoxDecoration(
-                                               gradient: LinearGradient(
-                                                   colors: [
-                                                     Colors.grey.withOpacity(0.3),
-                                                     Colors.grey.withOpacity(0.2),
-                                                   ]
-                                               ),
-                                               borderRadius: BorderRadius.circular(30)
-                                           ),
-                                           child: Center(
-                                             child: Text("خیر",style: TextStyle(color: Colors.black,fontFamily: "IRANSans",fontSize: Get.height * 0.025,fontWeight: FontWeight.w400),),
-                                           ),
-                                         ),
-                                       ),
-
-                                         BlocConsumer<TransferToCartBankBloc, TransferToCartBankState>(
-                                           listener: (context, state) {
-                                             if (state is TransferToCartBankLoadedState) {
-                                               if (state.resultObject != null && state.resultObject!.success!) {
-                                                 // BlocProvider.of<TransferToCartBankBloc>(context).add(
-                                                 //   TransferToCartBankLoadingEvent(transferToBankVm: TransferToBankVm(
-                                                 //     amount: int.parse(_controllerAmount.text),
-                                                 //     bankId: int.parse(userList[count].cartNumber),
-                                                 //   ))
-                                                 // );
-                                                 Fluttertoast.showToast(msg: state.resultObject!.message ?? "");
-
-                                               } else if (state.resultObject != null) {
-                                                 Fluttertoast.showToast(msg: state.resultObject!.message ?? "");
-                                               } else
-                                                 Fluttertoast.showToast(
-                                                   msg: 'دوباره امتحان کنید',
-                                                 );
-                                             }
-                                           },
-                                           builder: (context, state) {
-                                             if (state is TransferToCartBankLoadingState)
-                                               return MyWaiting();
-                                             else
-                                               return BlocConsumer<TransferToCartBankBloc, TransferToCartBankState>(
-                                                 listener: (context, state) {
-                                                   if (state is TransferToCartBankLoadedState) {
-                                                     if (state.resultObject != null &&
-                                                         state.resultObject!.success!) {
-                                                       // BlocProvider.of<TransferToCartBankBloc>(context).add(
-                                                       //     TransferToCartBankLoadingEvent(transferToBankVm: TransferToBankVm(
-                                                       //       amount: int.parse(_controllerAmount.text),
-                                                       //       bankId: int.parse(userList[count].cartNumber),
-                                                       //     ))
-                                                       // );
-
-                                                     } else if (state.resultObject != null) {
-                                                       Fluttertoast.showToast(
-                                                           msg: state.resultObject!.message ?? "");
-                                                     } else
-                                                       Fluttertoast.showToast(
-                                                         msg: 'دوباره امتحان کنید',
-                                                       );
-                                                   }
-                                                 },
-                                                 builder: (context, state) {
-                                                   if (state is TransferToCartBankLoadingState)
-                                                     return MyWaiting();
-                                                   else
-                                                     return  InkWell(
-                                                       onTap: () {
-                                                         if (_formKey.currentState!.validate()) {
-                                                           BlocProvider.of<TransferToCartBankBloc>(context).add(
-                                                               TransferToCartBankLoadingEvent(transferToBankVm: TransferToBankVm(
-                                                                 amount: int.parse(_controllerAmount.text),
-                                                                 bankId: int.parse(userList[count].cartNumber),
-                                                               ))
-                                                           );
-                                                         }
-                                                       },
-                                                       child: Container(
-                                                         height: Get.height * 0.08,
-                                                         width: Get.width * 0.4,
-                                                         decoration: BoxDecoration(
-                                                         gradient: LinearGradient(
-                                                         colors: [
-                                                         Color.fromRGBO(20, 186, 219, 1),
-                                                   Color.fromRGBO(60, 198, 226, 1)
-                                                   ]
-                                                   ),
-                                                   borderRadius: BorderRadius.circular(30)
-                                                   ),
-                                                         child: Center(child: Text("بله",style: TextStyle(color: Colors.white,fontSize: 17),),),
-                                                       ),
-                                                     );
-                                                 },
-                                               );
-                                           },
-                                         ),
-
-
-                                     ],
-                                   )
-                                  ],
+                            builder: (ctx) {
+                              return BlocProvider.value(
+                                value: BlocProvider.of<TransferToCartBankBloc>(
+                                    context),
+                                child: Container(
+                                  height: Get.height * 0.4,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(20),
+                                        topLeft: Radius.circular(20)),
+                                    color: Colors.white,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 10),
+                                        height: Get.height * 0.009,
+                                        width: Get.width * 0.18,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: Colors.grey[300]),
+                                      ),
+                                      SizedBox(
+                                        height: Get.height * 0.03,
+                                      ),
+                                      Text(
+                                        "آیا از درخواست انتقال وجه به حساب بانکی اطمینان دارید؟",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: "IRANSans",
+                                            fontSize: Get.height * 0.025),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(height: Get.height * 0.05),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Container(
+                                              height: Get.height * 0.08,
+                                              width: Get.width * 0.4,
+                                              decoration: BoxDecoration(
+                                                  gradient:
+                                                      LinearGradient(colors: [
+                                                    Colors.grey
+                                                        .withOpacity(0.3),
+                                                    Colors.grey
+                                                        .withOpacity(0.2),
+                                                  ]),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30)),
+                                              child: Center(
+                                                child: Text(
+                                                  "خیر",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontFamily: "IRANSans",
+                                                      fontSize:
+                                                          Get.height * 0.025,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          BlocConsumer<TransferToCartBankBloc,
+                                              TransferToCartBankState>(
+                                            listener: (context, state) {
+                                              if (state
+                                                  is TransferToCartBankLoadedState) {
+                                                if (state.resultObject !=
+                                                        null &&
+                                                    state.resultObject!
+                                                        .success!) {
+                                                  // BlocProvider.of<TransferToCartBankBloc>(context).add(
+                                                  //   TransferToCartBankLoadingEvent(transferToBankVm: TransferToBankVm(
+                                                  //     amount: int.parse(_controllerAmount.text),
+                                                  //     bankId: int.parse(userList[count].cartNumber),
+                                                  //   ))
+                                                  // );
+                                                  Fluttertoast.showToast(
+                                                      msg: state.resultObject!
+                                                              .message ??
+                                                          "");
+                                                } else if (state.resultObject !=
+                                                    null) {
+                                                  Fluttertoast.showToast(
+                                                      msg: state.resultObject!
+                                                              .message ??
+                                                          "");
+                                                } else
+                                                  Fluttertoast.showToast(
+                                                    msg: 'دوباره امتحان کنید',
+                                                  );
+                                              }
+                                            },
+                                            builder: (context, state) {
+                                              if (state
+                                                  is TransferToCartBankLoadingState)
+                                                return MyWaiting();
+                                              else
+                                                return InkWell(
+                                                  onTap: () {
+                                                    if (_formKey.currentState!
+                                                        .validate()) {
+                                                      BlocProvider.of<
+                                                                  TransferToCartBankBloc>(
+                                                              context)
+                                                          .add(
+                                                              TransferToCartBankLoadingEvent(
+                                                                  transferToBankVm:
+                                                                      TransferToBankVm(
+                                                        amount: int.parse(
+                                                            _controllerAmount
+                                                                .text),
+                                                        bankId: int.parse(
+                                                            userList[count]
+                                                                .cartNumber),
+                                                      )));
+                                                    }
+                                                  },
+                                                  child: Container(
+                                                    height: Get.height * 0.08,
+                                                    width: Get.width * 0.4,
+                                                    decoration: BoxDecoration(
+                                                        gradient:
+                                                            LinearGradient(
+                                                                colors: [
+                                                              Color.fromRGBO(20,
+                                                                  186, 219, 1),
+                                                              Color.fromRGBO(60,
+                                                                  198, 226, 1)
+                                                            ]),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30)),
+                                                    child: Center(
+                                                      child: Text(
+                                                        "بله",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 17),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                            },
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -507,8 +526,7 @@ class _TransferToBankPageState extends State<TransferToBankPage> {
                                 _isFill
                                     ? Color.fromRGBO(60, 198, 226, 1)
                                     : Colors.grey.withOpacity(0.2)
-                              ])
-                      ),
+                              ])),
                       child: Center(
                         child: Text(
                           "ارسال درخواست",

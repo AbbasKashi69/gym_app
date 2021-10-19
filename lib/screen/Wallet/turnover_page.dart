@@ -22,6 +22,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class TurnoverPage extends StatefulWidget {
   const TurnoverPage({Key? key}) : super(key: key);
+  static const routeName = '/turnoverPage';
 
   @override
   _TurnoverPageState createState() => _TurnoverPageState();
@@ -43,6 +44,7 @@ class _TurnoverPageState extends State<TurnoverPage>
     _exerciseScrollController = ScrollController()..addListener(_listener);
     _dietScrollController = ScrollController()..addListener(_listenerDiet);
   }
+
   late ScrollController _exerciseScrollController;
   late ScrollController _dietScrollController;
   late PageController _pageController;
@@ -51,7 +53,7 @@ class _TurnoverPageState extends State<TurnoverPage>
     if (_exerciseScrollController.position.pixels ==
         _exerciseScrollController.position.maxScrollExtent) {
       BlocProvider.of<GetAllDepositBloc>(context)
-        ..add(GetAllDepositLoadedEvent(10,1));
+        ..add(GetAllDepositLoadedEvent(10, 1));
     }
   }
 
@@ -59,7 +61,7 @@ class _TurnoverPageState extends State<TurnoverPage>
     if (_dietScrollController.position.pixels ==
         _dietScrollController.position.maxScrollExtent) {
       BlocProvider.of<GetAllDepositBloc>(context)
-        ..add(GetAllDepositLoadedEvent(11,2));
+        ..add(GetAllDepositLoadedEvent(11, 2));
     }
   }
 
@@ -149,19 +151,26 @@ class _TurnoverPageState extends State<TurnoverPage>
                                 });
                                 BlocProvider.of<GetAllDepositBloc>(context).add(
                                     GetAllDepositLoadingEvent(
-                                        pageNumber: 2,pageSize: 11));
+                                        pageNumber: 2, pageSize: 11));
                               },
                               child: AnimatedContainer(
                                 duration: Duration(seconds: 1),
-
                                 height: gh(0.25),
                                 width: gw(0.3),
                                 decoration: BoxDecoration(
-                                  color: _selectedTab == 1 ? Colors.grey[300] : Colors.white,
-                                  borderRadius: BorderRadius.circular(10)
-                                ),
+                                    color: _selectedTab == 1
+                                        ? Colors.grey[300]
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(10)),
                                 child: Center(
-                                  child: Text("واریز ها",style: TextStyle(color: _selectedTab == 1 ? Colors.black : Colors.grey[400],fontSize: gh(0.0225)),),
+                                  child: Text(
+                                    "واریز ها",
+                                    style: TextStyle(
+                                        color: _selectedTab == 1
+                                            ? Colors.black
+                                            : Colors.grey[400],
+                                        fontSize: gh(0.0225)),
+                                  ),
                                 ),
                               ),
                             ),
@@ -172,22 +181,28 @@ class _TurnoverPageState extends State<TurnoverPage>
                                 setState(() {
                                   _selectedTab = 2;
                                 });
-                                BlocProvider.of<GetAllWithdrawalBloc>(context).add(
-                                    GetAllWithdrawalLoadingEvent(
-                                        pageNumber: 1,pageSize: 10));
+                                BlocProvider.of<GetAllWithdrawalBloc>(context)
+                                    .add(GetAllWithdrawalLoadingEvent(
+                                        pageNumber: 1, pageSize: 10));
                               },
-
                               child: AnimatedContainer(
                                 duration: Duration(seconds: 1),
-
                                 height: gh(0.25),
                                 width: gw(0.3),
                                 decoration: BoxDecoration(
-                                    color: _selectedTab == 2 ? Colors.grey[300] : Colors.white,
-                                    borderRadius: BorderRadius.circular(10)
-                                ),
+                                    color: _selectedTab == 2
+                                        ? Colors.grey[300]
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(10)),
                                 child: Center(
-                                  child: Text("برداشت ها",style: TextStyle(color: _selectedTab == 2 ? Colors.black : Colors.grey[400],fontSize: gh(0.0225)),),
+                                  child: Text(
+                                    "برداشت ها",
+                                    style: TextStyle(
+                                        color: _selectedTab == 2
+                                            ? Colors.black
+                                            : Colors.grey[400],
+                                        fontSize: gh(0.0225)),
+                                  ),
                                 ),
                               ),
                             ),
@@ -201,15 +216,22 @@ class _TurnoverPageState extends State<TurnoverPage>
                               },
                               child: AnimatedContainer(
                                 duration: Duration(seconds: 1),
-
                                 height: gh(0.25),
                                 width: gw(0.6),
                                 decoration: BoxDecoration(
-                                    color: _selectedTab == 3 ? Colors.grey[300] : Colors.white,
-                                    borderRadius: BorderRadius.circular(10)
-                                ),
+                                    color: _selectedTab == 3
+                                        ? Colors.grey[300]
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(10)),
                                 child: Center(
-                                  child: Text("انتقال به کیف پول دیگران",style: TextStyle(color: _selectedTab == 3 ? Colors.black : Colors.grey[400],fontSize: gh(0.0225)),),
+                                  child: Text(
+                                    "انتقال به کیف پول دیگران",
+                                    style: TextStyle(
+                                        color: _selectedTab == 3
+                                            ? Colors.black
+                                            : Colors.grey[400],
+                                        fontSize: gh(0.0225)),
+                                  ),
                                 ),
                               ),
                             ),
@@ -226,16 +248,23 @@ class _TurnoverPageState extends State<TurnoverPage>
                                 height: gh(0.25),
                                 width: gw(0.5),
                                 decoration: BoxDecoration(
-                                    color: _selectedTab == 4 ? Colors.grey[300] : Colors.white,
-                                    borderRadius: BorderRadius.circular(10)
-                                ),
+                                    color: _selectedTab == 4
+                                        ? Colors.grey[300]
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(10)),
                                 child: Center(
-                                  child: Text("انتقال به حساب بانکی",style: TextStyle(color: _selectedTab == 4 ? Colors.black : Colors.grey[400],fontSize: gh(0.0225)),),
+                                  child: Text(
+                                    "انتقال به حساب بانکی",
+                                    style: TextStyle(
+                                        color: _selectedTab == 4
+                                            ? Colors.black
+                                            : Colors.grey[400],
+                                        fontSize: gh(0.0225)),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-
                         ],
                         isScrollable: true,
                         indicatorColor: Colors.transparent,
@@ -245,151 +274,232 @@ class _TurnoverPageState extends State<TurnoverPage>
                   SizedBox(
                     height: Get.height * 0.035,
                   ),
-                  _selectedTab==1 ?BlocBuilder<GetAllDepositBloc, GetAllDepositState>(
-                    builder: (context, state) => AnimatedSwitcher(
-                      duration: Duration(milliseconds: 1500),
-                      switchInCurve: Curves.easeIn,
-                      child: state is GetAllDepositLoadingState
-                          ? Center(child: MyWaiting())
-                          : state is GetAllDepositLoadedState &&
-                          state.page_moneyRequestVm != null &&
-                          state.page_moneyRequestVm!.items != null &&
-                          state.page_moneyRequestVm!.items!.isNotEmpty
-                          ? ListView.builder(
-                        controller: _selectedTab == 0
-                            ? _exerciseScrollController
-                            : _dietScrollController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          if (index <
-                              state.page_moneyRequestVm!.items!.length)
-                            return ItemLoadedFirst(
-                                moneyRequestVm: state
-                                    .page_moneyRequestVm!.items![index]);
-                          else
-                            return MyWaiting();
-                        },
-                        itemCount: state.page_moneyRequestVm!.hasNext!
-                            ? state.page_moneyRequestVm!.items!.length + 1
-                            : state.page_moneyRequestVm!.items!.length,
-                      )
-                          : state is GetAllDepositLoadedState &&
-                          (state.page_moneyRequestVm == null ||
-                              state.page_moneyRequestVm!.items == null ||
-                              state.page_moneyRequestVm!.items!.isEmpty)
-                          ? NoData()
-                          : Container(),
-                    ),
-                  ) : _selectedTab==2?BlocBuilder<GetAllWithdrawalBloc, GetAllWithdrawalState>(
-                    builder: (context, state) => AnimatedSwitcher(
-                      duration: Duration(milliseconds: 1500),
-                      switchInCurve: Curves.easeIn,
-                      child: state is GetAllWithdrawalLoadingState
-                          ? Center(child: MyWaiting())
-                          : state is GetAllWithdrawalLoadedState &&
-                          state.page_moneyRequestVm != null &&
-                          state.page_moneyRequestVm!.items != null &&
-                          state.page_moneyRequestVm!.items!.isNotEmpty
-                          ? ListView.builder(
-                        controller: _selectedTab == 0
-                            ? _exerciseScrollController
-                            : _dietScrollController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          if (index <
-                              state.page_moneyRequestVm!.items!.length)
-                            return ItemLoadedFirst(
-                                moneyRequestVm: state
-                                    .page_moneyRequestVm!.items![index]);
-                          else
-                            return MyWaiting();
-                        },
-                        itemCount: state.page_moneyRequestVm!.hasNext!
-                            ? state.page_moneyRequestVm!.items!.length + 1
-                            : state.page_moneyRequestVm!.items!.length,
-                      )
-                          : state is GetAllWithdrawalLoadedState &&
-                          (state.page_moneyRequestVm == null ||
-                              state.page_moneyRequestVm!.items == null ||
-                              state.page_moneyRequestVm!.items!.isEmpty)
-                          ? NoData()
-                          : Container(),
-                    ),
-                  ):_selectedTab==3?BlocBuilder<GetTransferToOthersWalletsBloc, GetTransferToOthersWalletsState>(
-                    builder: (context, state) => AnimatedSwitcher(
-                      duration: Duration(milliseconds: 1500),
-                      switchInCurve: Curves.easeIn,
-                      child: state is GetTransferToOthersWalletsLoadingState
-                          ? Center(child: MyWaiting())
-                          : state is GetTransferToOthersWalletsLoadedState &&
-                          state.page_transactionVm != null &&
-                          state.page_transactionVm!.items != null &&
-                          state.page_transactionVm!.items!.isNotEmpty
-                          ? ListView.builder(
-                        controller: _selectedTab == 0
-                            ? _exerciseScrollController
-                            : _dietScrollController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          if (index <
-                              state.page_transactionVm!.items!.length)
-                            return ItemLoadedTwo(
-                                transactionVm:  state
-                                    .page_transactionVm!.items![index]);
-                          else
-                            return MyWaiting();
-                        },
-                        itemCount: state.page_transactionVm!.hasNext!
-                            ? state.page_transactionVm!.items!.length + 1
-                            : state.page_transactionVm!.items!.length,
-                      )
-                          : state is GetTransferToOthersWalletsLoadedState &&
-                          (state.page_transactionVm == null ||
-                              state.page_transactionVm!.items == null ||
-                              state.page_transactionVm!.items!.isEmpty)
-                          ? NoData()
-                          : Container(),
-                    ),
-                  ):_selectedTab==4? BlocBuilder<GetTransferToCardBankBloc, GetTransferToCardBankState>(
-                    builder: (context, state) => AnimatedSwitcher(
-                      duration: Duration(milliseconds: 1500),
-                      switchInCurve: Curves.easeIn,
-                      child: state is GetTransferToCardBankLoadingState
-                          ? Center(child: MyWaiting())
-                          : state is GetTransferToCardBankLoadedState &&
-                          state.page_moneyRequestVm != null &&
-                          state.page_moneyRequestVm!.items != null &&
-                          state.page_moneyRequestVm!.items!.isNotEmpty
-                          ? ListView.builder(
-                        controller: _selectedTab == 0
-                            ? _exerciseScrollController
-                            : _dietScrollController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          if (index <
-                              state.page_moneyRequestVm!.items!.length)
-                            return ItemLoadedLast(
-                                moneyRequestVm: state
-                                    .page_moneyRequestVm!.items![index]);
-                          else
-                            return MyWaiting();
-                        },
-                        itemCount: state.page_moneyRequestVm!.hasNext!
-                            ? state.page_moneyRequestVm!.items!.length + 1
-                            : state.page_moneyRequestVm!.items!.length,
-                      )
-                          : state is GetTransferToCardBankLoadedState &&
-                          (state.page_moneyRequestVm == null ||
-                              state.page_moneyRequestVm!.items == null ||
-                              state.page_moneyRequestVm!.items!.isEmpty)
-                          ? NoData()
-                          : Container(),
-                    ),
-                  ):Container()
+                  _selectedTab == 1
+                      ? BlocBuilder<GetAllDepositBloc, GetAllDepositState>(
+                          builder: (context, state) => AnimatedSwitcher(
+                            duration: Duration(milliseconds: 1500),
+                            switchInCurve: Curves.easeIn,
+                            child: state is GetAllDepositLoadingState
+                                ? Center(child: MyWaiting())
+                                : state is GetAllDepositLoadedState &&
+                                        state.page_moneyRequestVm != null &&
+                                        state.page_moneyRequestVm!.items !=
+                                            null &&
+                                        state.page_moneyRequestVm!.items!
+                                            .isNotEmpty
+                                    ? ListView.builder(
+                                        controller: _selectedTab == 0
+                                            ? _exerciseScrollController
+                                            : _dietScrollController,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                          if (index <
+                                              state.page_moneyRequestVm!.items!
+                                                  .length)
+                                            return ItemLoadedFirst(
+                                                moneyRequestVm: state
+                                                    .page_moneyRequestVm!
+                                                    .items![index]);
+                                          else
+                                            return MyWaiting();
+                                        },
+                                        itemCount:
+                                            state.page_moneyRequestVm!.hasNext!
+                                                ? state.page_moneyRequestVm!
+                                                        .items!.length +
+                                                    1
+                                                : state.page_moneyRequestVm!
+                                                    .items!.length,
+                                      )
+                                    : state is GetAllDepositLoadedState &&
+                                            (state.page_moneyRequestVm ==
+                                                    null ||
+                                                state.page_moneyRequestVm!
+                                                        .items ==
+                                                    null ||
+                                                state.page_moneyRequestVm!
+                                                    .items!.isEmpty)
+                                        ? NoData()
+                                        : Container(),
+                          ),
+                        )
+                      : _selectedTab == 2
+                          ? BlocBuilder<GetAllWithdrawalBloc,
+                              GetAllWithdrawalState>(
+                              builder: (context, state) => AnimatedSwitcher(
+                                duration: Duration(milliseconds: 1500),
+                                switchInCurve: Curves.easeIn,
+                                child: state is GetAllWithdrawalLoadingState
+                                    ? Center(child: MyWaiting())
+                                    : state is GetAllWithdrawalLoadedState &&
+                                            state.page_moneyRequestVm != null &&
+                                            state.page_moneyRequestVm!.items !=
+                                                null &&
+                                            state.page_moneyRequestVm!.items!
+                                                .isNotEmpty
+                                        ? ListView.builder(
+                                            controller: _selectedTab == 0
+                                                ? _exerciseScrollController
+                                                : _dietScrollController,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemBuilder: (context, index) {
+                                              if (index <
+                                                  state.page_moneyRequestVm!
+                                                      .items!.length)
+                                                return ItemLoadedFirst(
+                                                    moneyRequestVm: state
+                                                        .page_moneyRequestVm!
+                                                        .items![index]);
+                                              else
+                                                return MyWaiting();
+                                            },
+                                            itemCount: state
+                                                    .page_moneyRequestVm!
+                                                    .hasNext!
+                                                ? state.page_moneyRequestVm!
+                                                        .items!.length +
+                                                    1
+                                                : state.page_moneyRequestVm!
+                                                    .items!.length,
+                                          )
+                                        : state is GetAllWithdrawalLoadedState &&
+                                                (state.page_moneyRequestVm ==
+                                                        null ||
+                                                    state.page_moneyRequestVm!
+                                                            .items ==
+                                                        null ||
+                                                    state.page_moneyRequestVm!
+                                                        .items!.isEmpty)
+                                            ? NoData()
+                                            : Container(),
+                              ),
+                            )
+                          : _selectedTab == 3
+                              ? BlocBuilder<GetTransferToOthersWalletsBloc,
+                                  GetTransferToOthersWalletsState>(
+                                  builder: (context, state) => AnimatedSwitcher(
+                                    duration: Duration(milliseconds: 1500),
+                                    switchInCurve: Curves.easeIn,
+                                    child: state
+                                            is GetTransferToOthersWalletsLoadingState
+                                        ? Center(child: MyWaiting())
+                                        : state is GetTransferToOthersWalletsLoadedState &&
+                                                state.page_transactionVm !=
+                                                    null &&
+                                                state.page_transactionVm!
+                                                        .items !=
+                                                    null &&
+                                                state.page_transactionVm!.items!
+                                                    .isNotEmpty
+                                            ? ListView.builder(
+                                                controller: _selectedTab == 0
+                                                    ? _exerciseScrollController
+                                                    : _dietScrollController,
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemBuilder: (context, index) {
+                                                  if (index <
+                                                      state.page_transactionVm!
+                                                          .items!.length)
+                                                    return ItemLoadedTwo(
+                                                        transactionVm: state
+                                                            .page_transactionVm!
+                                                            .items![index]);
+                                                  else
+                                                    return MyWaiting();
+                                                },
+                                                itemCount: state
+                                                        .page_transactionVm!
+                                                        .hasNext!
+                                                    ? state.page_transactionVm!
+                                                            .items!.length +
+                                                        1
+                                                    : state.page_transactionVm!
+                                                        .items!.length,
+                                              )
+                                            : state is GetTransferToOthersWalletsLoadedState &&
+                                                    (state.page_transactionVm == null ||
+                                                        state.page_transactionVm!
+                                                                .items ==
+                                                            null ||
+                                                        state
+                                                            .page_transactionVm!
+                                                            .items!
+                                                            .isEmpty)
+                                                ? NoData()
+                                                : Container(),
+                                  ),
+                                )
+                              : _selectedTab == 4
+                                  ? BlocBuilder<GetTransferToCardBankBloc,
+                                      GetTransferToCardBankState>(
+                                      builder: (context, state) =>
+                                          AnimatedSwitcher(
+                                        duration: Duration(milliseconds: 1500),
+                                        switchInCurve: Curves.easeIn,
+                                        child: state
+                                                is GetTransferToCardBankLoadingState
+                                            ? Center(child: MyWaiting())
+                                            : state is GetTransferToCardBankLoadedState &&
+                                                    state.page_moneyRequestVm !=
+                                                        null &&
+                                                    state.page_moneyRequestVm!
+                                                            .items !=
+                                                        null &&
+                                                    state.page_moneyRequestVm!
+                                                        .items!.isNotEmpty
+                                                ? ListView.builder(
+                                                    controller: _selectedTab ==
+                                                            0
+                                                        ? _exerciseScrollController
+                                                        : _dietScrollController,
+                                                    physics:
+                                                        const NeverScrollableScrollPhysics(),
+                                                    shrinkWrap: true,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      if (index <
+                                                          state
+                                                              .page_moneyRequestVm!
+                                                              .items!
+                                                              .length)
+                                                        return ItemLoadedLast(
+                                                            moneyRequestVm: state
+                                                                .page_moneyRequestVm!
+                                                                .items![index]);
+                                                      else
+                                                        return MyWaiting();
+                                                    },
+                                                    itemCount: state
+                                                            .page_moneyRequestVm!
+                                                            .hasNext!
+                                                        ? state.page_moneyRequestVm!
+                                                                .items!.length +
+                                                            1
+                                                        : state
+                                                            .page_moneyRequestVm!
+                                                            .items!
+                                                            .length,
+                                                  )
+                                                : state is GetTransferToCardBankLoadedState &&
+                                                        (state.page_moneyRequestVm == null ||
+                                                            state.page_moneyRequestVm!
+                                                                    .items ==
+                                                                null ||
+                                                            state
+                                                                .page_moneyRequestVm!
+                                                                .items!
+                                                                .isEmpty)
+                                                    ? NoData()
+                                                    : Container(),
+                                      ),
+                                    )
+                                  : Container()
                 ],
               ),
             ),
@@ -399,11 +509,12 @@ class _TurnoverPageState extends State<TurnoverPage>
     );
   }
 }
+
 class ItemDietary extends StatelessWidget {
   const ItemDietary(
       {Key? key,
       required this.sizeScreen,
-        required this.planTypeLogvm,
+      required this.planTypeLogvm,
       required this.subscriptionTypeInvoiceListVm})
       : super(key: key);
 
@@ -516,7 +627,7 @@ class ItemLoadedFirst extends StatelessWidget {
               decoration: BoxDecoration(
                   border: Border(
                       right:
-                      BorderSide(color: parseColor('#00B4D8'), width: 3))),
+                          BorderSide(color: parseColor('#00B4D8'), width: 3))),
               child: Padding(
                 padding: EdgeInsets.all(15),
                 child: Row(
@@ -528,10 +639,14 @@ class ItemLoadedFirst extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Text("مقدار:",style: TextStyle(color: Colors.black),),
-                              SizedBox(width: 5,),
+                              Text(
+                                "مقدار:",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text("${moneyRequestVm.nDeposit}")
-
                             ],
                           ),
                           SizedBox(
@@ -539,10 +654,14 @@ class ItemLoadedFirst extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text("روش عملیات:",style: TextStyle(color: Colors.black),),
-                              SizedBox(width: 5,),
+                              Text(
+                                "روش عملیات:",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text("${moneyRequestVm.nPaymentType}")
-
                             ],
                           ),
                           SizedBox(
@@ -550,10 +669,21 @@ class ItemLoadedFirst extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text("وضعیت:",style: TextStyle(color: Colors.black),),
-                              SizedBox(width: 5,),
-                              Text("${moneyRequestVm.nStatus}",style: TextStyle(color: moneyRequestVm.nStatus == "در حال انتظار" ? Colors.orangeAccent : Colors.blueAccent),)
-
+                              Text(
+                                "وضعیت:",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "${moneyRequestVm.nStatus}",
+                                style: TextStyle(
+                                    color: moneyRequestVm.nStatus ==
+                                            "در حال انتظار"
+                                        ? Colors.orangeAccent
+                                        : Colors.blueAccent),
+                              )
                             ],
                           ),
                           SizedBox(
@@ -561,10 +691,14 @@ class ItemLoadedFirst extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text("شماره رسید:",style: TextStyle(color: Colors.black),),
-                              SizedBox(width: 5,),
+                              Text(
+                                "شماره رسید:",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text("${moneyRequestVm.trackingCode}")
-
                             ],
                           ),
                           SizedBox(
@@ -572,16 +706,17 @@ class ItemLoadedFirst extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text(" تاریخ و ساعت:",style: TextStyle(color: Colors.black),),
+                              Text(
+                                " تاریخ و ساعت:",
+                                style: TextStyle(color: Colors.black),
+                              ),
                               Spacer(),
                               Text("${moneyRequestVm.nCreationDate}")
-
                             ],
                           ),
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -590,6 +725,7 @@ class ItemLoadedFirst extends StatelessWidget {
     );
   }
 }
+
 class ItemLoadedTwo extends StatelessWidget {
   const ItemLoadedTwo({Key? key, required this.transactionVm})
       : super(key: key);
@@ -611,7 +747,7 @@ class ItemLoadedTwo extends StatelessWidget {
               decoration: BoxDecoration(
                   border: Border(
                       right:
-                      BorderSide(color: parseColor('#00B4D8'), width: 3))),
+                          BorderSide(color: parseColor('#00B4D8'), width: 3))),
               child: Padding(
                 padding: EdgeInsets.all(15),
                 child: Row(
@@ -623,10 +759,14 @@ class ItemLoadedTwo extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Text("کاربر:",style: TextStyle(color: Colors.black),),
-                              SizedBox(width: 5,),
+                              Text(
+                                "کاربر:",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text("${transactionVm.userId}")
-
                             ],
                           ),
                           SizedBox(
@@ -634,10 +774,14 @@ class ItemLoadedTwo extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text(" سمت:",style: TextStyle(color: Colors.black),),
-                              SizedBox(width: 5,),
+                              Text(
+                                " سمت:",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text("-")
-
                             ],
                           ),
                           SizedBox(
@@ -645,10 +789,14 @@ class ItemLoadedTwo extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text("مقدار:",style: TextStyle(color: Colors.black),),
-                              SizedBox(width: 5,),
+                              Text(
+                                "مقدار:",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text("${transactionVm.nAmount}")
-
                             ],
                           ),
                           SizedBox(
@@ -656,16 +804,19 @@ class ItemLoadedTwo extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text(" تاریخ و ساعت:",style: TextStyle(color: Colors.black),),
-                              SizedBox(width: 5,),
+                              Text(
+                                " تاریخ و ساعت:",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text("${transactionVm.nCreationDate}")
-
                             ],
                           ),
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -674,6 +825,7 @@ class ItemLoadedTwo extends StatelessWidget {
     );
   }
 }
+
 class ItemLoadedLast extends StatelessWidget {
   const ItemLoadedLast({Key? key, required this.moneyRequestVm})
       : super(key: key);
@@ -695,7 +847,7 @@ class ItemLoadedLast extends StatelessWidget {
               decoration: BoxDecoration(
                   border: Border(
                       right:
-                      BorderSide(color: parseColor('#00B4D8'), width: 3))),
+                          BorderSide(color: parseColor('#00B4D8'), width: 3))),
               child: Padding(
                 padding: EdgeInsets.all(15),
                 child: Row(
@@ -707,10 +859,14 @@ class ItemLoadedLast extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Text("کاربر:",style: TextStyle(color: Colors.black),),
-                              SizedBox(width: 5,),
+                              Text(
+                                "کاربر:",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text("${moneyRequestVm.userId}")
-
                             ],
                           ),
                           SizedBox(
@@ -718,10 +874,14 @@ class ItemLoadedLast extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text(" سمت:",style: TextStyle(color: Colors.black),),
-                              SizedBox(width: 5,),
+                              Text(
+                                " سمت:",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text("-")
-
                             ],
                           ),
                           SizedBox(
@@ -729,10 +889,14 @@ class ItemLoadedLast extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text("مقدار:",style: TextStyle(color: Colors.black),),
-                              SizedBox(width: 5,),
+                              Text(
+                                "مقدار:",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text("${moneyRequestVm.nWithdraw}")
-
                             ],
                           ),
                           SizedBox(
@@ -740,16 +904,19 @@ class ItemLoadedLast extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text(" تاریخ و ساعت:",style: TextStyle(color: Colors.black),),
-                              SizedBox(width: 5,),
+                              Text(
+                                " تاریخ و ساعت:",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text("${moneyRequestVm.nCreationDate}")
-
                             ],
                           ),
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ),

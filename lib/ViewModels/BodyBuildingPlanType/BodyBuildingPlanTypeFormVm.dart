@@ -46,7 +46,7 @@ class BodyBuildingPlanTypeFormVm extends BaseViewModel {
     coachId = json['coachId'];
     coachFullName = json['coachFullName'];
     title = json['title'];
-    description = json['description'];
+    description = json['description'] ?? "";
     totalPrice = json['totalPrice'];
     totalTerm = json['totalTerm'];
     isPrivate = json['isPrivate'];

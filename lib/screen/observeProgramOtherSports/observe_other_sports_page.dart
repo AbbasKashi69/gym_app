@@ -45,6 +45,7 @@ class _ObserveOtherSportsPageState extends State<ObserveOtherSportsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Size sizeScreen = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: Color(0xff48CAE4),
         body: Container(
@@ -57,14 +58,13 @@ class _ObserveOtherSportsPageState extends State<ObserveOtherSportsPage> {
                   anonymousPlantypeFormVm = AnonymousPlantypeFormVm.fromJson(
                       state.resultObject!.extra! as Map<String, dynamic>);
                   currentDay = anonymousPlantypeFormVm.currentDay!;
-                  currentDayForSend = anonymousPlantypeFormVm.currentDay!;
+                  currentDayForSend = currentDay - 1;
                   dayCount = anonymousPlantypeFormVm.dayTerms!.length;
                   termCounInDay = anonymousPlantypeFormVm.dayTerms!
                       .where((element) => element.dayNumber == 1)
                       .toList()
                       .first
                       .termsCount!;
-                  currentDayForSend = anonymousPlantypeFormVm.currentDay!;
                 }
               }
             },
@@ -85,7 +85,11 @@ class _ObserveOtherSportsPageState extends State<ObserveOtherSportsPage> {
                             ? Center(
                                 child: NoData(),
                               )
-                            : Container(),
+                            : Container(
+                                color: Colors.white,
+                                height: sizeScreen.height,
+                                width: sizeScreen.width,
+                              ),
               );
             },
           ),
@@ -279,7 +283,7 @@ class _ItemLoadedObserveOtherSportsState
                                 flex: 2,
                               )
                             : Expanded(
-                                flex: 3,
+                                flex: 2,
                                 child: BlocConsumer<ChangeCurrentDayBloc,
                                     ChangeCurrentDayState>(
                                   listener: (context, state) {

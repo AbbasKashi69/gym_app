@@ -56,9 +56,9 @@ class _ObserveProgramBodyState extends State<ObserveProgramBody> {
                   bodyBuildingPlanTypeFormVm =
                       BodyBuildingPlanTypeFormVm.fromJson(
                           state.resultObject!.extra! as Map<String, dynamic>);
-                  currentDay = bodyBuildingPlanTypeFormVm.currentDay!;
-                  currentDayForSend = bodyBuildingPlanTypeFormVm.currentDay!;
                   dayCount = bodyBuildingPlanTypeFormVm.dayTerms!.length;
+                  currentDay = bodyBuildingPlanTypeFormVm.currentDay!;
+                  currentDayForSend = currentDay - 1;
                   termCounInDay = bodyBuildingPlanTypeFormVm.dayTerms!
                       .where((element) => element.dayNumber == 1)
                       .toList()
@@ -298,7 +298,7 @@ class _ItemLoadedObserveBodyBuildingState
                                 flex: 2,
                               )
                             : Expanded(
-                                flex: 3,
+                                flex: 2,
                                 child: BlocConsumer<
                                     ChangeCurrentDayBodyBuildingBloc,
                                     ChangeCurrentDayBodyBuildingState>(
