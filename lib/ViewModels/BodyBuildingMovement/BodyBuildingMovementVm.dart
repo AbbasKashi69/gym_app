@@ -1,5 +1,9 @@
 
 
+import 'dart:typed_data';
+
+import 'package:gym_app/ViewModels/Person/PersonVm.dart';
+
 import '../BaseViewModel.dart';
 
 class BodyBuildingMovementVm extends BaseViewModel {
@@ -17,7 +21,8 @@ bool? isActive;
 String? creationDate;
 String? nCreationDate;
 
-
+    Uint8List? uint8list;
+    FileVm? fileVm;
 
 
     BodyBuildingMovementVm(
@@ -30,7 +35,8 @@ this.description,
 this.filePath, 
 this.status, 
 this.nStatus, 
-this.isActive, 
+this.isActive,
+
 this.creationDate, 
 this.nCreationDate, 
 

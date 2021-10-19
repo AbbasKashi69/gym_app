@@ -21,7 +21,8 @@ import 'package:gym_app/screen/MyActiveProgram/my_active_program_page.dart';
 import 'package:gym_app/screen/ProgramList/program_list_page.dart';
 import 'package:gym_app/screen/chat/chat_list_page.dart';
 import 'package:gym_app/screen/list_barnameha/list_barnameha.dart';
-import 'package:gym_app/screen/settings/setting_page.dart';
+
+import '../setting_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

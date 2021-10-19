@@ -93,7 +93,7 @@ import 'package:gym_app/screen/profile_page/profile_page.dart';
 import 'package:gym_app/screen/profile_page/reset_password1_page.dart';
 import 'package:gym_app/screen/profile_page/reset_password2_page.dart';
 import 'package:gym_app/screen/profile_page/reset_password3_page.dart';
-import 'package:gym_app/screen/settings/setting_page.dart';
+import 'package:gym_app/screen/setting_page.dart';
 import 'package:gym_app/screen/subscription_page/subscription_page.dart';
 import 'package:gym_app/screen/PersonalInfo/personal_info_page.dart';
 import 'package:gym_app/screen/ProfileApprentice/profile_apprentice_page.dart';

@@ -18,6 +18,7 @@ class TransactionService {
   static const String url_getAll = '/api/Transaction/GetAll';
   static const String url_getSumWithdrawal = '/api/Transaction/GetSumWithdrawal';
   static const String url_getSumDeposit = '/api/Transaction/GetSumDeposit';
+  static const String url_getTransferToOthersWallets = '/api/Transaction/GetTransferToOthersWallets';
 
   Future<ResultObject?> edit(SubscriptionTypeVm subscriptionTypeVm) async {
     var response =
@@ -60,6 +61,15 @@ class TransactionService {
     return null;
   }
 
+  Future<Page_TransactionVm?> getTransferToOthersWallets(int? pageSize, [int pageNumber = 1] ) async {
+    var response = await repository!.get(url_getTransferToOthersWallets +
+        '?pageNumber=$pageNumber&pageSize=$pageSize');
+    if (response != null) {
+      Page_TransactionVm result = Page_TransactionVm.fromJson(response);
+      return result;
+    }
+    return null;
+  }
 
   Future<Page_TransactionVm?> getAll([int pageNumber = 1]) async {
     var response =

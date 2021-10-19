@@ -3,10 +3,11 @@ import '../BaseViewModel.dart';
 class TransactionAmountVm extends BaseViewModel {
   double? amount;
   String? nAmount;
-
+  int? bankId;
   TransactionAmountVm({
     this.amount,
     this.nAmount,
+    this.bankId,
   });
 
   TransactionAmountVm.fromJson(Map<String, dynamic> json) {
