@@ -204,34 +204,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ],
                 )),
-            BlocConsumer<GetCurrentUserRoleBloc, GetCurrentUserRoleState>(
-              listener: (context, state) {
-                if (state is GetCurrentUserRoleLoadedState) {
-                  if (state.listRoleVm != null &&
-                      state.listRoleVm!.isNotEmpty) {
-                    // CurrentUserVm.roleType = state.listRoleVm!.first.roleType;
-                    CurrentUserVm.roleType = state.listRoleVm!.first.id;
-                  }
-                }
-              },
-              builder: (context, state) {
-                if (state is GetCurrentUserRoleLoadingState)
-                  return Center(
-                    child: MyWaiting(),
-                  );
-                else if (state is GetCurrentUserRoleLoadedState) {
-                  if (state.listRoleVm != null &&
-                      state.listRoleVm!.isNotEmpty) {
-                    // if (state.listRoleVm!.first.roleType == 3)
-                    if (state.listRoleVm!.first.id == 3)
-                      return ItemsStudents();
-                    else
-                      return ItemsCoach();
-                  }
-                }
-                return Container();
-              },
-            ),
+            if (CurrentUserVm.roleType == 3) ItemsStudents() else ItemsCoach(),
             SizedBox(
               height: 25,
             ),

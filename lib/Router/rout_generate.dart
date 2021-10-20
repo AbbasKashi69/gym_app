@@ -120,16 +120,9 @@ class MyRouter {
     switch (routeSettings.name) {
       case MyHomePage.routeName:
         return MaterialPageRoute(
-            builder: (context) => MultiBlocProvider(
-                  providers: [
-                    BlocProvider(
-                        create: (context) => GetCurrentUserRoleBloc()
-                          ..add(GetCurrentUserRoleLoadingEvent())),
-                    BlocProvider(
-                      create: (context) =>
-                          BottomNavBloc()..add(BottomNavLoadingEvent(index: 0)),
-                    )
-                  ],
+            builder: (context) => BlocProvider(
+                  create: (context) =>
+                      BottomNavBloc()..add(BottomNavLoadingEvent(index: 0)),
                   child: MyHomePage(),
                 ));
       case ScanPage.routeName:
