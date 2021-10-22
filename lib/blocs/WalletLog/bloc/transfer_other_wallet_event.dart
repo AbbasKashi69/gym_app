@@ -8,5 +8,4 @@ class TransferToOtherWalletLoadingEvent extends TransferToOtherWalletEvent {
 
   TransferToOtherWalletLoadingEvent({required this.transferToOtherWalletVm});
 
-
 }

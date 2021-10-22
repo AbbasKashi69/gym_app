@@ -628,9 +628,7 @@ class MyRouter {
       case TransferOtherWallet.routeName:
         return MaterialPageRoute(
           builder: (context) => BlocProvider<TransferOtherWalletBloc>(
-            create: (context) => TransferOtherWalletBloc()
-              ..add(TransferToOtherWalletLoadingEvent(
-                  transferToOtherWalletVm: TransferToOtherWalletsVm())),
+            create: (context) => TransferOtherWalletBloc(),
             child: TransferOtherWallet(),
           ),
         );

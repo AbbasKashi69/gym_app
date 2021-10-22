@@ -95,14 +95,12 @@ import 'package:gym_app/ViewModels/WalletLog/transferToOtherWalletVm.dart';
       TransferToOtherWalletsVm transferToOtherWalletVm) async {
     print("gg");
     var response =
-    await repository!.post(url_transferToOthersWallets, transferToOtherWalletVm.toJson());
+    await repository!.post(url_transferToOthersWallets,transferToOtherWalletVm.toJson());
     print(response);
     if (response != null) {
-
       ResultObject result = ResultObject.fromJson(response);
       print("gg3");
       return result;
-
     }
     return null;
   }

@@ -41,35 +41,59 @@ class _TurnoverPageState extends State<TurnoverPage>
     super.initState();
     _tabController = new TabController(length: 4, vsync: this);
     _pageController = PageController(initialPage: 0, keepPage: true);
-    _exerciseScrollController = ScrollController()..addListener(_listener);
-    _dietScrollController = ScrollController()..addListener(_listenerDiet);
+    _DepositController = ScrollController()..addListener(_listener);
+    _WithrawlScrollController = ScrollController()
+      ..addListener(_listenerWithrawl);
+    _OthersScrollController = ScrollController()
+      ..addListener(_listenerOtherWallets);
+    _ToBankScrollController = ScrollController()..addListener(_listenerToBank);
   }
 
-  late ScrollController _exerciseScrollController;
-  late ScrollController _dietScrollController;
+  late ScrollController _DepositController;
+  late ScrollController _WithrawlScrollController;
+  late ScrollController _OthersScrollController;
+  late ScrollController _ToBankScrollController;
   late PageController _pageController;
 
   _listener() {
-    if (_exerciseScrollController.position.pixels ==
-        _exerciseScrollController.position.maxScrollExtent) {
+    if (_DepositController.position.pixels ==
+        _DepositController.position.maxScrollExtent) {
       BlocProvider.of<GetAllDepositBloc>(context)
-        ..add(GetAllDepositLoadedEvent(10, 1));
+        ..add(GetAllDepositLoadedEvent(10, 2));
     }
   }
 
-  _listenerDiet() {
-    if (_dietScrollController.position.pixels ==
-        _dietScrollController.position.maxScrollExtent) {
-      BlocProvider.of<GetAllDepositBloc>(context)
-        ..add(GetAllDepositLoadedEvent(11, 2));
+  _listenerToBank() {
+    if (_ToBankScrollController.position.pixels ==
+        _ToBankScrollController.position.maxScrollExtent) {
+      BlocProvider.of<GetTransferToCardBankBloc>(context)
+        ..add(GetTransferToCardBankLoadedEvent(10, 2));
+    }
+  }
+
+  _listenerOtherWallets() {
+    if (_OthersScrollController.position.pixels ==
+        _OthersScrollController.position.maxScrollExtent) {
+      BlocProvider.of<GetTransferToOthersWalletsBloc>(context)
+        ..add(GetTransferToOthersWalletsLoadedEvent(10, 2));
+    }
+  }
+
+  _listenerWithrawl() {
+    if (_WithrawlScrollController.position.pixels ==
+        _WithrawlScrollController.position.maxScrollExtent) {
+      BlocProvider.of<GetTransferToOthersWalletsBloc>(context)
+        ..add(GetTransferToOthersWalletsLoadedEvent(10, 2));
     }
   }
 
   @override
   void dispose() {
     _pageController.dispose();
-    _exerciseScrollController.dispose();
-    _dietScrollController.dispose();
+    _ToBankScrollController.dispose();
+    _OthersScrollController.dispose();
+    _DepositController.dispose();
+    _WithrawlScrollController.dispose();
     super.dispose();
   }
 
@@ -117,6 +141,15 @@ class _TurnoverPageState extends State<TurnoverPage>
         height: gh(1),
         width: gw(1),
         child: SingleChildScrollView(
+          controller: _selectedTab == 1
+              ? _DepositController
+              : _selectedTab == 2
+                  ? _WithrawlScrollController
+                  : _selectedTab == 3
+                      ? _OthersScrollController
+                      : _selectedTab == 4
+                          ? _ToBankScrollController
+                          : null,
           physics: const BouncingScrollPhysics(),
           child: Container(
             width: Get.width,
@@ -288,9 +321,6 @@ class _TurnoverPageState extends State<TurnoverPage>
                                         state.page_moneyRequestVm!.items!
                                             .isNotEmpty
                                     ? ListView.builder(
-                                        controller: _selectedTab == 0
-                                            ? _exerciseScrollController
-                                            : _dietScrollController,
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
@@ -340,9 +370,6 @@ class _TurnoverPageState extends State<TurnoverPage>
                                             state.page_moneyRequestVm!.items!
                                                 .isNotEmpty
                                         ? ListView.builder(
-                                            controller: _selectedTab == 0
-                                                ? _exerciseScrollController
-                                                : _dietScrollController,
                                             physics:
                                                 const NeverScrollableScrollPhysics(),
                                             shrinkWrap: true,
@@ -397,8 +424,8 @@ class _TurnoverPageState extends State<TurnoverPage>
                                                     .isNotEmpty
                                             ? ListView.builder(
                                                 controller: _selectedTab == 0
-                                                    ? _exerciseScrollController
-                                                    : _dietScrollController,
+                                                    ? _DepositController
+                                                    : _WithrawlScrollController,
                                                 physics:
                                                     const NeverScrollableScrollPhysics(),
                                                 shrinkWrap: true,
@@ -456,8 +483,8 @@ class _TurnoverPageState extends State<TurnoverPage>
                                                 ? ListView.builder(
                                                     controller: _selectedTab ==
                                                             0
-                                                        ? _exerciseScrollController
-                                                        : _dietScrollController,
+                                                        ? _DepositController
+                                                        : _WithrawlScrollController,
                                                     physics:
                                                         const NeverScrollableScrollPhysics(),
                                                     shrinkWrap: true,

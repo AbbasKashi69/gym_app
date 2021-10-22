@@ -26,11 +26,8 @@ class TransferOtherWalletBloc extends Bloc<TransferToOtherWalletEvent, TransferT
         print("aaa1");
         var data = await _walletLogService.transferToOthersWallets(event.transferToOtherWalletVm);
         print("aaa2");
-
         yield TransferToOtherWalletLoadedState(resultObject: data);
         print("aaa3");
-
-
       } catch (e) {
         print('error in  state' + e.toString());
         yield TransferToOtherWalletErrorState(message: e.toString());

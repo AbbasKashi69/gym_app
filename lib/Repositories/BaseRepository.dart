@@ -151,7 +151,8 @@ class BaseRepository implements IBaseRepository {
         {'Content-Type': 'application/json', 'Accept': 'application/json'});
     http.Response response =
         await http.post(newUrl, headers: headersList, body: jsonEncode(jsonVm));
-
+     print(response.statusCode);
+     print(response);
     if (response.statusCode == 200 || response.statusCode == 400) {
       if (response.body.isNotEmpty) {
         var result = json.decode(response.body);
