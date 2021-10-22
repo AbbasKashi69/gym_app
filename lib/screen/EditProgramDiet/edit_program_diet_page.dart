@@ -14,6 +14,8 @@ import 'package:gym_app/screen/CreateProgramDietSetting/create_program_diet_sett
 import 'package:gym_app/screen/CreateProgramOtherSports/create_program_other_sports_page.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
+import '../../main.dart';
+
 class EditProgramDietPage extends StatefulWidget {
   EditProgramDietPage({Key? key}) : super(key: key);
   static const routeName = '/EditProgramDietPage';
@@ -61,6 +63,7 @@ class _EditProgramDietPageState extends State<EditProgramDietPage> {
                     state.resultObject!.success!) {
                   dietPlantypeFormVm = DietPlanTypeFormVm.fromJson(
                       state.resultObject!.extra! as Map<String, dynamic>);
+                  _setDisplayOrderToMaxValue();
                   _descriptionTextEditingController.text =
                       dietPlantypeFormVm.description ?? "";
                   _endDateTextEditingController.text =
@@ -104,6 +107,15 @@ class _EditProgramDietPageState extends State<EditProgramDietPage> {
         ),
       ),
     );
+  }
+
+  void _setDisplayOrderToMaxValue() {
+    List<int?> mySortDisplay = [];
+    dietPlantypeFormVm.dietPlanTypeDetailForms!.forEach((element) {
+      mySortDisplay.add(element.displayOrder);
+    });
+    mySortDisplay.sort();
+    MyHomePage.lastDisplayOtherSports = mySortDisplay.last!;
   }
 }
 

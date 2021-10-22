@@ -8,6 +8,7 @@ import 'package:gym_app/blocs/AnonymousPlanType/bloc/find_by_id_in_form_other_sp
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/customeTextField.dart';
 import 'package:gym_app/components/myWaiting.dart';
+import 'package:gym_app/main.dart';
 import 'package:gym_app/screen/CreateProgramOtherSports/create_program_other_sports_page.dart';
 import 'package:gym_app/screen/CreateProgramOtherSportsSetting/create_program_other_sports_setting_pages.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
@@ -61,6 +62,7 @@ class _EditProgramOtherSportsPageState
                     state.resultObject!.success!) {
                   anonymousPlantypeFormVm = AnonymousPlantypeFormVm.fromJson(
                       state.resultObject!.extra! as Map<String, dynamic>);
+                  _setDisplayOrderToMaxValue();
                   _descriptionTextEditingController.text =
                       anonymousPlantypeFormVm.description ?? "";
                   _endDateTextEditingController.text =
@@ -104,6 +106,15 @@ class _EditProgramOtherSportsPageState
         ),
       ),
     );
+  }
+
+  void _setDisplayOrderToMaxValue() {
+    List<int?> mySortDisplay = [];
+    anonymousPlantypeFormVm.anonymousPlanTypeDetailForms!.forEach((element) {
+      mySortDisplay.add(element.displayOrder);
+    });
+    mySortDisplay.sort();
+    MyHomePage.lastDisplayOtherSports = mySortDisplay.last!;
   }
 }
 

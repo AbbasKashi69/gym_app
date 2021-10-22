@@ -6,6 +6,8 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:gym_app/ViewModels/Account/LoginVm.dart';
+import 'package:gym_app/ViewModels/CurrentUserVm.dart';
+import 'package:gym_app/blocs/Account/bloc/get_current_user_role_bloc.dart';
 import 'package:gym_app/blocs/Account/bloc/login_bloc.dart';
 import 'package:gym_app/components/constant.dart';
 import 'package:gym_app/components/myWaiting.dart';
@@ -187,38 +189,59 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: Get.height * 0.1,
                     ),
-                    BlocConsumer<LoginBloc, LoginState>(
+                    BlocConsumer<GetCurrentUserRoleBloc,
+                        GetCurrentUserRoleState>(
                       listener: (context, state) {
-                        if (state is LoginLoadedState) {
-                          if (state.resultObject!.success!) {
+                        if (state is GetCurrentUserRoleLoadedState) {
+                          if (state.listRoleVm != null &&
+                              state.listRoleVm!.isNotEmpty) {
+                            // CurrentUserVm.roleType = state.listRoleVm!.first.roleType;
+                            CurrentUserVm.roleType = state.listRoleVm!.first.id;
                             Navigator.of(context).pushNamedAndRemoveUntil(
                                 MyHomePage.routeName, (route) => false);
                           }
-                          Fluttertoast.showToast(
-                              msg: state.resultObject!.message!);
                         }
                       },
                       builder: (context, state) {
-                        if (state is LoginLoadingState)
+                        if (state is GetCurrentUserRoleLoadingState)
                           return MyWaiting();
                         else
-                          return CustomeButton(
-                            sizeScreen: MediaQuery.of(context).size,
-                            title: 'ورود',
-                            onTap: () {
-                              if (loginKey.currentState!.validate()) {
-                                BlocProvider.of<LoginBloc>(context).add(
-                                    LoginLoadingEvent(
-                                        loginVm: LoginVm(
-                                            userName: '0' +
-                                                _phoneTextInputEditingController
-                                                    .text,
-                                            password:
-                                                _passTextInputEditingController
-                                                    .text)));
+                          return BlocConsumer<LoginBloc, LoginState>(
+                            listener: (context, state) {
+                              if (state is LoginLoadedState) {
+                                if (state.resultObject != null &&
+                                    state.resultObject!.success!) {
+                                  BlocProvider.of<GetCurrentUserRoleBloc>(
+                                          context)
+                                      .add(GetCurrentUserRoleLoadingEvent());
+                                } else
+                                  Fluttertoast.showToast(
+                                      msg: state.resultObject!.message!);
                               }
                             },
-                            isReject: true,
+                            builder: (context, state) {
+                              if (state is LoginLoadingState)
+                                return MyWaiting();
+                              else
+                                return CustomeButton(
+                                  sizeScreen: MediaQuery.of(context).size,
+                                  title: 'ورود',
+                                  onTap: () {
+                                    if (loginKey.currentState!.validate()) {
+                                      BlocProvider.of<LoginBloc>(context).add(
+                                          LoginLoadingEvent(
+                                              loginVm: LoginVm(
+                                                  userName: '0' +
+                                                      _phoneTextInputEditingController
+                                                          .text,
+                                                  password:
+                                                      _passTextInputEditingController
+                                                          .text)));
+                                    }
+                                  },
+                                  isReject: true,
+                                );
+                            },
                           );
                       },
                     ),

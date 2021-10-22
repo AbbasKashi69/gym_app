@@ -18,6 +18,8 @@ import 'package:gym_app/screen/CreateProgramOtherSports/create_program_other_spo
 import 'package:gym_app/screen/createProgramBodySetting/create_program_body_setting_page.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
+import '../../main.dart';
+
 class EditProgramBodyBuilding extends StatefulWidget {
   EditProgramBodyBuilding({Key? key}) : super(key: key);
   static const String routeName = '/EditProgramBodyBuilding';
@@ -69,6 +71,7 @@ class _EditProgramBodyBuildingState extends State<EditProgramBodyBuilding> {
                   bodyBuildingPlanTypeFormVm =
                       BodyBuildingPlanTypeFormVm.fromJson(
                           state.resultObject!.extra! as Map<String, dynamic>);
+                  _setDisplayOrderToMaxValue();
                   _descriptionTextEditingController.text =
                       bodyBuildingPlanTypeFormVm.description ?? "";
                   _endDateTextEditingController.text =
@@ -113,6 +116,15 @@ class _EditProgramBodyBuildingState extends State<EditProgramBodyBuilding> {
         ),
       ),
     );
+  }
+
+  void _setDisplayOrderToMaxValue() {
+    List<int?> mySortDisplay = [];
+    bodyBuildingPlanTypeFormVm.bodyBuildingPlanTypeDetails!.forEach((element) {
+      mySortDisplay.add(element.displayOrder);
+    });
+    mySortDisplay.sort();
+    MyHomePage.lastDisplayOtherSports = mySortDisplay.last!;
   }
 }
 
